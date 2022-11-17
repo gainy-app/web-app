@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import {SignIn} from 'routes';
-import {routes} from 'utils/constants';
+import { SignIn, NotFound, Home } from 'routes';
+import { routes } from 'utils/constants';
 
 function App() {
 
@@ -11,6 +11,20 @@ function App() {
         element={
           <React.Suspense>
             <SignIn/>
+          </React.Suspense>
+        }
+      />
+      <Route path={routes.home}
+        element={
+          <React.Suspense>
+            <Home/>
+          </React.Suspense>
+        }
+      />
+      <Route path={routes.notFound}
+        element={
+          <React.Suspense>
+            <NotFound/>
           </React.Suspense>
         }
       />

@@ -1,5 +1,7 @@
 export const routes = {
-  signIn: '/sign-in'
+  signIn: '/sign-in',
+  notFound: '*',
+  home: '/',
 };
 
 export const imageTypes = {
