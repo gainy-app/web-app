@@ -16,7 +16,7 @@
     "number-leading-zero": "never",
     "at-rule-no-unknown": null,
     "color-named": "never",
-    "selector-class-pattern": "^([a-z][a-z0-9]*)((-|--|__)[a-z0-9]+)*(((__|--)([a-z][a-z0-9]*)(-[a-z0-9]+)*)?)$",
+    "selector-class-pattern": null,
     "no-descending-specificity": null,
     "max-line-length": 220,
     "scss/at-rule-no-unknown": true,

@@ -1,0 +1,36 @@
+@import "../../../styles/mixins";
+
+.button {
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 22px 68px;
+
+  @include flex(row,center,center);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all ease-out .4s;
+  color: $white;
+  background-color: $blue;
+  border-radius: 20px;
+
+  &:hover,
+  &:active {
+    opacity: .9;
+  }
+
+  &:disabled {
+    background-color: $disabled;
+  }
+
+  &_apple {
+    background-color: $dark-blue;
+    color: $white;
+  }
+
+  &_transparent {
+    background-color: transparent;
+    color: $black;
+  }
+}

@@ -1,0 +1,12 @@
+@import "../../../styles/mixins";
+
+.footer {
+  @include flex(row,center,center);
+  font-family: "Inter Regular", sans-serif;
+  color: #000;
+  font-size: 16px;
+
+  span {
+    margin-bottom: 24px;
+  }
+}

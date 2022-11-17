@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { SignIn, NotFound, Home } from 'routes';
+import { SignIn, NotFound, Home, GetApp } from 'routes';
 import { routes } from 'utils/constants';
 
 function App() {
@@ -18,6 +18,13 @@ function App() {
         element={
           <React.Suspense>
             <Home/>
+          </React.Suspense>
+        }
+      />
+      <Route path={routes.getApp}
+        element={
+          <React.Suspense>
+            <GetApp/>
           </React.Suspense>
         }
       />

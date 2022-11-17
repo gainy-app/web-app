@@ -3,7 +3,7 @@ import {Header} from './header';
 import styles from './layout.module.scss';
 
 interface Props {
-    children: JSX.Element
+    children?: JSX.Element
     isAuth?: boolean
 }
 

@@ -1,5 +1,28 @@
+@import "../../styles/mixins";
+
 .section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 80px;
+
   .description {
-    font-family: "SF Pro Display", sans-serif;
+    font-family: "SF Pro Display Heavy", sans-serif;
+    font-size: 24px;
+    color: $black;
+  }
+
+  .authButtons {
+    @include flex(column, center ,center);
+
+    button {
+      svg {
+        margin-right: 16px;
+      }
+    }
+
+    button:first-child {
+      margin-bottom: 20px;
+    }
   }
 }
