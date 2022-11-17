@@ -4,6 +4,7 @@ import styles from './signin.module.scss';
 
 export default function SignIn () {
   const {pathname} = useLocation();
+
   return (
     <Layout isAuth={!pathname.includes(pathname)}>
       <section className={styles.section}>

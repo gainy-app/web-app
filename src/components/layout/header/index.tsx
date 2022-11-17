@@ -1,10 +1,11 @@
-import {Image} from 'components/common/Image';
+import {Image} from 'components';
+import {imageTypes} from 'utils/constants';
 
 export const Header = () => {
   return (
     <header>
       <nav>
-        <Image type={'logo'}/>
+        <Image type={imageTypes.logo}/>
         <div>link</div>
       </nav>
     </header>
