@@ -1,0 +1,21 @@
+@import "styles/fonts.scss";
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+body > div:first-child {
+  height: 100%;
+}
+
+code {
+  font-family:
+    source-code-pro,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Courier New",
+    monospace;
+}

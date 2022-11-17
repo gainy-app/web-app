@@ -1,0 +1,86 @@
+@import "./variables";
+
+@mixin flex($fd: initial, $jc: initial, $ai: initial, $fw: initial) {
+  display: flex;
+  flex-direction: $fd;
+  flex-wrap: $fw;
+  align-items: $ai;
+  justify-content: $jc;
+}
+
+@mixin size($w: initial, $h: initial) {
+  width: $w;
+  height: $h;
+}
+
+@mixin text($family: initial, $size: initial, $color: initial) {
+  font-family: $family;
+  font-size: $size;
+  color: $color;
+}
+
+@mixin quadHd {
+  @media (max-width: $quad-hd) {
+    @content;
+  }
+}
+
+@mixin macbookFifteen {
+  @media (max-width: $macbook-fifteen) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (max-width: $macbook-twelve) {
+    @content;
+  }
+}
+
+@mixin maxTablet {
+  @media (max-width: $max-tablet-size) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $default-tablet-size) {
+    @content;
+  }
+}
+
+@mixin mediumDesktop {
+  @media (max-width: $macbook-fifteen) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: $desktop) {
+    @content;
+  }
+}
+
+@mixin minTablet {
+  @media (max-width: $min-tablet-size) {
+    @content;
+  }
+}
+
+@mixin phone {
+  @media (max-width: $max-mobile-size) {
+    @content;
+  }
+}
+
+@mixin big-phone {
+  @media (max-width: $medium-mobile-size) {
+    @content;
+  }
+}
+
+@mixin medium-phone {
+  @media (max-width: $small-mobile-size) {
+    @content;
+  }
+}

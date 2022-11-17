@@ -1,0 +1,30 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "plugins": ["stylelint-order", "stylelint-scss"],
+  "rules": {
+    "no-empty-source": null,
+    "declaration-empty-line-before": null,
+    "no-missing-end-of-source-newline": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "no-invalid-position-at-import-rule": null,
+    "scss/no-global-function-names": null,
+    "media-feature-name-no-vendor-prefix": null,
+    "scss/at-import-no-partial-leading-underscore": null,
+    "alpha-value-notation": null,
+    "color-function-notation": null,
+    "no-duplicate-selectors": null,
+    "number-leading-zero": "never",
+    "at-rule-no-unknown": null,
+    "color-named": "never",
+    "selector-class-pattern": "^([a-z][a-z0-9]*)((-|--|__)[a-z0-9]+)*(((__|--)([a-z][a-z0-9]*)(-[a-z0-9]+)*)?)$",
+    "no-descending-specificity": null,
+    "max-line-length": 220,
+    "scss/at-rule-no-unknown": true,
+    "scss/selector-no-redundant-nesting-selector": true,
+    "scss/operator-no-unspaced": true,
+    "scss/operator-no-newline-before": true,
+    "scss/operator-no-newline-after": true,
+    "scss/at-mixin-pattern": null,
+    "scss/at-import-partial-extension": null
+  }
+}
