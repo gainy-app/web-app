@@ -14,8 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: NPM install
+      - name: Install node.js
         run: sudo apt install nodejs npm
+
+      - name: npm install
+        run: npm install
 
       - name: Terraform Format
         id: fmt

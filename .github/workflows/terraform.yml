@@ -43,10 +43,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: NPM install
+      - name: Install node.js
         run: sudo apt install nodejs npm
 
-      - name: NPM build
+      - name: npm install
+        run: npm install
+
+      - name: npm run build
         run: npm run build
 
       - name: Copy
