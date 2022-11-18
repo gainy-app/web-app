@@ -1,0 +1,4 @@
+.meltano
+.idea
+.tox
+.pytest_cache
