@@ -1,28 +1,77 @@
 @import "../../styles/mixins";
 
 .section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 80px;
+  @include flex(column,initial,center);
+  padding-top: 5.714vw;
+
+  @media (max-width: $macbook-thirteen) {
+    padding-top: 80px;
+  }
+
+  .logo {
+    width: 8.571vw;
+    height: 2.857vw;
+
+    @media (max-width: $macbook-thirteen) {
+      width: 120px;
+      height: 40px;
+    }
+  }
+
+  .car {
+    width: 17.143vw;
+    height: 14.286vw;
+
+    @media (max-width: $macbook-thirteen) {
+      width: 234px;
+      height: 240px;
+    }
+  }
 
   .description {
+    font-size: 1.714vw;
     font-family: "SF Pro Display Heavy", sans-serif;
-    font-size: 24px;
     color: $black;
+
+    @media (max-width: $macbook-thirteen) {
+      font-size: 24px;
+    }
+
+    @media (max-width: $medium-mobile-size) {
+      font-size: 20px;
+      text-align: center;
+    }
   }
 
   .authButtons {
     @include flex(column, center ,center);
 
+    .signIcon {
+      width: 1vw;
+      height: 1.143vw;
+
+      @media (max-width: $macbook-thirteen) {
+        width: 14px;
+        height: 16px;
+      }
+    }
+
     button {
       svg {
-        margin-right: 16px;
+        margin-right: 1.143vw;
+
+        @media (max-width: $macbook-thirteen) {
+          margin-right: 16px;
+        }
       }
     }
 
     button:first-child {
-      margin-bottom: 20px;
+      margin-bottom: 1.143vw;
+
+      @media (max-width: $macbook-thirteen) {
+        margin-bottom: 16px;
+      }
     }
   }
 }

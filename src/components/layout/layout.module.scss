@@ -1,13 +1,15 @@
+@import "../../styles/mixins";
+
 .container {
   display: flex;
   flex-direction: column;
   height: 100%;
+  max-width: $macbook-thirteen;
+  margin: 0 auto;
 }
 
 .content {
   flex: 1 0 auto;
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
 .footer {

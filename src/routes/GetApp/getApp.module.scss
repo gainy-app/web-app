@@ -1,6 +1,112 @@
+@import "../../styles/mixins";
+
 .section {
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 80px;
+  padding-top: 5.714vw;
+  color: $black;
+
+  @media (max-width: $macbook-thirteen) {
+    padding-top: 80px;
+  }
+
+  .title {
+    font-family: "SF Pro Display Heavy", sans-serif;
+    margin-top: 4.714vw;
+    font-weight: 700;
+    font-size: 1.714vw;
+    line-height: 2.286vw;
+
+    @media (max-width: $macbook-thirteen) {
+      margin-top: 66px;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
+
+  .subtitle {
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-weight: 500;
+    font-size: 1.143vw;
+    line-height: 1.714vw;
+    margin-top: 2.857vw;
+    text-align: center;
+
+    @media (max-width: $macbook-thirteen) {
+      font-size: 16px;
+      line-height: 24px;
+      margin-top: 40px;
+    }
+  }
+
+  .qrCode {
+    margin-top: 4.571vw;
+    height: 14.286vw;
+    width: 14.286vw;
+
+    @media (max-width: $macbook-thirteen) {
+      height: 200px;
+      width: 200px;
+      margin-top: 64px;
+    }
+  }
+
+  .description {
+    margin-top: 1.714vw;
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-weight: 500;
+    font-size: 1.143vw;
+    line-height: 1.714vw;
+
+    @media (max-width: $macbook-thirteen) {
+      margin-top: 24px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+
+  .actions {
+    width: 22.857vw;
+    margin-top: 1.714vw;
+    margin-bottom: 2.857vw;
+
+    @media (max-width: $macbook-thirteen) {
+      width: 320px;
+      margin-top: 24px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: $small-mobile-size) {
+      width: 300px;
+      margin-top: 24px;
+      margin-bottom: 40px;
+    }
+
+    label,
+    button,
+    input {
+      width: 100%;
+    }
+
+    label {
+      overflow: hidden;
+    }
+
+    button {
+      margin-top: 1.143vw;
+      padding: 1.571vw 4.857vw;
+
+      @media (max-width: $macbook-thirteen) {
+        margin-top: 16px;
+        padding: 22px 68px;
+      }
+    }
+  }
 }

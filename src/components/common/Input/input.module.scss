@@ -1,3 +1,5 @@
+@import "../../../styles/mixins";
+
 input[type="number"] {
   appearance: textfield;
 }
@@ -6,4 +8,24 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   appearance: none;
   margin: 0;
+}
+
+.label {
+  border: 2px solid $blue;
+  background: transparent;
+  border-radius: 16px;
+  display: block;
+
+  .input {
+    border: none;
+    border-radius: 16px;
+    padding: 20px 16px;
+    color: $black;
+
+    &:focus,
+    &:active {
+      border: none;
+      outline: none;
+    }
+  }
 }
