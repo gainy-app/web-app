@@ -1,24 +1,17 @@
-resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-}
-
 data "aws_iam_policy_document" "web_s3_policy" {
   statement {
-    actions   = ["s3:GetObject"]
+    sid = "AllowCloudFrontServicePrincipalReadOnly"
+    actions   = ["s3:GetObject", "s3:ListBucket"]
     resources = ["${aws_s3_bucket.web.arn}/*"]
 
     principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
-  }
-
-  statement {
-    actions   = ["s3:ListBucket"]
-    resources = [aws_s3_bucket.web.arn]
-
-    principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
+    condition {
+      test     = "StringEquals"
+      values   = [aws_cloudfront_distribution.s3_distribution.arn]
+      variable = "AWS:SourceArn"
     }
   }
 }
@@ -40,9 +33,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     domain_name              = aws_s3_bucket.web.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.default.id
     origin_id                = local.s3_origin_id
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
-    }
   }
 
   enabled             = true
