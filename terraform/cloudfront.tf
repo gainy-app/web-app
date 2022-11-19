@@ -1,8 +1,24 @@
 data "aws_iam_policy_document" "web_s3_policy" {
   statement {
-    sid       = "AllowCloudFrontServicePrincipalReadOnly"
-    actions   = ["s3:GetObject", "s3:ListBucket"]
+    sid       = "AllowCloudFrontServicePrincipalGetObject"
+    actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.web.arn}/*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      values   = [aws_cloudfront_distribution.s3_distribution.arn]
+      variable = "AWS:SourceArn"
+    }
+  }
+
+  statement {
+    sid       = "AllowCloudFrontServicePrincipalListBucket"
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.web.arn]
 
     principals {
       type        = "Service"
