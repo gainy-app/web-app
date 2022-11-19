@@ -64,8 +64,10 @@ jobs:
       - name: npm run build
         run: npm run build
 
-      - name: Copy
-        run: cp -r build terraform
+      - uses: actions/upload-artifact@master
+        with:
+          name: build
+          path: build
 
   test:
     name: "Test"
@@ -96,6 +98,11 @@ jobs:
         run: terraform validate -no-color
         working-directory: terraform
 
+      - uses: actions/download-artifact@master
+        with:
+          name: build
+          path: terraform/build
+
       - name: Terraform Plan
         id: plan
         if: inputs.only_plan
@@ -122,6 +129,11 @@ jobs:
         id: init
         run: terraform init -backend-config=backend-${{ env.TF_VAR_env }}.hcl -reconfigure
         working-directory: terraform
+
+      - uses: actions/download-artifact@master
+        with:
+          name: build
+          path: terraform/build
 
       - name: Terraform Apply
         id: apply
