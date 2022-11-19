@@ -1,29 +1,38 @@
-resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-}
-
 data "aws_iam_policy_document" "web_s3_policy" {
   statement {
+    sid       = "AllowCloudFrontServicePrincipalGetObject"
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.web.arn}/*"]
 
     principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      values   = [aws_cloudfront_distribution.s3_distribution.arn]
+      variable = "AWS:SourceArn"
     }
   }
 
   statement {
+    sid       = "AllowCloudFrontServicePrincipalListBucket"
     actions   = ["s3:ListBucket"]
     resources = [aws_s3_bucket.web.arn]
 
     principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      values   = [aws_cloudfront_distribution.s3_distribution.arn]
+      variable = "AWS:SourceArn"
     }
   }
 }
 
-resource "aws_s3_bucket_policy" "blog" {
+resource "aws_s3_bucket_policy" "web" {
   bucket = aws_s3_bucket.web.id
   policy = data.aws_iam_policy_document.web_s3_policy.json
 }
