@@ -1,3 +1,33 @@
+resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
+}
+
+data "aws_iam_policy_document" "web_s3_policy" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.web.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
+    }
+  }
+
+  statement {
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.web.arn]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "blog" {
+  bucket = aws_s3_bucket.web.id
+  policy = data.aws_iam_policy_document.web_s3_policy.json
+}
+
 resource "aws_cloudfront_origin_access_control" "default" {
   name                              = "gainy-web-${var.env}"
   origin_access_control_origin_type = "s3"
@@ -90,6 +120,12 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   custom_error_response {
     error_code         = 404
+    response_code      = 200
+    response_page_path = "/index.html"
+  }
+
+  custom_error_response {
+    error_code         = 403
     response_code      = 200
     response_page_path = "/index.html"
   }

@@ -33,6 +33,5 @@ resource "aws_s3_object" "content" {
   key          = each.value
   source       = "${local.build_path}/${each.value}"
   etag         = filemd5("${local.build_path}/${each.value}")
-  acl          = "public-read"
   content_type = lookup(tomap(local.mime_types), element(split(".", each.key), length(split(".", each.key)) - 1))
 }
