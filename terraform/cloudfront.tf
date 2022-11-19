@@ -87,6 +87,12 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     acm_certificate_arn = aws_acm_certificate_validation.web.certificate_arn
     ssl_support_method  = "sni-only"
   }
+
+  custom_error_response {
+    error_code = 404
+    response_code = 200
+    response_page_path = "/index.html"
+  }
 }
 
 resource "cloudflare_record" "web" {
