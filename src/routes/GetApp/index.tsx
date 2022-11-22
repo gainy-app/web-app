@@ -1,4 +1,4 @@
-import { Image, Layout, Button, Input } from 'components';
+import { Image, Layout, Button, Input, Loader } from 'components';
 import { config } from './config';
 import { imageTypes } from 'utils/constants';
 import { formatNumber } from 'utils/helpers';
@@ -6,10 +6,15 @@ import { QRCodeSVG } from 'qrcode.react';
 import { FormEvent, useState } from 'react';
 import styles from './getApp.module.scss';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
+import { useMutation } from '@apollo/client';
+import { SEND_APP_LINK } from 'services/gql/queries/appLink';
+import { useMutation } from '@apollo/client';
+import { SEND_APP_LINK } from 'services/gql/queries/appLink';
 
 export default function GetApp () {
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
+  const [sendLink, {loading}] = useMutation(SEND_APP_LINK);
 
   const {form,qrcode,subtitle,title,description, validate} = config;
 
@@ -17,7 +22,9 @@ export default function GetApp () {
     e.preventDefault();
 
     if(validate(phoneState, setErrors)) {
+      const phone_number = formatNumber(String(phoneState), 'us');
       console.log(formatNumber(String(phoneState), 'us'), 'submit');
+      sendLink({variables: {phone_number}});
     }
   };
 
@@ -41,8 +48,10 @@ export default function GetApp () {
         >
           <div className={styles.actions}>
             <Input>
-              <PatternFormat placeholder={'Phone number'}
-                valueIsNumericString format="(###) ###-####"
+              <PatternFormat
+                placeholder={'Phone number'}
+                valueIsNumericString
+                format="(###) ###-####"
                 mask="_"
                 name={'phone'}
                 onValueChange={onPhoneChange}
@@ -53,11 +62,11 @@ export default function GetApp () {
               <p className={styles.error}>{errors}</p>
             )}
             <Button type={'submit'}>
-              {form.button}
+              {loading ? <Loader className={styles.loader}/> : form.button}
             </Button>
           </div>
         </form>
       </section>
     </Layout>
   );
-}
+};

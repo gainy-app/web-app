@@ -1,8 +1,12 @@
 import styles from './loader.module.scss';
 
-export const Loader = () => {
+interface Props {
+    className?: string
+}
+
+export const Loader = ({className}: Props) => {
   return (
-    <div className={styles.center}>
+    <div className={`${styles.center} ${className}`}>
       <div className={styles.loader}/>
     </div>
   );
