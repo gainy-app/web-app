@@ -119,10 +119,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     response_code      = 200
     response_page_path = "/index.html"
   }
-
-  provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${self.id} --paths '/*'"
-  }
 }
 
 resource "cloudflare_record" "web" {

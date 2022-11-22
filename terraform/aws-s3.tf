@@ -30,7 +30,7 @@ locals {
 resource "aws_s3_object" "content" {
   for_each     = fileset(local.build_path, "**")
   bucket       = aws_s3_bucket.web.id
-  key          = "${each.value}"
+  key          = each.value
   source       = "${local.build_path}/${each.value}"
   etag         = filemd5("${local.build_path}/${each.value}")
   content_type = lookup(tomap(local.mime_types), element(split(".", each.key), length(split(".", each.key)) - 1))
