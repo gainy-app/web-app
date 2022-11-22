@@ -1,5 +1,9 @@
+import styles from './loader.module.scss';
+
 export const Loader = () => {
   return (
-    <div>loading</div>
+    <div className={styles.center}>
+      <div className={styles.loader}/>
+    </div>
   );
 };

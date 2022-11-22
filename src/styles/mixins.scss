@@ -13,73 +13,13 @@
   height: $h;
 }
 
-@mixin text($family: initial, $size: initial, $color: initial) {
-  font-family: $family;
-  font-size: $size;
-  color: $color;
-}
-
-@mixin quadHd {
-  @media (max-width: $quad-hd) {
-    @content;
-  }
-}
-
-@mixin macbookFifteen {
-  @media (max-width: $macbook-fifteen) {
-    @content;
-  }
-}
-
-@mixin laptop {
-  @media (max-width: $macbook-twelve) {
-    @content;
-  }
-}
-
-@mixin maxTablet {
-  @media (max-width: $max-tablet-size) {
-    @content;
-  }
-}
-
-@mixin tablet {
-  @media (max-width: $default-tablet-size) {
-    @content;
-  }
-}
-
-@mixin mediumDesktop {
-  @media (max-width: $macbook-fifteen) {
-    @content;
-  }
-}
-
-@mixin desktop {
-  @media (max-width: $desktop) {
-    @content;
-  }
-}
-
-@mixin minTablet {
-  @media (max-width: $min-tablet-size) {
+@mixin macbookThirteen {
+  @media (max-width: $macbook-thirteen) {
     @content;
   }
 }
 
 @mixin phone {
-  @media (max-width: $max-mobile-size) {
-    @content;
-  }
-}
-
-@mixin big-phone {
-  @media (max-width: $medium-mobile-size) {
-    @content;
-  }
-}
-
-@mixin medium-phone {
   @media (max-width: $small-mobile-size) {
     @content;
   }

@@ -3,13 +3,14 @@ import {imageTypes} from 'utils/constants';
 interface Props {
     type: string
     className?: string
+    onClick?: () => void
 }
 
-export const Image = ({type, className}: Props) => {
+export const Image = ({type, className, onClick}: Props) => {
   switch (type) {
     case imageTypes.logo: {
       return (
-        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+        <svg onClick={onClick} width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
           <path d="M60.4738 3.39349C60.4738 5.33263 61.9468 6.74292 63.9555 6.74292C65.9641 6.74292 67.3925 5.33263 67.3925 3.39349C67.3925 1.45435 65.9641 0 63.9555 0C61.9468 0 60.4738 1.45435 60.4738 3.39349ZM61.0987 32.3043H66.7676V10.2246H61.0987V32.3043Z" fill="black"/>
           <path d="M73.3041 32.3043H78.973V19.8762C78.973 16.1742 81.562 14.9402 83.9277 14.9402C86.5613 14.9402 88.4361 16.6149 88.4361 19.8762V32.3043H94.105V18.9948C94.105 12.9129 90.0876 9.73977 85.3115 9.73977C82.8118 9.73977 80.5353 10.6653 78.7498 12.4281L78.4374 10.2246H73.3041V32.3043Z" fill="black"/>
           <path d="M96.0299 10.2246L105.627 32.1721L102.788 40H108.636L120 10.2246H113.974L108.573 25.1207L102.324 10.2246H96.0299Z" fill="black"/>

@@ -1,16 +1,20 @@
 import { Footer } from './footer';
-import {Header} from './header';
+import { Header } from './header';
 import styles from './layout.module.scss';
+import { useLocation } from 'react-router-dom';
+import { routes } from 'utils/constants';
 
 interface Props {
     children?: JSX.Element
-    isAuth?: boolean
 }
 
-export const Layout = ({children, isAuth}: Props) => {
+export const Layout = ({children}: Props) => {
+  const {pathname} = useLocation();
+  const withHeader = (!pathname.includes(routes.signIn) && !pathname.includes(routes.getApp));
+
   return (
     <div className={styles.container}>
-      {isAuth && <Header />}
+      {withHeader && <Header />}
       <main className={styles.content}>
         {children}
       </main>
