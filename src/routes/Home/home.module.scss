@@ -1,5 +1,5 @@
+@import "../../styles/mixins";
+
 .section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex(column,initial,center);
 }

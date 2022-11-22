@@ -1,0 +1,23 @@
+@import "../../../styles/mixins";
+
+.header {
+  width: 920px;
+  margin: 0 auto;
+  padding-top: 40px;
+
+  @media (max-width: $large-tablet) {
+    width: 600px;
+  }
+
+  @media (max-width: $small-tablet) {
+    width: 440px;
+  }
+
+  @media (max-width: $small-mobile-size) {
+    width: 100%;
+  }
+
+  .navigation {
+    @include flex(row,space-between,center);
+  }
+}

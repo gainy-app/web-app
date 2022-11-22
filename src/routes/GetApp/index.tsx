@@ -16,12 +16,14 @@ export default function GetApp () {
   return (
     <Layout>
       <section className={styles.section}>
-        <Image type={imageTypes.logo}/>
+        <Image type={imageTypes.logo} className={styles.logo}/>
         <h1 className={styles.title}>{title}</h1>
         <p className={styles.subtitle}>{subtitle}</p>
         <QRCodeSVG value={qrcode} className={styles.qrCode}/>
-        <p className={styles.description}>{description}</p>
-        <p>or</p>
+        <div className={styles.description}>
+          <p>{description}</p>
+          <p>or</p>
+        </div>
         <div className={styles.actions}>
           <Input
             type="number"

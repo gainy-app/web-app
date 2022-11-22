@@ -6,5 +6,8 @@ export const routes = {
 };
 
 export const imageTypes = {
-  logo: 'logo'
+  logo: 'logo',
+  car: 'car',
+  apple: 'apple',
+  google: 'google',
 };
