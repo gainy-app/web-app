@@ -49,7 +49,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     domain_name              = aws_s3_bucket.web.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.default.id
     origin_id                = local.s3_origin_id
-    origin_path              = "/test"
   }
 
   enabled             = true
@@ -70,8 +69,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
     viewer_protocol_policy = "allow-all"
     min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
+    default_ttl            = var.env == "production" ? 360 : 0
+    max_ttl                = var.env == "production" ? 3600 : 0
   }
 
   # Cache behavior with precedence 0
