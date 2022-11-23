@@ -109,22 +109,54 @@
     button {
       margin-top: 1.143vw;
       padding: 1.571vw 4.857vw;
+      position: relative;
+      height: 4.571vw;
 
       @include macbookThirteen {
+        height: 64px;
         margin-top: 16px;
         padding: 22px 68px;
       }
     }
 
-    .error {
+    .error,
+    .success {
       margin-top: .357vw;
       font-size: 1vw;
       text-align: center;
-      color: $error;
 
       @include macbookThirteen {
         margin-top: 5px;
         font-size: 14px;
+      }
+    }
+
+    .success {
+      color: $success;
+    }
+
+    .error {
+      color: $error;
+    }
+
+    .loader {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%);
+
+      @include macbookThirteen {
+        top: 20%;
+      }
+
+      div {
+        height: 1.429vw;
+        width: 1.429vw;
+
+        @include macbookThirteen {
+          height: 20px;
+          width: 20px;
+        }
       }
     }
   }

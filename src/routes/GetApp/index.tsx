@@ -8,13 +8,11 @@ import styles from './getApp.module.scss';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from 'services/gql/queries/appLink';
-import { useMutation } from '@apollo/client';
-import { SEND_APP_LINK } from 'services/gql/queries/appLink';
 
 export default function GetApp () {
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
-  const [sendLink, {loading}] = useMutation(SEND_APP_LINK);
+  const [sendLink, {loading, error, data}] = useMutation(SEND_APP_LINK);
 
   const {form,qrcode,subtitle,title,description, validate} = config;
 
@@ -23,7 +21,6 @@ export default function GetApp () {
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
-      console.log(formatNumber(String(phoneState), 'us'), 'submit');
       sendLink({variables: {phone_number}});
     }
   };
@@ -64,9 +61,15 @@ export default function GetApp () {
             <Button type={'submit'}>
               {loading ? <Loader className={styles.loader}/> : form.button}
             </Button>
+            {error && (
+              <p className={styles.error}>Errors</p>
+            )}
+            {data?.send_app_link?.ok && (
+              <p className={styles.success}>Link sent</p>
+            )}
           </div>
         </form>
       </section>
     </Layout>
   );
-};
+}
