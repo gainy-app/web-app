@@ -23,11 +23,8 @@ function App() {
         <SignIn/>
       </React.Suspense>}>
       </Route>
-
       <Route path={routes.getApp} element={<React.Suspense>
-        <PrivateRoute>
-          <GetApp/>
-        </PrivateRoute>
+        <GetApp/>
       </React.Suspense>}>
       </Route>
       <Route path={routes.notFound}
