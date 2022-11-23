@@ -1,7 +1,7 @@
 import { Image, Layout, Button, Input, Loader } from 'components';
 import { config } from './config';
 import { imageTypes } from 'utils/constants';
-import { formatNumber } from 'utils/helpers';
+import { formatNumber, parseGQLerror } from 'utils/helpers';
 import { QRCodeSVG } from 'qrcode.react';
 import { FormEvent, useState } from 'react';
 import styles from './getApp.module.scss';
@@ -58,11 +58,11 @@ export default function GetApp () {
             {errors && (
               <p className={styles.error}>{errors}</p>
             )}
-            <Button type={'submit'}>
+            <Button type={'submit'} id={'webapp_signin_send_link'}>
               {loading ? <Loader className={styles.loader}/> : form.button}
             </Button>
             {error && (
-              <p className={styles.error}>Errors</p>
+              <p className={styles.error}>{parseGQLerror(error)}</p>
             )}
             {data?.send_app_link?.ok && (
               <p className={styles.success}>Link sent</p>

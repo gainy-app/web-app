@@ -30,7 +30,7 @@ export default function SignIn () {
         <div className={styles.authButtons}>
           <Button
             variant={'apple'}
-            id={'webapp_signin_apple '}
+            id={'webapp_signin_apple'}
             onClick={() => onSignIn(signInWithApple)}>
             <Image type={imageTypes.apple} className={styles.signIcon}/>
             <span> {form.apple}</span>
