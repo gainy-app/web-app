@@ -1,11 +1,12 @@
 export const config = {
   title: 'Gey the mobile App',
-  subtitle: 'To start invest in TTFs, please continue on our mobile app by signing in with the account you  just created.',
+  subtitle: 'Our brand new web platform is so new it’s not even there yet. For now, please continue in our mobile app by signing in with the account you’ve just created.',
   qrcode: 'https://go.gainy.app/ZOFw/Webp?af_qr=true',
-  description: 'Scan to get the app',
+  description: 'Scan the QR code',
+  subDescription: 'enter your phone number for the download link',
   form: {
     phone: 'Phone number',
-    button: 'Text me App link'
+    button: 'Text me the link'
   },
   validate(value:string, setErrors: (arg: string) => void) {
     let phoneError = '';

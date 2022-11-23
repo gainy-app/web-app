@@ -14,7 +14,7 @@ export default function GetApp () {
   const [errors, setErrors] = useState<string>('');
   const [sendLink, {loading, error, data}] = useMutation(SEND_APP_LINK);
 
-  const {form,qrcode,subtitle,title,description, validate} = config;
+  const {form,qrcode,subtitle,title,description, validate, subDescription} = config;
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,6 +39,7 @@ export default function GetApp () {
         <div className={styles.description}>
           <p>{description}</p>
           <p>or</p>
+          <p>{subDescription}</p>
         </div>
         <form
           onSubmit={onSubmitHandler}
