@@ -26,8 +26,8 @@ export default function SignIn () {
       <section className={styles.section}>
         <Image type={imageTypes.logo} className={styles.logo}/>
         <Image type={imageTypes.car} className={styles.car}/>
-        <p className={styles.title}>{title}</p>
         <p className={styles.description}>{description}</p>
+        <p className={styles.title}>{title}</p>
         <div className={styles.authButtons}>
           <Button
             variant={'apple'}
