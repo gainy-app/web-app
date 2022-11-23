@@ -22,7 +22,7 @@ input::-webkit-inner-spin-button {
     border-radius: 16px;
   }
 
-  .input {
+  input {
     border: none;
     border-radius: 1.143vw;
     padding: 1.429vw 1.143vw;
@@ -35,6 +35,10 @@ input::-webkit-inner-spin-button {
       padding: 20px 16px;
       font-size: 16px;
       line-height: 24px;
+    }
+
+    &::placeholder {
+      color: $black;
     }
 
     &:focus,

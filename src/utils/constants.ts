@@ -11,3 +11,7 @@ export const imageTypes = {
   apple: 'apple',
   google: 'google',
 };
+
+export const phoneMasks = {
+  us: 'us'
+};

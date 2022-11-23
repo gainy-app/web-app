@@ -29,14 +29,14 @@ export default function SignIn () {
         <p className={styles.description}>{title}</p>
         <div className={styles.authButtons}>
           <Button
-            type={'apple'}
-            id={'webapp_signin_apple '}
+            variant={'apple'}
+            id={'webapp_signin_apple'}
             onClick={() => onSignIn(signInWithApple)}>
             <Image type={imageTypes.apple} className={styles.signIcon}/>
             <span> {form.apple}</span>
           </Button>
           <Button
-            type={'transparent'}
+            variant={'transparent'}
             onClick={() => onSignIn(signInWithGoogle)}
             id={'webapp_signin_google'}
           >
