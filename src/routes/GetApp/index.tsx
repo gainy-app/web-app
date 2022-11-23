@@ -1,10 +1,11 @@
 import { Image, Layout, Button, Input } from 'components';
-import {config} from './config';
+import { config } from './config';
 import { imageTypes } from 'utils/constants';
-import {QRCodeSVG} from 'qrcode.react';
-import {FormEvent, useState} from 'react';
+import { formatNumber } from 'utils/helpers';
+import { QRCodeSVG } from 'qrcode.react';
+import { FormEvent, useState } from 'react';
 import styles from './getApp.module.scss';
-import {NumberFormatValues, PatternFormat} from 'react-number-format';
+import { NumberFormatValues, PatternFormat } from 'react-number-format';
 
 export default function GetApp () {
   const [phoneState, setPhoneState] = useState<string>('');
@@ -16,7 +17,7 @@ export default function GetApp () {
     e.preventDefault();
 
     if(validate(phoneState, setErrors)) {
-      console.log(phoneState, 'submit');
+      console.log(formatNumber(String(phoneState), 'us'), 'submit');
     }
   };
 
@@ -59,4 +60,4 @@ export default function GetApp () {
       </section>
     </Layout>
   );
-};
+}

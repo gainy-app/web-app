@@ -16,6 +16,7 @@ export const config = {
       setErrors(phoneError);
       return false;
     }
+    setErrors('');
     return true;
   }
 };
