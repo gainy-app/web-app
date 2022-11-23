@@ -6,5 +6,16 @@ export const config = {
   form: {
     phone: 'Phone number',
     button: 'Text me App link'
+  },
+  validate(value:string, setErrors: (arg: string) => void) {
+    let phoneError = '';
+    if(value.length <= 9) {
+      phoneError = 'Please, enter a valid phone number';
+    }
+    if(phoneError) {
+      setErrors(phoneError);
+      return false;
+    }
+    return true;
   }
 };

@@ -115,5 +115,17 @@
         padding: 22px 68px;
       }
     }
+
+    .error {
+      margin-top: .357vw;
+      font-size: 1vw;
+      text-align: center;
+      color: $error;
+
+      @include macbookThirteen {
+        margin-top: 5px;
+        font-size: 14px;
+      }
+    }
   }
 }

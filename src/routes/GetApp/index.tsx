@@ -2,15 +2,26 @@ import { Image, Layout, Button, Input } from 'components';
 import {config} from './config';
 import { imageTypes } from 'utils/constants';
 import {QRCodeSVG} from 'qrcode.react';
-import {ChangeEvent, useState} from 'react';
+import {FormEvent, useState} from 'react';
 import styles from './getApp.module.scss';
+import {NumberFormatValues, PatternFormat} from 'react-number-format';
 
 export default function GetApp () {
-  const [phone, setPhone] = useState('');
-  const {form,qrcode,subtitle,title,description} = config;
+  const [phoneState, setPhoneState] = useState<string>('');
+  const [errors, setErrors] = useState<string>('');
 
-  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPhone(e.target.value);
+  const {form,qrcode,subtitle,title,description, validate} = config;
+
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if(validate(phoneState, setErrors)) {
+      console.log(phoneState, 'submit');
+    }
+  };
+
+  const onPhoneChange = (values: NumberFormatValues) => {
+    setPhoneState(values.value);
   };
 
   return (
@@ -24,18 +35,28 @@ export default function GetApp () {
           <p>{description}</p>
           <p>or</p>
         </div>
-        <div className={styles.actions}>
-          <Input
-            type="number"
-            value={phone}
-            onChange={onInputChange}
-            placeholder={form.phone}
-          />
-          <Button id={'webapp_signin_send_link'}>
-            {form.button}
-          </Button>
-        </div>
+        <form
+          onSubmit={onSubmitHandler}
+        >
+          <div className={styles.actions}>
+            <Input>
+              <PatternFormat placeholder={'Phone number'}
+                valueIsNumericString format="(###) ###-####"
+                mask="_"
+                name={'phone'}
+                onValueChange={onPhoneChange}
+                value={phoneState}
+              />
+            </Input>
+            {errors && (
+              <p className={styles.error}>{errors}</p>
+            )}
+            <Button type={'submit'}>
+              {form.button}
+            </Button>
+          </div>
+        </form>
       </section>
     </Layout>
   );
-}
+};
