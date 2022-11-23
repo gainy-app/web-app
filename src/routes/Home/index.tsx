@@ -1,4 +1,4 @@
-import { Layout } from 'components';
+import {Button, Layout} from 'components';
 import styles from './home.module.scss';
 import { useAuth } from 'contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -15,8 +15,8 @@ export default function Home () {
   return (
     <Layout>
       <section className={styles.section}>
-        <h1>index page</h1>
-        <button onClick={onLogout}>logout</button>
+        <h1 className={styles.title}>index page</h1>
+        <Button onClick={onLogout}>Logout</Button>
       </section>
     </Layout>
   );
