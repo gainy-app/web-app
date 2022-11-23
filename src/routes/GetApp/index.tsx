@@ -31,7 +31,7 @@ export default function GetApp () {
             onChange={onInputChange}
             placeholder={form.phone}
           />
-          <Button>
+          <Button id={'webapp_signin_send_link'}>
             {form.button}
           </Button>
         </div>
