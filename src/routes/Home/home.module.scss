@@ -2,4 +2,24 @@
 
 .section {
   @include flex(column,initial,center);
+
+  .title {
+    font-size: 1.143vw;
+
+    @include macbookThirteen {
+      margin-top: 16px;
+      padding: 22px 68px;
+      font-size: 16px;
+    }
+  }
+
+  button {
+    margin-top: 1.143vw;
+    padding: .714vw 4.857vw;
+
+    @include macbookThirteen {
+      margin-top: 16px;
+      padding: 10px 68px;
+    }
+  }
 }
