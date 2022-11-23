@@ -1,7 +1,7 @@
 import { Image, Layout, Button } from 'components';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import styles from './signin.module.scss';
-import {imageTypes, routes} from 'utils/constants';
+import { imageTypes, routes } from 'utils/constants';
 import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
 
@@ -30,6 +30,7 @@ export default function SignIn () {
         <div className={styles.authButtons}>
           <Button
             type={'apple'}
+            id={'webapp_signin_apple '}
             onClick={() => onSignIn(signInWithApple)}>
             <Image type={imageTypes.apple} className={styles.signIcon}/>
             <span> {form.apple}</span>
@@ -37,6 +38,7 @@ export default function SignIn () {
           <Button
             type={'transparent'}
             onClick={() => onSignIn(signInWithGoogle)}
+            id={'webapp_signin_google'}
           >
             <Image type={imageTypes.google} className={styles.signIcon}/>
             <span> {form.google} </span>

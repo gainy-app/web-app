@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import styles from './button.module.scss';
+import React from 'react';
 
-interface Props {
+interface Props extends React.HTMLProps<HTMLButtonElement> {
     children: JSX.Element | string | JSX.Element[]
     onClick?: () => void
     type?: 'apple' | 'transparent'
 }
 
-export const Button = ({children, onClick, type}: Props) => {
+export const Button = ({children, onClick, type, ...rest}: Props) => {
   return (
     <button
       className={classNames(styles.button, {
@@ -15,6 +16,7 @@ export const Button = ({children, onClick, type}: Props) => {
         [styles.button_transparent]: type === 'transparent',
       })}
       onClick={onClick}
+      {...rest}
     >
       {children}
     </button>
