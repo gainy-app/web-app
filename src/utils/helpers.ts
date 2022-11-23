@@ -16,5 +16,5 @@ export const parseGQLerror = (error?: ApolloError) => {
   const extention = error.graphQLErrors.find((i: {message:string}) => i.message);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return extention.extensions.internal.response.body.message || '';
+  return extention?.extensions?.internal?.response?.body?.message || '';
 };
