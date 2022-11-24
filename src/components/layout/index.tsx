@@ -13,7 +13,7 @@ export const Layout = ({children}: Props) => {
   const withHeader = (!pathname.includes(routes.signIn) && !pathname.includes(routes.getApp));
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${withHeader ? '' : styles.blue}`}>
       {withHeader && <Header />}
       <main className={styles.content}>
         {children}
