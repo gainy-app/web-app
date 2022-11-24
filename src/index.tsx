@@ -9,7 +9,6 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from 'services/gql/client';
 import TagManager from 'react-gtm-module';
 
-
 if(process.env.REACT_APP_GTM_CONTAINER) {
   const tagManagerArgs = {
     gtmId: process.env.REACT_APP_GTM_CONTAINER
