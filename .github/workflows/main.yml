@@ -51,3 +51,4 @@ jobs:
       FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
       FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
       HASURA_URL: ${{ secrets.HASURA_URL }}
+      GTM_CONTAINER: ${{ secrets.GTM_CONTAINER }}
