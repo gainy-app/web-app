@@ -14,7 +14,7 @@ export default function GetApp () {
   const [errors, setErrors] = useState<string>('');
   const [sendLink, {loading, error, data}] = useMutation(SEND_APP_LINK);
 
-  const {form,qrcode,subtitle,title,description, validate, subDescription} = config;
+  const {form,qrcode,subtitle,title,description,validate} = config;
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,22 +32,20 @@ export default function GetApp () {
   return (
     <Layout>
       <section className={styles.section}>
-        <Image type={imageTypes.logo} className={styles.logo}/>
+        <Image type={imageTypes.logoWhite} className={styles.logo}/>
         <h1 className={styles.title}>{title}</h1>
         <p className={styles.subtitle}>{subtitle}</p>
-        <QRCodeSVG value={qrcode} className={styles.qrCode}/>
-        <div className={styles.description}>
-          <p>{description}</p>
-          <p>or</p>
-          <p>{subDescription}</p>
+        <div className={styles.qrWrapper}>
+          <QRCodeSVG value={qrcode} className={styles.qrCode}/>
         </div>
+        <p className={styles.description}>{description}</p>
         <form
           onSubmit={onSubmitHandler}
         >
           <div className={styles.actions}>
             <Input>
               <PatternFormat
-                placeholder={'Phone number'}
+                placeholder={form.phone}
                 valueIsNumericString
                 format="(###) ###-####"
                 mask="_"
