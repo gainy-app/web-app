@@ -2,12 +2,16 @@
 
 .container {
   @include flex(column);
-  height: 100%;
   margin: 0 auto;
+  min-height: 100%;
 
   @include phone {
     padding: 0 20px;
   }
+}
+
+.blue {
+  background: $blue;
 }
 
 .content {
