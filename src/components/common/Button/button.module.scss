@@ -4,7 +4,7 @@
   font-family: "SF Pro Display Medium", sans-serif;
   font-size: 1.143vw;
   line-height: 1.429vw;
-  padding: 1.571vw 4.857vw;
+  padding: 1.286vw 2.071vw;
 
   @include flex(row,center,center);
   text-decoration: none;
@@ -15,10 +15,10 @@
   background-color: $blue;
   border-radius: 1.429vw;
 
-  @media (max-width: $macbook-thirteen) {
+  @include macbookThirteen {
     font-size: 16px;
     line-height: 20px;
-    padding: 24px 66px;
+    padding: 18px 29px;
     border-radius: 20px;
   }
 
@@ -36,8 +36,16 @@
     color: $white;
   }
 
-  &_transparent {
-    background-color: transparent;
+  &_google {
+    background-color: $white;
     color: $black;
+    padding: 1.286vw 1.571vw;
+
+    @include macbookThirteen {
+      font-size: 16px;
+      line-height: 20px;
+      padding: 18px 22px;
+      border-radius: 20px;
+    }
   }
 }

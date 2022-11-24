@@ -3,10 +3,10 @@
 .footer {
   @include flex(row,center,center);
   font-family: "Inter Regular", sans-serif;
-  color: $black;
-  font-size: 1.143vw;
+  color: $white;
+  font-size: $fz-16;
 
-  @media (max-width: $macbook-thirteen) {
+  @include macbookThirteen {
     font-size: 16px;
     line-height: 24px;
   }
@@ -14,7 +14,7 @@
   span {
     margin-bottom: 1.714vw;
 
-    @media (max-width: $macbook-thirteen) {
+    @include macbookThirteen {
       margin-bottom: 24px;
     }
   }

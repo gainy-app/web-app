@@ -5,7 +5,7 @@
   margin: 0 auto;
   min-height: 100%;
 
-  @include phone {
+  @include tablet {
     padding: 0 20px;
   }
 }

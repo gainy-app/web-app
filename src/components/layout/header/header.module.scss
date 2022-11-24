@@ -19,5 +19,18 @@
 
   .navigation {
     @include flex(row,space-between,center);
+
+    button {
+      padding: .714vw 4.857vw;
+      background: $black;
+
+      @include macbookThirteen {
+        padding: 10px 68px;
+      }
+
+      @include phone {
+        padding: 10px 30px;
+      }
+    }
   }
 }
