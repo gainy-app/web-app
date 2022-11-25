@@ -10,6 +10,7 @@ export const imageTypes = {
   car: 'car',
   apple: 'apple',
   google: 'google',
+  logoWhite: 'logoWhite'
 };
 
 export const phoneMasks = {

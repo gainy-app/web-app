@@ -19,6 +19,18 @@
   }
 }
 
+@mixin tablet {
+  @media (max-width: $small-tablet) {
+    @content;
+  }
+}
+
+@mixin iPhone {
+  @media (max-width: $medium-mobile-size) {
+    @content;
+  }
+}
+
 @mixin phone {
   @media (max-width: $small-mobile-size) {
     @content;

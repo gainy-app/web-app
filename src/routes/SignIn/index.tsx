@@ -6,7 +6,7 @@ import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
 
 export default function SignIn () {
-  const {title,form, description} = config;
+  const {title,form, description, subDescription} = config;
   const {pathname} = useLocation();
   const navigate = useNavigate();
   const {signInWithGoogle, currentUser, signInWithApple} = useAuth();
@@ -24,10 +24,11 @@ export default function SignIn () {
   return (
     <Layout>
       <section className={styles.section}>
-        <Image type={imageTypes.logo} className={styles.logo}/>
         <Image type={imageTypes.car} className={styles.car}/>
-        <p className={styles.description}>{description}</p>
         <p className={styles.title}>{title}</p>
+        <p className={styles.description}>{description}</p>
+        <p className={styles.description}>{subDescription}</p>
+
         <div className={styles.authButtons}>
           <Button
             variant={'apple'}
@@ -37,7 +38,7 @@ export default function SignIn () {
             <span> {form.apple}</span>
           </Button>
           <Button
-            variant={'transparent'}
+            variant={'google'}
             onClick={() => onSignIn(signInWithGoogle)}
             id={'webapp_signin_google'}
           >
