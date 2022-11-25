@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useAuth } from 'contexts/AuthContext';
 import { PrivateRoute, Loader } from 'components';
 import { Home, NotFound, SignIn, GetApp } from 'routes';
@@ -8,8 +8,8 @@ import styles from './components/layout/layout.module.scss';
 import {usePage} from 'hooks';
 
 function App() {
-  const {loading } = useAuth();
-  const {withHeader} = usePage();
+  const { loading } = useAuth();
+  const { withHeader } = usePage();
 
   if(loading) {
     return <Loader/>;
@@ -20,7 +20,9 @@ function App() {
       <Routes>
         <Route path={routes.home} element={
           <PrivateRoute>
-            <Home/>
+            <React.Suspense>
+              <Home/>
+            </React.Suspense>
           </PrivateRoute>
         }/>
         <Route path={routes.signIn}   element={<React.Suspense>
