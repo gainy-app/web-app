@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client';
-import {phoneMasks} from './constants';
+import { phoneMasks } from './constants';
 
 export const formatNumber = (phone: string, mask: string) => {
   switch (mask) {

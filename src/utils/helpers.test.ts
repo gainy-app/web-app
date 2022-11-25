@@ -1,4 +1,4 @@
-import {formatNumber} from './helpers';
+import { formatNumber } from './helpers';
 
 describe('test format input fn', () => {
   const phoneNumber = '1111111111';

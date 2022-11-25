@@ -8,11 +8,11 @@ interface Props {
 }
 
 export const PrivateRoute = ({ children }: Props) => {
-  const {currentUser} = useAuth();
+  const { currentUser } = useAuth();
   const location = useLocation();
 
   if (!currentUser) {
-    return <Navigate to="/sign-in" replace state={{path: location.pathname}}/>;
+    return <Navigate to="/sign-in" replace state={{ path: location.pathname }}/>;
   }
 
   return children;

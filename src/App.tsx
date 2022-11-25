@@ -5,7 +5,7 @@ import { PrivateRoute, Loader } from 'components';
 import { Home, NotFound, SignIn, GetApp } from 'routes';
 import { routes } from 'utils/constants';
 import styles from './components/layout/layout.module.scss';
-import {usePage} from 'hooks';
+import { usePage } from 'hooks';
 
 function App() {
   const { loading } = useAuth();

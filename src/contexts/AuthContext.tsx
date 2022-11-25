@@ -1,7 +1,7 @@
-import {signInWithPopup, User as FirebaseUser} from 'firebase/auth';
+import { signInWithPopup, User as FirebaseUser } from 'firebase/auth';
 import React, { useContext, useState, useEffect } from 'react';
-import {appleProvider, auth, googleProvider} from '../firebase';
-import {onAuthChange} from 'services/auth';
+import { appleProvider, auth, googleProvider } from '../firebase';
+import { onAuthChange } from 'services/auth';
 
 interface IAuthContext {
   currentUser: FirebaseUser | null,
