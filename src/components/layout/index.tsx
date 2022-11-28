@@ -5,8 +5,8 @@ import { usePage } from 'hooks';
 import React from 'react';
 
 interface Props {
-    children?: JSX.Element | JSX.Element[]
-    footerClassName?: string
+  children?: JSX.Element | JSX.Element[]
+  footerClassName?: string
 }
 
 export const Layout = React.memo(({ children, footerClassName }: Props) => {
