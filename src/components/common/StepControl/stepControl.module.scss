@@ -1,0 +1,46 @@
+@import "../../../styles/mixins";
+
+.wrapper {
+  padding: 24px;
+  font-family: "SF Pro Display", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid $blue;
+  border-radius: 16px;
+  max-width: 440px;
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .stepIndicatorWithTitle {
+    display: flex;
+    align-items: center;
+
+    .stepIndicator {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: $blue;
+      color: $white;
+      line-height: 20px;
+      border-radius: 50%;
+    }
+
+    .stepTitle {
+      line-height: 24px;
+      display: inline-block;
+      margin-left: 16px;
+    }
+  }
+
+  .edit {
+    color: $blue;
+  }
+}

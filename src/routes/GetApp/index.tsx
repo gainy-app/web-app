@@ -12,16 +12,16 @@ import { SEND_APP_LINK } from 'services/gql/queries/appLink';
 export default function GetApp () {
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
-  const [sendLink, {loading, error, data}] = useMutation(SEND_APP_LINK);
+  const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
 
-  const {form,qrcode,subtitle,title,description,validate} = config;
+  const { form,qrcode,subtitle,title,description,validate } = config;
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
-      sendLink({variables: {phone_number}});
+      sendLink({ variables: { phone_number } });
     }
   };
 

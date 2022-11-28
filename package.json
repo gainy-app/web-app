@@ -31,7 +31,8 @@
     "lint:css:fix": "npm run lint:css -- --fix",
     "lint:es": "eslint --ext .js,.jsx,.ts,.tsx src",
     "lint:es:fix": "npm run lint:es -- --fix",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "e2e": "cypress run"
   },
   "eslintConfig": {
     "extends": [
@@ -63,9 +64,12 @@
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
+    "cypress": "^11.2.0",
+    "cypress-firebase": "^2.2.2",
     "eslint": "^8.27.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.31.10",
+    "firebase-admin": "^11.3.0",
     "stylelint": "^14.15.0",
     "stylelint-config-standard-scss": "^6.1.0",
     "stylelint-order": "^5.0.0",

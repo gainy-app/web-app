@@ -1,0 +1,94 @@
+@import "../../../styles/mixins";
+
+.title {
+  font-size: $fz-24;
+  font-family: "SF Pro Display Heavy", sans-serif;
+  line-height: 32px;
+  font-weight: 700;
+  margin-bottom: $fz-24;
+
+  @include macbookThirteen {
+    font-size: 24px;
+    max-width: 440px;
+    margin-bottom: 24px;
+  }
+
+  @include phone {
+    font-size: 20px;
+    text-align: center;
+  }
+}
+
+.description {
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: $fz-16;
+  line-height: $fz-24;
+  margin-bottom: 2.286vw;
+
+  @include macbookThirteen {
+    font-size: 16px;
+    max-width: 440px;
+    line-height: 24px;
+    margin-bottom: 32px;
+  }
+}
+
+label {
+  margin-bottom: 1.429vw;
+  max-width: 800px;
+
+  @media (max-width: 1920px) {
+    max-width: 500px;
+  }
+
+  @include macbookThirteen {
+    margin-bottom: 20px;
+  }
+
+  .input {
+    padding: 1.429vw;
+
+    @include macbookThirteen {
+      padding: 20px;
+    }
+  }
+}
+
+.button {
+  padding: 1.143vw 4.857vw;
+  transition: all .4s ease-in-out;
+  opacity: 0;
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-size: 1.143vw;
+  line-height: 1.429vw;
+
+  @include flex(row, center, center);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  color: $white;
+  background-color: $blue;
+  border-radius: 1.429vw;
+  max-width: 400px;
+
+  @include macbookThirteen {
+    font-size: 16px;
+    line-height: 20px;
+    padding: 16px 68px;
+    border-radius: 20px;
+    max-width: 200px;
+  }
+
+  &:hover,
+  &:active {
+    opacity: .9;
+  }
+}
+
+.hidden {
+  button {
+    opacity: 1;
+  }
+}

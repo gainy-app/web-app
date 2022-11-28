@@ -12,7 +12,7 @@ interface Props extends React.HTMLProps<HTMLButtonElement> {
 export const Button = ({ children, onClick, variant, ...rest }: Props) => {
   return (
     <button
-      className={classNames(styles.button, {
+      className={classNames(styles.button,  {
         [styles.button_apple]: variant === 'apple',
         [styles.button_google]: variant === 'google',
       })}

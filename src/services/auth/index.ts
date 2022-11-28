@@ -18,7 +18,8 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading) => {
           return refreshToken(user);
         }))
       .then(res => {
-        localStorage.setItem('token', JSON.stringify(res));
+        res &&
+        localStorage.setItem('token', res);
       })
       .catch(rej => console.log(rej));
   } else {

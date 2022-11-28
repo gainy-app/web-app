@@ -1,24 +1,42 @@
 @import "../../../styles/mixins";
 
 .header {
-  width: 920px;
+  * {
+    box-sizing: border-box;
+  }
+  padding-top: 2.857vw;
+  max-width: 1400px;
   margin: 0 auto;
-  padding-top: 40px;
+  width: 100vw;
+
+  @include macbookThirteen {
+    width: 940px;
+    padding-top: 40px;
+  }
 
   @media (max-width: $large-tablet) {
-    width: 600px;
-  }
-
-  @media (max-width: $small-tablet) {
-    width: 440px;
-  }
-
-  @media (max-width: $small-mobile-size) {
     width: 100%;
   }
 
   .navigation {
     @include flex(row,space-between,center);
+    padding-right: 50px;
+    padding-left: 50px;
+
+    @media (max-width: $small-tablet) {
+      padding-right: 0;
+      padding-left: 0;
+    }
+
+    .logo {
+      height: 2.857vw;
+      width: 8.571vw;
+
+      @include macbookThirteen {
+        height: 40px;
+        width: 120px;
+      }
+    }
 
     button {
       padding: .714vw 4.857vw;
