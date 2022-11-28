@@ -52,6 +52,22 @@ jobs:
       - name: npm install
         run: npm install
 
+      - name: Setup
+        run: |
+          echo -e "{
+            TEST_FIREBASE_ACCOUNT_UID: \"$TEST_FIREBASE_ACCOUNT_UID\",
+            FIREBASE_API_KEY: \"$FIREBASE_API_KEY\",
+            FIREBASE_AUTH_DOMAIN: \"$FIREBASE_AUTH_DOMAIN\",
+            FIREBASE_PROJECT_ID: \"$FIREBASE_PROJECT_ID\",
+            FIREBASE_STORAGE_BUCKET: \"$FIREBASE_STORAGE_BUCKET\",
+            FIREBASE_SENDER_ID: \"$FIREBASE_SENDER_ID\",
+            FIREBASE_APP_ID: \"$FIREBASE_APP_ID\",
+            FIREBASE_MEASUREMENT_ID: \"$FIREBASE_MEASUREMENT_ID\"
+          }" > cypress.env.json
+          cat cypress.env.json
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" > serviceAccount.json
+          cat serviceAccount.json
+          
       - name: e2e
         run: npm run e2e
 
