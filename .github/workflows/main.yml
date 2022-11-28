@@ -21,7 +21,6 @@ jobs:
         run: npm install
 
       - name: Terraform Format
-        id: fmt
         run: terraform fmt -check -recursive
         working-directory: terraform
 
@@ -30,6 +29,34 @@ jobs:
 
       - name: Lint:ES
         run: npm run lint:es
+
+  test:
+    name: "Test"
+    runs-on: ubuntu-latest
+    env:
+      TEST_FIREBASE_ACCOUNT_UID: ${{ secrets.TEST_FIREBASE_ACCOUNT_UID }}
+      FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+      FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+      FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
+      FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+      FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install node.js
+        run: sudo apt install nodejs npm
+
+      - name: npm install
+        run: npm install
+
+      - name: e2e
+        run: npm run e2e
+
+      - name: unit
+        run: npm run test
 
   terraform:
     name: "Terraform"
@@ -50,5 +77,6 @@ jobs:
       FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
       FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
       FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+      FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
       HASURA_URL: ${{ secrets.HASURA_URL }}
       GTM_CONTAINER: ${{ secrets.GTM_CONTAINER }}
