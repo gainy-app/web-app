@@ -43,6 +43,9 @@ jobs:
       - name: Install packages
         run: npm install
 
+      - name: Unit tests
+        run: npm run test
+
       - name: Start
         run: |
           npm install -g wait-on
@@ -73,11 +76,8 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
 
-      - name: e2e
+      - name: E2E tests
         run: npm run e2e
-
-      - name: unit
-        run: npm run test
 
   terraform:
     name: "Terraform"
