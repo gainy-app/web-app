@@ -56,12 +56,13 @@ jobs:
       - name: Setup
         run: |
           python -c 'import json, os; print(json.dumps({k: os.environ[k] for k in ["TEST_FIREBASE_ACCOUNT_UID","FIREBASE_API_KEY","FIREBASE_AUTH_DOMAIN","FIREBASE_PROJECT_ID","FIREBASE_STORAGE_BUCKET","FIREBASE_SENDER_ID","FIREBASE_APP_ID","FIREBASE_MEASUREMENT_ID"]}))' > cypress.env.json
-          cat cypress.env.json
           echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > serviceAccount.json
-          cat serviceAccount.json
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
+        with:
+          config: baseUrl=http://localhost:3000
+          config-file: cypress.env.json
 
 #      - name: e2e
 #        run: npm run e2e
