@@ -50,8 +50,8 @@ jobs:
       REACT_APP_GTM_CONTAINER: ${{ secrets.GTM_CONTAINER }}
       REACT_APP_ENV: ${{ inputs.env }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
 
       - name: Install node.js
         run: sudo apt install nodejs npm
