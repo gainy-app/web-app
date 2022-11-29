@@ -60,8 +60,11 @@ jobs:
           echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > serviceAccount.json
           cat serviceAccount.json
 
-      - name: e2e
-        run: npm run e2e
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+
+#      - name: e2e
+#        run: npm run e2e
 
       - name: unit
         run: npm run test
