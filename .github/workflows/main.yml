@@ -50,13 +50,13 @@ jobs:
       - name: Install node.js
         run: sudo apt install nodejs npm
 
-      - name: Install
+      - name: Install packages
         run: npm install
 
       - name: Start
         run: |
           npm install -g wait-on
-          npm run start & wait-on http://localhost:8080
+          npm run start & wait-on http://localhost:3000
 
       - name: Setup env
         run: |
