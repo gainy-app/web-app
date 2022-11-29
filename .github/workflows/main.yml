@@ -34,6 +34,7 @@ jobs:
     name: "Test"
     runs-on: ubuntu-latest
     env:
+      TEST_UID: ${{ secrets.TEST_FIREBASE_ACCOUNT_UID }}
       REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
       REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
       REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
@@ -61,7 +62,7 @@ jobs:
 
       - name: Setup env
         run: |
-          python -c 'import json, os; print(json.dumps({k: os.environ[k] for k in ["REACT_APP_FIREBASE_API_KEY","REACT_APP_FIREBASE_AUTH_DOMAIN","REACT_APP_FIREBASE_PROJECT_ID","REACT_APP_FIREBASE_STORAGE_BUCKET","REACT_APP_FIREBASE_SENDER_ID","REACT_APP_FIREBASE_APP_ID","REACT_APP_FIREBASE_MEASUREMENT_ID"]}))' > cypress.env.json
+          python -c 'import json, os; print(json.dumps({k: os.environ[k] for k in ["TEST_UID", "REACT_APP_FIREBASE_API_KEY","REACT_APP_FIREBASE_AUTH_DOMAIN","REACT_APP_FIREBASE_PROJECT_ID","REACT_APP_FIREBASE_STORAGE_BUCKET","REACT_APP_FIREBASE_SENDER_ID","REACT_APP_FIREBASE_APP_ID","REACT_APP_FIREBASE_MEASUREMENT_ID"]}))' > cypress.env.json
           echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > serviceAccount.json
 
       - name: e2e
