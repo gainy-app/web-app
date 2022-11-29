@@ -81,7 +81,7 @@ jobs:
       FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
       FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
       FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
-    container: cypress/included:4.11.0
+    container: cypress/included:10.0.0
     steps:
       - uses: actions/checkout@v2
       - name: Setup
