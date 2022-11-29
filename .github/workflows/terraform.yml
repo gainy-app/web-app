@@ -37,7 +37,6 @@ jobs:
   build:
     name: "Build"
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
     env:
       REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
       REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
