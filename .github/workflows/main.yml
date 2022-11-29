@@ -30,8 +30,46 @@ jobs:
       - name: Lint:ES
         run: npm run lint:es
 
-  test:
-    name: "Test"
+#  test:
+#    name: "Test"
+#    runs-on: ubuntu-latest
+#    env:
+#      TEST_FIREBASE_ACCOUNT_UID: ${{ secrets.TEST_FIREBASE_ACCOUNT_UID }}
+#      FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+#      FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+#      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+#      FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+#      FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
+#      FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+#      FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+#      FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Install node.js
+#        run: sudo apt install nodejs npm
+#
+#      - name: Cache node_modules
+#        uses: actions/cache@v3
+#        with:
+#          path: node_modules
+#          key: node_modules
+#
+#      - name: npm install
+#        run: npm install
+#
+#      - name: Setup
+#        run: |
+#          python -c 'import json, os; print(json.dumps({k: os.environ[k] for k in ["TEST_FIREBASE_ACCOUNT_UID","FIREBASE_API_KEY","FIREBASE_AUTH_DOMAIN","FIREBASE_PROJECT_ID","FIREBASE_STORAGE_BUCKET","FIREBASE_SENDER_ID","FIREBASE_APP_ID","FIREBASE_MEASUREMENT_ID"]}))' > cypress.env.json
+#          echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > serviceAccount.json
+#
+#      - name: e2e
+#        run: docker run -v $PWD:/e2e -w /e2e --entrypoint /e2e/cypress/entrypoint.sh cypress/included:10.0.0
+#
+#      - name: unit
+#        run: npm run test
+  cypress-run:
     runs-on: ubuntu-latest
     env:
       TEST_FIREBASE_ACCOUNT_UID: ${{ secrets.TEST_FIREBASE_ACCOUNT_UID }}
@@ -43,32 +81,14 @@ jobs:
       FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
       FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
       FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+    container: cypress/included:4.11.0
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Install node.js
-        run: sudo apt install nodejs npm
-
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: node_modules
-
-      - name: npm install
-        run: npm install
-
+      - uses: actions/checkout@v2
       - name: Setup
         run: |
           python -c 'import json, os; print(json.dumps({k: os.environ[k] for k in ["TEST_FIREBASE_ACCOUNT_UID","FIREBASE_API_KEY","FIREBASE_AUTH_DOMAIN","FIREBASE_PROJECT_ID","FIREBASE_STORAGE_BUCKET","FIREBASE_SENDER_ID","FIREBASE_APP_ID","FIREBASE_MEASUREMENT_ID"]}))' > cypress.env.json
           echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > serviceAccount.json
-
-      - name: e2e
-        run: docker run -v $PWD:/e2e -w /e2e --entrypoint /e2e/cypress/entrypoint.sh cypress/included:10.0.0
-
-      - name: unit
-        run: npm run test
+      - run: cypress run
 
   terraform:
     name: "Terraform"
