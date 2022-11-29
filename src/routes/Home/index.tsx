@@ -9,15 +9,43 @@ import { KycLayout } from '../../components/layout/kyc';
 import { CitizenForm } from '../../components/forms/CitizenForm';
 import { CitizenshipForm } from '../../components/forms/CitizenshipForm';
 import { EmailAddressForm } from '../../components/forms/EmailAddressForm';
+import { PhoneNumberForm } from '../../components/forms/PhoneNumberForm';
+import { VerifyPhoneNumberForm } from '../../components/forms/VerifyPhoneNumberForm';
+import { LegalNameForm } from '../../components/forms/LegalNameForm';
+import { ResidentAddressForm } from '../../components/forms/ResidentAddressForm';
+import { SocialSecurityForm } from '../../components/forms/SocialSecurityForm';
+
 interface formData {
   country: string
   citizenship: boolean
   email: string
+  phone: string
+  verifyCode: string
+  username: string
+  lastname: string
+  birthday: string
+  addressLine: string
+  addressLine2: string
+  city: string
+  state: string
+  zipcode: string
+  socialSecurityNumber: string
 }
 const INITIAL_DATA = {
   country: '',
   citizenship: false,
-  email: ''
+  email: '',
+  phone: '',
+  verifyCode: '',
+  username: '',
+  lastname: '',
+  birthday: '',
+  addressLine: '',
+  addressLine2: '',
+  city: '',
+  state: '',
+  zipcode: '',
+  socialSecurityNumber: '',
 };
 export default function Home () {
   const { invest } = config;
@@ -33,19 +61,26 @@ export default function Home () {
   };
 
 
-  const { step, isFirstStep, back, next, isLastPage, isContinue, isControls, currentStepIndex }
+  const { step, isFirstStep, back, next, isLastPage, isContinue, isControls, currentStepIndex, goToStep }
     = useMultistepForm([
-      '',
+      null,
       <CitizenForm {...data} updateFields={updateFields}/>,
       <CitizenshipForm {...data} updateFields={updateFields}/>,
-      <EmailAddressForm {...data} updateFields={updateFields}/>
+      <EmailAddressForm {...data} updateFields={updateFields}/>,
+      <PhoneNumberForm {...data} updateFields={updateFields}/>,
+      <VerifyPhoneNumberForm {...data} updateFields={updateFields}/>,
+      null,
+      <LegalNameForm {...data} updateFields={updateFields}/>,
+      <ResidentAddressForm {...data} updateFields={updateFields}/>,
+      <SocialSecurityForm {...data} updateFields={updateFields}/>,
+      null
     ]);
 
   const onSumChange = (values: NumberFormatValues) => {
     setSum(values.formattedValue);
   };
 
-
+  console.log(currentStepIndex);
   const buttonsRender = () => {
     switch (true) {
       case isFirstStep:
@@ -56,6 +91,9 @@ export default function Home () {
         return (
           <Button type={'button'} onClick={next}>{'Continue'}</Button>
         );
+      default: return (
+        <Button type={'button'} onClick={next}>{'Next'}</Button>
+      );
     }
   };
 
@@ -66,10 +104,10 @@ export default function Home () {
           :  <KycLayout>
             {step
               ? step
-              : <StepsControlForm currentStepIndex={currentStepIndex}/>}
-            <div>
-              {isControls && <button type={'button'} onClick={back}>back</button>}
+              : <StepsControlForm currentStepIndex={currentStepIndex} goToStep={goToStep}/>}
+            <div style={{ display:'flex' }}>
               {buttonsRender()}
+              {isControls && <button type={'button'} style={{ marginLeft: '104px' }} onClick={back}>back</button>}
             </div>
           </KycLayout>
       }

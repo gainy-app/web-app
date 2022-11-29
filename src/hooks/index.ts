@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { routes } from 'utils/constants';
 import { ReactElement, useState } from 'react';
 
+
 export const usePage = () => {
   const { pathname } = useLocation();
   const withHeader = (!pathname.includes(routes.signIn) && !pathname.includes(routes.getApp));
@@ -12,10 +13,11 @@ export const usePage = () => {
     withFooter
   };
 };
+type IuseMultistepForm = ReactElement | null
 
-export const useMultistepForm = (steps: any) => {
+export const useMultistepForm = (steps: IuseMultistepForm[]) => {
   const [currentStepIndex,setCurrentStepIndex] = useState(0);
-  console.log(steps);
+
   const next = () => {
     setCurrentStepIndex(prev => {
       if(prev >= steps.length - 1) return prev;
@@ -39,6 +41,7 @@ export const useMultistepForm = (steps: any) => {
     currentStepIndex === 6 ||
     currentStepIndex === 10
   );
+  const isEditor = currentStepIndex !== 6 && currentStepIndex !== 10;
 
   return {
     currentStepIndex,
@@ -50,6 +53,6 @@ export const useMultistepForm = (steps: any) => {
     isFirstStep: currentStepIndex === 0,
     isLastPage: currentStepIndex === steps.length - 1,
     isContinue,
-    isControls: currentStepIndex >= 2,
+    isControls: currentStepIndex >= 2 && isEditor
   };
 };

@@ -2,15 +2,15 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 
-interface emailData {
-  email: string
+interface verifyData {
+  verifyCode: string
 }
 
-type Props = emailData & {
-  updateFields: (fields: Partial<emailData>) => void
+type Props = verifyData & {
+  updateFields: (fields: Partial<verifyData>) => void
 }
 
-export const EmailAddressForm = ({ updateFields,email }:Props) => {
+export const VerifyPhoneNumberForm = ({ updateFields,verifyCode }:Props) => {
   const { title,subtitle } = config;
   return (
     <FormWrapper title={title} subtitle={subtitle}>

@@ -6,8 +6,11 @@ interface Props {
   stepTitle: string
   activeStep?: boolean
   withEdit: boolean
+  onEdit: (step: number) => void
+  step: number
 }
-export const StepControl = ({ stepNumber,withEdit, stepTitle, activeStep }: Props) => {
+export const StepControl = ({ stepNumber,withEdit, stepTitle, activeStep, onEdit, step }: Props) => {
+  console.log(step);
   return (
     <div className={classNames(styles.wrapper, {
       [styles.active]: activeStep
@@ -22,7 +25,7 @@ export const StepControl = ({ stepNumber,withEdit, stepTitle, activeStep }: Prop
         <span className={styles.stepTitle}>{stepTitle}</span>
       </div>
       {withEdit && (
-        <div className={styles.edit}>edit</div>
+        <div className={styles.edit} onClick={() => onEdit(step)}>edit</div>
       )}
     </div>
   );
