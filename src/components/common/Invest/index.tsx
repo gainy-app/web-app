@@ -12,10 +12,11 @@ interface Props {
   }
   sum: string | null
   onSumChange: (values: NumberFormatValues) => void
+  setStart: (arg: boolean) => void
 }
 
 export const Invest = React.memo(({
-  invest: { title,buttonText,subtitle },sum,onSumChange
+  invest: { title,buttonText,subtitle },sum,onSumChange, setStart
 }: Props) => {
 
   return (
@@ -33,7 +34,7 @@ export const Invest = React.memo(({
         />
       </Input>
       <div className={sum ? styles.hidden : ''}>
-        <Button className={styles.button}>{buttonText}</Button>
+        <Button onClick={() => setStart(true)} className={styles.button}>{buttonText}</Button>
       </div>
     </KycLayout>
   );

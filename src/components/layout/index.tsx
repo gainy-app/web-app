@@ -5,7 +5,7 @@ import { usePage } from 'hooks';
 import React from 'react';
 
 interface Props {
-  children?: JSX.Element | JSX.Element[]
+  children?: JSX.Element | JSX.Element[] | boolean
   footerClassName?: string
 }
 

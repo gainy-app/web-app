@@ -6,4 +6,4 @@ export { PrivateRoute } from 'components/common/PrivateRoute';
 export { Loader } from 'components/common/Loader';
 export { Invest } from 'components/common/Invest';
 export { StepControl } from 'components/common/StepControl';
-export { StepsControl } from 'components/common/StepsControl';
+export { StepsControlForm } from 'components/forms/StepsControlForm';
