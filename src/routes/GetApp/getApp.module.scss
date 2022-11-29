@@ -117,14 +117,18 @@
       width: 280px;
     }
 
-    input {
-      text-align: center;
-      padding: 1.429vw;
+    label {
+      max-width: 100% !important;
 
-      width: 100%;
+      input {
+        text-align: center;
+        padding: 1.429vw;
+        max-width: 100% !important;
+        width: 100%;
 
-      @include macbookThirteen {
-        padding: 20px;
+        @include macbookThirteen {
+          padding: 20px;
+        }
       }
     }
 
@@ -143,12 +147,11 @@
       }
     }
 
-    .error,
     .success {
       margin-top: .357vw;
+      color: $success;
       font-size: 1vw;
       text-align: center;
-      font-family: "SF Pro Display Medium", sans-serif;
 
       @include macbookThirteen {
         margin-top: 5px;
@@ -156,12 +159,21 @@
       }
     }
 
-    .success {
-      color: $success;
+    .errorValidation {
+      color: $pink;
     }
 
     .error {
-      color: $error;
+      font-family: "SF Pro Display Medium", sans-serif;
+      text-align: center;
+      color: $pink;
+      margin-top: 16px;
+      font-size: 1vw;
+
+      @include macbookThirteen {
+        margin-top: 5px;
+        font-size: 14px;
+      }
     }
 
     .loader {

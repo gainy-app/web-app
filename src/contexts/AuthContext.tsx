@@ -1,7 +1,7 @@
-import {signInWithPopup, User as FirebaseUser} from 'firebase/auth';
+import { signInWithPopup, User as FirebaseUser } from 'firebase/auth';
 import React, { useContext, useState, useEffect } from 'react';
-import {appleProvider, auth, googleProvider} from '../firebase';
-import {onAuthChange} from 'services/auth';
+import { appleProvider, auth, googleProvider } from '../firebase';
+import { onAuthChange } from 'services/auth';
 
 interface IAuthContext {
   currentUser: FirebaseUser | null,
@@ -16,7 +16,7 @@ const AuthContext = React.createContext<IAuthContext>({
   logout: () => {},
   signInWithGoogle: async () => {},
   signInWithApple: async () => {},
-  loading: true
+  loading: true,
 });
 
 export function useAuth() {
@@ -60,7 +60,7 @@ export function AuthProvider({ children }: Props) {
     logout,
     signInWithGoogle,
     loading,
-    signInWithApple
+    signInWithApple,
   };
 
   return (

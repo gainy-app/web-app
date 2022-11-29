@@ -6,13 +6,13 @@ import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
 
 export default function SignIn () {
-  const {title,form, description, subDescription} = config;
-  const {pathname} = useLocation();
+  const { title,form, description, subDescription } = config;
+  const { pathname } = useLocation();
   const navigate = useNavigate();
-  const {signInWithGoogle, currentUser, signInWithApple} = useAuth();
+  const { signInWithGoogle, currentUser, signInWithApple } = useAuth();
 
   if(currentUser) {
-    return <Navigate to={routes.home} replace state={{path: pathname}}/>;
+    return <Navigate to={routes.home} replace state={{ path: pathname }}/>;
   }
 
   const onSignIn = (cb:() => Promise<void>) => {

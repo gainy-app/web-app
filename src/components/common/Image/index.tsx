@@ -1,4 +1,4 @@
-import {imageTypes} from 'utils/constants';
+import { imageTypes } from 'utils/constants';
 
 interface Props {
     type: string
@@ -6,7 +6,7 @@ interface Props {
     onClick?: () => void
 }
 
-export const Image = ({type, className, onClick}: Props) => {
+export const Image = ({ type, className, onClick }: Props) => {
   switch (type) {
     case imageTypes.logo: {
       return (

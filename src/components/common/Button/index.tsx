@@ -9,10 +9,10 @@ interface Props extends React.HTMLProps<HTMLButtonElement> {
     type?: 'button' | 'submit' | 'reset'
 }
 
-export const Button = ({children, onClick, variant, ...rest}: Props) => {
+export const Button = ({ children, onClick, variant, ...rest }: Props) => {
   return (
     <button
-      className={classNames(styles.button, {
+      className={classNames(styles.button,  {
         [styles.button_apple]: variant === 'apple',
         [styles.button_google]: variant === 'google',
       })}

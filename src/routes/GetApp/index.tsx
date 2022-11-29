@@ -12,16 +12,16 @@ import { SEND_APP_LINK } from 'services/gql/queries/appLink';
 export default function GetApp () {
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
-  const [sendLink, {loading, error, data}] = useMutation(SEND_APP_LINK);
+  const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
 
-  const {form,qrcode,subtitle,title,description,validate} = config;
+  const { form,qrcode,subtitle,title,description,validate } = config;
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
-      sendLink({variables: {phone_number}});
+      sendLink({ variables: { phone_number } });
     }
   };
 
@@ -52,11 +52,9 @@ export default function GetApp () {
                 name={'phone'}
                 onValueChange={onPhoneChange}
                 value={phoneState}
+                className={`${errors ? styles.errorValidation : ''}`}
               />
             </Input>
-            {errors && (
-              <p className={styles.error}>{errors}</p>
-            )}
             <Button type={'submit'} id={'webapp_signin_send_link'}>
               {loading ? <Loader className={styles.loader}/> : form.button}
             </Button>
@@ -64,7 +62,7 @@ export default function GetApp () {
               <p className={styles.error}>{parseGQLerror(error)}</p>
             )}
             {data?.send_app_link?.ok && (
-              <p className={styles.success}>Link sent</p>
+              <p className={styles.success}>{form.successMessage}</p>
             )}
           </div>
         </form>

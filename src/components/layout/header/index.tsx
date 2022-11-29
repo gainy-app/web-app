@@ -1,8 +1,8 @@
-import {Button, Image} from 'components';
-import {imageTypes, routes} from 'utils/constants';
+import { Button, Image } from 'components';
+import { imageTypes, routes } from 'utils/constants';
 import styles from './header.module.scss';
-import {useNavigate} from 'react-router-dom';
-import {useAuth} from 'contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'contexts/AuthContext';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ export const Header = () => {
 
   const onLogout = async () => {
     await logout();
+    localStorage.removeItem('token');
     navigate('/sign-in');
   };
 

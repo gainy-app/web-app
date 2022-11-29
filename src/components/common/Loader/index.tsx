@@ -4,7 +4,7 @@ interface Props {
     className?: string
 }
 
-export const Loader = ({className}: Props) => {
+export const Loader = ({ className }: Props) => {
   return (
     <div className={`${styles.center} ${className}`}>
       <div className={styles.loader}/>
