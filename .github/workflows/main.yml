@@ -62,7 +62,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           config: baseUrl=http://localhost:3000
-          config-file: cypress.env.json
+#          config-file: cypress.env.json
 
 #      - name: e2e
 #        run: npm run e2e
