@@ -54,7 +54,7 @@ jobs:
 
       - name: Setup
         run: |
-          echo -e "{
+          echo "{
             TEST_FIREBASE_ACCOUNT_UID: \"${{ secrets.TEST_FIREBASE_ACCOUNT_UID }}\",
             FIREBASE_API_KEY: \"${{ secrets.FIREBASE_API_KEY }}\",
             FIREBASE_AUTH_DOMAIN: \"${{ secrets.FIREBASE_AUTH_DOMAIN }}\",
