@@ -84,10 +84,10 @@ jobs:
     container: cypress/included:10.0.0
     steps:
       - uses: actions/checkout@v2
-      - name: Setup
-        run: |
-          python -c 'import json, os; print(json.dumps({k: os.environ[k] for k in ["TEST_FIREBASE_ACCOUNT_UID","FIREBASE_API_KEY","FIREBASE_AUTH_DOMAIN","FIREBASE_PROJECT_ID","FIREBASE_STORAGE_BUCKET","FIREBASE_SENDER_ID","FIREBASE_APP_ID","FIREBASE_MEASUREMENT_ID"]}))' > cypress.env.json
-          echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > serviceAccount.json
+#      - name: Setup
+#        run: |
+#          python -c 'import json, os; print(json.dumps({k: os.environ[k] for k in ["TEST_FIREBASE_ACCOUNT_UID","FIREBASE_API_KEY","FIREBASE_AUTH_DOMAIN","FIREBASE_PROJECT_ID","FIREBASE_STORAGE_BUCKET","FIREBASE_SENDER_ID","FIREBASE_APP_ID","FIREBASE_MEASUREMENT_ID"]}))' > cypress.env.json
+#          echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > serviceAccount.json
       - run: cypress run
 
   terraform:
