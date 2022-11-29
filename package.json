@@ -32,7 +32,7 @@
     "lint:es": "eslint --ext .js,.jsx,.ts,.tsx src",
     "lint:es:fix": "npm run lint:es -- --fix",
     "postinstall": "husky install",
-    "e2e": "cypress run"
+    "e2e": "cypress run --headless"
   },
   "eslintConfig": {
     "extends": [
