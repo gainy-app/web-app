@@ -64,7 +64,8 @@ jobs:
           echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > serviceAccount.json
 
       - name: e2e
-        run: docker run -v $PWD:/e2e -w /e2e --entrypoint /e2e/cypress/entrypoint.sh cypress/included:10.0.0
+        run: npm run e2e
+#        run: docker run -v $PWD:/e2e -w /e2e --entrypoint /e2e/cypress/entrypoint.sh cypress/included:10.0.0
 
       - name: unit
         run: npm run test
