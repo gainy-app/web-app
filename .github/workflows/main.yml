@@ -55,7 +55,7 @@ jobs:
 
       - name: Setup
         run: |
-          echo "{
+          echo "\{
             \"TEST_FIREBASE_ACCOUNT_UID\": \"$TEST_FIREBASE_ACCOUNT_UID\",
             \"FIREBASE_API_KEY\": \"$FIREBASE_API_KEY\",
             \"FIREBASE_AUTH_DOMAIN\": \"$FIREBASE_AUTH_DOMAIN\",
@@ -64,7 +64,7 @@ jobs:
             \"FIREBASE_SENDER_ID\": \"$FIREBASE_SENDER_ID\",
             \"FIREBASE_APP_ID\": \"$FIREBASE_APP_ID\",
             \"FIREBASE_MEASUREMENT_ID\": \"$FIREBASE_MEASUREMENT_ID\"
-          }" > cypress.env.json
+          \}" > cypress.env.json
           cat cypress.env.json
           echo "$FIREBASE_SERVICE_ACCOUNT_KEY" > serviceAccount.json
           cat serviceAccount.json
