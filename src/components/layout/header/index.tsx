@@ -14,6 +14,7 @@ export const Header = () => {
 
   const onLogout = async () => {
     await logout();
+    localStorage.removeItem('token');
     navigate('/sign-in');
   };
 

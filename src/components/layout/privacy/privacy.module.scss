@@ -1,9 +1,7 @@
-@import "../../styles/mixins";
+@import "../../../styles/mixins";
 
 .section {
   * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
   }
 
@@ -13,10 +11,6 @@
   padding-top: 120px;
 
   @include macbookThirteen {
-    max-width: 440px;
-  }
-
-  .footer {
-    color: $black;
+    max-width: 680px;
   }
 }

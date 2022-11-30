@@ -16,7 +16,7 @@ const AuthContext = React.createContext<IAuthContext>({
   logout: () => {},
   signInWithGoogle: async () => {},
   signInWithApple: async () => {},
-  loading: true
+  loading: true,
 });
 
 export function useAuth() {
@@ -60,7 +60,7 @@ export function AuthProvider({ children }: Props) {
     logout,
     signInWithGoogle,
     loading,
-    signInWithApple
+    signInWithApple,
   };
 
   return (

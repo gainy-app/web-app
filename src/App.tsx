@@ -19,11 +19,11 @@ function App() {
     <div className={`${styles.container} ${withHeader ? '' : styles.blue}`}>
       <Routes>
         <Route path={routes.home} element={
-          <PrivateRoute>
-            <React.Suspense>
+          <React.Suspense>
+            <PrivateRoute>
               <Home/>
-            </React.Suspense>
-          </PrivateRoute>
+            </PrivateRoute>
+          </React.Suspense>
         }/>
         <Route path={routes.signIn}   element={<React.Suspense>
           <SignIn/>

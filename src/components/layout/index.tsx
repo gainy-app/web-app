@@ -1,14 +1,16 @@
 import { Footer } from './footer';
 import { Header } from './header';
 import styles from './layout.module.scss';
-import {usePage} from 'hooks';
+import { usePage } from 'hooks';
+import React from 'react';
 
 interface Props {
-    children?: JSX.Element
+  children?: JSX.Element | JSX.Element[]
+  footerClassName?: string
 }
 
-export const Layout = ({children}: Props) => {
-  const {withHeader} = usePage();
+export const Layout = React.memo(({ children, footerClassName }: Props) => {
+  const { withHeader, withFooter } = usePage();
 
   return (
     <>
@@ -16,7 +18,7 @@ export const Layout = ({children}: Props) => {
       <main className={styles.content}>
         {children}
       </main>
-      <Footer footerClassName={styles.footer}/>
+      <Footer footerClassName={withFooter ? styles.footer : footerClassName}/>
     </>
   );
-};
+});

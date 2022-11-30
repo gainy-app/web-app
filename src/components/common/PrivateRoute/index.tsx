@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
-
-import { useAuth } from 'contexts/AuthContext';
 import React, { ReactElement } from 'react';
+import { useAuth } from 'contexts/AuthContext';
+import { routes } from 'utils/constants';
 
 interface Props {
   children: ReactElement<ReactElement>
@@ -12,8 +12,7 @@ export const PrivateRoute = ({ children }: Props) => {
   const location = useLocation();
 
   if (!currentUser) {
-    return <Navigate to="/sign-in" replace state={{ path: location.pathname }}/>;
+    return <Navigate to={routes.signIn} replace state={{ path: location.pathname }}/>;
   }
-
-  return children;
+  return children ;
 };
