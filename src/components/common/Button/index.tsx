@@ -5,7 +5,7 @@ import React from 'react';
 interface Props extends React.HTMLProps<HTMLButtonElement> {
     children: JSX.Element | string | JSX.Element[]
     onClick?: () => void
-    variant?: 'apple' | 'google'
+    variant?: 'apple' | 'google' | 'download'
     type?: 'button' | 'submit' | 'reset'
 }
 
@@ -15,6 +15,7 @@ export const Button = ({ children, onClick, variant, ...rest }: Props) => {
       className={classNames(styles.button,  {
         [styles.button_apple]: variant === 'apple',
         [styles.button_google]: variant === 'google',
+        [styles.button_download]: variant === 'download',
       })}
       onClick={onClick}
       {...rest}

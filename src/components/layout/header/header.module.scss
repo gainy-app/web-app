@@ -39,12 +39,8 @@
     }
 
     button {
-      padding: .714vw 4.857vw;
+      padding: 10px 68px;
       background: $black;
-
-      @include macbookThirteen {
-        padding: 10px 68px;
-      }
 
       @include phone {
         padding: 10px 30px;

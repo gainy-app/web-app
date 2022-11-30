@@ -12,28 +12,17 @@ input::-webkit-inner-spin-button {
 
 .label {
   font-family: "SF Pro Display Medium", sans-serif;
-  border: .143vw solid $blue;
   background: transparent;
-  border-radius: 1.143vw;
   display: block;
-
-  @include macbookThirteen {
-    border: 2px solid $blue;
-    border-radius: 16px;
-  }
+  border: 2px solid $blue;
+  border-radius: 16px;
 
   input {
     border: none;
-    border-radius: 1.143vw;
     color: $black;
-    font-size: 1.143vw;
-    line-height: 1.714vw;
-
-    @include macbookThirteen {
-      border-radius: 16px;
-      font-size: 16px;
-      line-height: 24px;
-    }
+    border-radius: 16px;
+    font-size: 16px;
+    line-height: 24px;
 
     &::placeholder {
       color: $gray-light;

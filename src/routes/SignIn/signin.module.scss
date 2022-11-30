@@ -7,95 +7,82 @@
   }
 
   @include flex(column,initial,center);
-  padding-top: 4vw;
+  padding-top: 56px;
 
-  @include macbookThirteen {
-    padding-top: 56px;
+  @include phone {
+    padding-top: 48px;
   }
 
   .car {
-    @include size(17.143vw, 13.321vw);
-    margin-bottom: 2.714vw;
+    @include size(240px, 186.5px);
+    margin-bottom: 32px;
 
-    @include macbookThirteen {
-      margin-bottom: 32px;
-
-      @include size(240px, 186.5px);
+    @include phone {
+      @include size(200px, 155px);
     }
   }
 
   .title,
   .description {
     text-align: center;
-    max-width: 1400px;
     margin-bottom: 24px;
     color: $white;
   }
 
   .title {
-    font-size: $fz-24;
     font-family: "SF Pro Display", sans-serif;
     line-height: 32px;
     font-weight: 700;
+    font-size: 24px;
+    max-width: 440px;
 
-    @include macbookThirteen {
-      font-size: 24px;
-      max-width: 440px;
+    @include iPhone {
+      max-width: 400px;
     }
 
     @include phone {
-      font-size: 20px;
-      text-align: center;
+      font-size: 21px;
+      max-width: 225px;
     }
   }
 
   .description {
     font-family: "SF Pro Display Medium", sans-serif;
-    font-size: 1.143vw;
-    line-height: 1.714vw;
+    font-size: 16px;
+    line-height: 24px;
+    max-width: 602px;
 
-    @include macbookThirteen {
-      font-size: 16px;
-      line-height: 24px;
-      max-width: 602px;
+    @include iPhone {
+      max-width: 400px;
+    }
+
+    @include phone {
+      font-size: 14px;
+      max-width: 280px;
     }
   }
 
   .authButtons {
     @include flex(row, center ,center);
-    column-gap: 18px;
+    column-gap: 16px;
     margin-top: 8px;
+    gap: 16px;
 
     @include iPhone {
       flex-direction: column;
-      margin-bottom: 20px;
+    }
+
+    @include phone {
+      margin-bottom: 40px;
     }
 
     .signIcon {
-      @include size(1vw, 1.143vw);
-
-      @include macbookThirteen {
-        @include size(14px, 16px);
-      }
+      @include size(14px, 16px);
     }
 
     button {
-      @include iPhone {
-        width: 250px;
-      }
-
       svg {
-        margin-right: 1.143vw;
-
-        @include macbookThirteen {
-          margin-right: 16px;
-        }
-      }
-    }
-
-    button:first-child {
-      @include iPhone {
-        margin-bottom: 20px;
+        margin-right: 16px;
       }
     }
   }

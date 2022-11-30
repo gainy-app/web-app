@@ -1,26 +1,23 @@
 @import "../../styles/mixins";
 
 .section {
-  * {
+  h1,
+  p {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
 
-  @include flex(column,initial,center);
-  padding-top: 5.714vw;
-  color: $white;
-
-  @include macbookThirteen {
-    padding-top: 80px;
+  a {
+    text-decoration: none;
   }
 
-  .logo {
-    @include size(8.571vw, 2.857vw);
+  @include flex(column,initial,center);
+  color: $white;
+  padding-top: 80px;
 
-    @include macbookThirteen {
-      @include size(120px, 40px);
-    }
+  .logo {
+    @include size(120px, 40px);
   }
 
   .title,
@@ -30,90 +27,65 @@
 
   .title {
     font-family: "SF Pro Display Heavy", sans-serif;
-    margin-top: 2.857vw;
     font-weight: 700;
-    font-size: $fz-24;
-    line-height: 2.286vw;
+    margin-top: 40px;
+    font-size: 24px;
+    line-height: 32px;
+    max-width: 440px;
 
-    @include macbookThirteen {
-      margin-top: 40px;
-      font-size: 24px;
-      line-height: 32px;
+    @include phone {
+      font-size: 21px;
     }
   }
 
   .subtitle {
     font-family: "SF Pro Display Medium", sans-serif;
     font-weight: 500;
-    font-size: 1.143vw;
-    line-height: 1.714vw;
-    margin-top: $fz-24;
     text-align: center;
-    max-width: 1140px;
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 24px;
+    max-width: 560px;
+    margin-bottom: 40px;
 
-    @include macbookThirteen {
-      font-size: 16px;
-      line-height: 24px;
-      margin-top: 24px;
-      max-width: 550px;
+    @include phone {
+      font-size: 14px;
+      margin-bottom: 16px;
     }
+  }
+
+  .buttonLink {
+    margin-bottom: 40px;
   }
 
   .qrWrapper {
     background: $white;
-    margin-top: 2.857vw;
-    padding: 1.429vw;
-    border-radius: $fz-16;
-
-    @include macbookThirteen {
-      margin-top: 40px;
-      border-radius: 16px;
-      padding: 20px;
-    }
+    margin-top: 40px;
+    border-radius: 16px;
+    padding: 20px;
 
     .qrCode {
-      height: 11.429vw;
-      width: 11.429vw;
-
-      @include macbookThirteen {
-        height: 160px;
-        width: 160px;
-      }
+      height: 160px;
+      width: 160px;
     }
   }
 
   .description {
-    margin-top: 2.857vw;
     font-family: "SF Pro Display Medium", sans-serif;
     font-weight: 500;
-    font-size: 1.143vw;
-    line-height: 1.714vw;
     text-align: center;
-    max-width: 1140px;
-
-    @include macbookThirteen {
-      margin-top: 40px;
-      font-size: 16px;
-      line-height: 24px;
-      max-width: 320px;
-    }
+    margin-top: 40px;
+    font-size: 16px;
+    line-height: 24px;
+    max-width: 335px;
   }
 
   .actions {
-    margin-top: 1.714vw;
-    margin-bottom: 4vw;
-    max-width: 1140px;
-    width: 32.857vw;
-
-    @include macbookThirteen {
-      width: 320px;
-      margin-top: 24px;
-      margin-bottom: 56px;
-    }
+    width: 320px;
+    margin-top: 24px;
+    margin-bottom: 56px;
 
     @include phone {
-      margin-top: 24px;
-      margin-bottom: 40px;
       width: 280px;
     }
 
@@ -122,41 +94,26 @@
 
       input {
         text-align: center;
-        padding: 1.429vw;
         max-width: 100% !important;
         width: 100%;
-
-        @include macbookThirteen {
-          padding: 20px;
-        }
+        padding: 20px 0;
       }
     }
 
     button {
-      margin-top: 1.143vw;
-      padding: 1.571vw 4.857vw;
       position: relative;
-      height: 4.571vw;
       background: $black;
       width: 100%;
-
-      @include macbookThirteen {
-        height: 64px;
-        margin-top: 16px;
-        padding: 22px 68px;
-      }
+      height: 56px;
+      margin-top: 16px;
+      padding: 22px 68px;
     }
 
     .success {
-      margin-top: .357vw;
       color: $success;
-      font-size: 1vw;
       text-align: center;
-
-      @include macbookThirteen {
-        margin-top: 5px;
-        font-size: 14px;
-      }
+      margin-top: 5px;
+      font-size: 14px;
     }
 
     .errorValidation {
@@ -168,32 +125,18 @@
       text-align: center;
       color: $pink;
       margin-top: 16px;
-      font-size: 1vw;
-
-      @include macbookThirteen {
-        margin-top: 5px;
-        font-size: 14px;
-      }
+      font-size: 14px;
     }
 
     .loader {
       position: absolute;
-      top: 35%;
+      top: 25%;
       left: 50%;
       transform: translate(-50%);
 
-      @include macbookThirteen {
-        top: 35%;
-      }
-
       div {
-        height: 1.429vw;
-        width: 1.429vw;
-
-        @include macbookThirteen {
-          height: 20px;
-          width: 20px;
-        }
+        height: 20px;
+        width: 20px;
       }
     }
   }

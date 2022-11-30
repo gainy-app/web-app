@@ -4,15 +4,17 @@ import { useAuth } from 'contexts/AuthContext';
 import { routes } from 'utils/constants';
 
 interface Props {
-  children: ReactElement<ReactElement>
+  children: ReactElement
 }
 
 export const PrivateRoute = ({ children }: Props) => {
   const { currentUser } = useAuth();
   const location = useLocation();
+  const token = localStorage.getItem('token');
 
-  if (!currentUser) {
+  //@ts-ignore
+  if (currentUser?.accessToken !== token) {
     return <Navigate to={routes.signIn} replace state={{ path: location.pathname }}/>;
   }
-  return children ;
+  return  children;
 };
