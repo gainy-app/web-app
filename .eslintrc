@@ -27,5 +27,7 @@
         "react/prop-types": "off",
         "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 0 }],
         "@typescript-eslint/no-empty-function": "off",
+        "object-curly-spacing": ["error", "always"],
+        "react/display-name": "off"
     }
 }

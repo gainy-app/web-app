@@ -1,22 +1,16 @@
-@import "../../styles/mixins";
+@import "../../../styles/mixins";
 
 .section {
   * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
   }
 
   @include flex(column,center,initial);
-  max-width: 1400px;
+  max-width: 1250px;
   margin: 0 auto;
   padding-top: 120px;
 
   @include macbookThirteen {
     max-width: 440px;
-  }
-
-  .footer {
-    color: $black;
   }
 }
