@@ -2,9 +2,6 @@
 
 .button {
   font-family: "SF Pro Display Medium", sans-serif;
-  font-size: 1.143vw;
-  line-height: 1.429vw;
-  padding: 1.286vw 2.071vw;
 
   @include flex(row,center,center);
   text-decoration: none;
@@ -13,14 +10,10 @@
   transition: all ease-out .4s;
   color: $white;
   background-color: $blue;
-  border-radius: 1.429vw;
-
-  @include macbookThirteen {
-    font-size: 16px;
-    line-height: 20px;
-    padding: 18px 29px;
-    border-radius: 20px;
-  }
+  font-size: 16px;
+  line-height: 20px;
+  padding: 18px 29px;
+  border-radius: 16px;
 
   &:hover,
   &:active {
@@ -39,13 +32,23 @@
   &_google {
     background-color: $white;
     color: $black;
-    padding: 1.286vw 1.571vw;
 
-    @include macbookThirteen {
-      font-size: 16px;
-      line-height: 20px;
-      padding: 18px 22px;
-      border-radius: 20px;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 18px 22px;
+    border-radius: 20px;
+  }
+
+  &_download {
+    padding: 16px 109px;
+    background: $pink;
+    font-size: 16px;
+    text-decoration: none;
+    color: $white;
+    line-height: 24px;
+
+    @include phone {
+      padding: 16px 89px;
     }
   }
 }

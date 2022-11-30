@@ -4,18 +4,10 @@
   @include flex(row,center,center);
   font-family: "Inter Regular", sans-serif;
   color: $white;
-  font-size: $fz-16;
-
-  @include macbookThirteen {
-    font-size: 16px;
-    line-height: 24px;
-  }
+  font-size: 16px;
+  line-height: 24px;
 
   span {
-    margin-bottom: 1.714vw;
-
-    @include macbookThirteen {
-      margin-bottom: 24px;
-    }
+    margin-bottom: 24px;
   }
 }
