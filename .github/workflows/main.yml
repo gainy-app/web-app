@@ -84,7 +84,6 @@ jobs:
     uses: ./.github/workflows/terraform.yml
     with:
       env: production
-      only_plan: ${{ !(github.ref == 'refs/heads/master' && github.event_name == 'push') }}
     secrets:
       TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
