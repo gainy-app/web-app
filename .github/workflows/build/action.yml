@@ -1,0 +1,47 @@
+name: Build
+
+inputs:
+  env: { required: true }
+  firebase_api_key: { required: true }
+  firebase_auth_domain: { required: true }
+  firebase_project_id: { required: true }
+  firebase_storage_bucket: { required: true }
+  firebase_sender_id: { required: true }
+  firebase_app_id: { required: true }
+  firebase_measurement_id: { required: true }
+  hasura_url: { required: true }
+  gtm_container: { required: true }
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v3
+
+    - name: Install node.js
+      run: sudo apt install nodejs npm
+      shell: bash
+
+    - name: npm install
+      run: npm install
+      shell: bash
+
+    - name: npm run build
+      run: npm run build
+      shell: bash
+      env:
+        REACT_APP_FIREBASE_API_KEY: ${{ inputs.firebase_api_key }}
+        REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ inputs.firebase_auth_domain }}
+        REACT_APP_FIREBASE_PROJECT_ID: ${{ inputs.firebase_project_id }}
+        REACT_APP_FIREBASE_STORAGE_BUCKET: ${{ inputs.firebase_storage_bucket }}
+        REACT_APP_FIREBASE_SENDER_ID: ${{ inputs.firebase_sender_id }}
+        REACT_APP_FIREBASE_APP_ID: ${{ inputs.firebase_app_id }}
+        REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ inputs.firebase_measurement_id }}
+        REACT_APP_HASURA_URL: ${{ inputs.hasura_url }}
+        REACT_APP_GTM_CONTAINER: ${{ inputs.gtm_container }}
+        REACT_APP_ENV: ${{ inputs.env }}
+
+    - uses: actions/upload-artifact@master
+      with:
+        name: build
+        path: build
