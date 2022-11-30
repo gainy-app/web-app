@@ -15,8 +15,8 @@ jobs:
   deploy:
     name: "Deploy"
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
-    concurrency: ${{ inputs.env }}
+    environment: ${{ inputs.env || "production" }}
+    concurrency: ${{ inputs.env || "production" }}
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
