@@ -1,33 +1,15 @@
 name: Deploy
 
 on:
+  push:
+    branches:
+      - master
   workflow_dispatch:
     inputs:
       env:
         description: 'Environment'
         default: 'test'
         required: true
-  workflow_call:
-    inputs:
-      env:
-        type: string
-        required: true
-    secrets:
-      TF_API_TOKEN: { required: true }
-      AWS_ACCESS_KEY_ID: { required: true }
-      AWS_SECRET_ACCESS_KEY: { required: true }
-      CLOUDFLARE_EMAIL: { required: true }
-      CLOUDFLARE_API_KEY: { required: true }
-      CLOUDFLARE_ZONE_ID: { required: true }
-      FIREBASE_API_KEY: { required: true }
-      FIREBASE_AUTH_DOMAIN: { required: true }
-      FIREBASE_PROJECT_ID: { required: true }
-      FIREBASE_STORAGE_BUCKET: { required: true }
-      FIREBASE_SENDER_ID: { required: true }
-      FIREBASE_APP_ID: { required: true }
-      FIREBASE_MEASUREMENT_ID: { required: true }
-      HASURA_URL: { required: true }
-      GTM_CONTAINER: { required: true }
 
 jobs:
   deploy:

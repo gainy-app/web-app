@@ -1,6 +1,21 @@
 name: Build
 
 on:
+  workflow_call:
+    inputs:
+      env:
+        type: string
+        required: true
+    secrets:
+      FIREBASE_API_KEY: { required: true }
+      FIREBASE_AUTH_DOMAIN: { required: true }
+      FIREBASE_PROJECT_ID: { required: true }
+      FIREBASE_STORAGE_BUCKET: { required: true }
+      FIREBASE_SENDER_ID: { required: true }
+      FIREBASE_APP_ID: { required: true }
+      FIREBASE_MEASUREMENT_ID: { required: true }
+      HASURA_URL: { required: true }
+      GTM_CONTAINER: { required: true }
 
 jobs:
   build:
