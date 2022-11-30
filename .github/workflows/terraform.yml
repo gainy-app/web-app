@@ -1,5 +1,7 @@
 name: Terraform Test
 
+on:
+
 jobs:
   test:
     name: "Test"
