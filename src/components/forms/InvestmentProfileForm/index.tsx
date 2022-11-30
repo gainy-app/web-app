@@ -2,23 +2,24 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 
-interface userData {
-  username: string
-  lastname: string
-  birthday: string
+interface profileData {
+  anualIncome: string
+  networthTotal: string
+  networthLiqued: string
+  exp: string
+  objectives: string
+  risk: string
 }
 
-type Props = userData & {
-  updateFields: (fields: Partial<userData>) => void
+type Props = profileData & {
+  updateFields: (fields: Partial<profileData>) => void
 }
 
-export const LegalNameForm = ({ updateFields }:Props) => {
+export const InvestmentProfileForm = ({ updateFields }:Props) => {
   console.log(updateFields);
   const { title,subtitle } = config;
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <Input/>
-      <Input/>
       <Input/>
     </FormWrapper>
   );

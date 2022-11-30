@@ -9,7 +9,7 @@ type Props = citizenData & {
   updateFields: (fields: Partial<citizenData>) => void
 }
 
-export const CitizenshipForm = ({ citizenship,updateFields }:Props) => {
+export const CitizenshipForm = ({ updateFields }:Props) => {
   const { title,subtitle } = config;
   return (
     <FormWrapper title={title} subtitle={subtitle}>

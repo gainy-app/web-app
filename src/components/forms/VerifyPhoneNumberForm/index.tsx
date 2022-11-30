@@ -10,7 +10,8 @@ type Props = verifyData & {
   updateFields: (fields: Partial<verifyData>) => void
 }
 
-export const VerifyPhoneNumberForm = ({ updateFields,verifyCode }:Props) => {
+export const VerifyPhoneNumberForm = ({ updateFields }:Props) => {
+  console.log(updateFields);
   const { title,subtitle } = config;
   return (
     <FormWrapper title={title} subtitle={subtitle}>

@@ -2,21 +2,20 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 
-interface residentData {
-  addressLine: string
-  addressLine2: string
-  city: string
-  state: string
-  zipcode: string
+interface letUsKnowData {
+  broker: boolean
+  person: string
+  tradedCompany: string
+  notify: boolean
 }
 
-type Props = residentData & {
-  updateFields: (fields: Partial<residentData>) => void
+type Props = letUsKnowData & {
+  updateFields: (fields: Partial<letUsKnowData>) => void
 }
 
-export const ResidentAddressForm = ({ updateFields }:Props) => {
-  console.log(updateFields);
+export const LetUsKnowForm = ({ updateFields }:Props) => {
   const { title,subtitle } = config;
+  console.log(updateFields);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <Input/>

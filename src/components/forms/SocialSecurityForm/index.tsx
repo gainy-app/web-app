@@ -10,14 +10,11 @@ type Props = socialSecurityData & {
   updateFields: (fields: Partial<socialSecurityData>) => void
 }
 
-export const SocialSecurityForm = ({ updateFields,socialSecurityNumber }:Props) => {
+export const SocialSecurityForm = ({ updateFields }:Props) => {
+  console.log(updateFields);
   const { title,subtitle } = config;
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <Input/>
-      <Input/>
-      <Input/>
-      <Input/>
       <Input/>
     </FormWrapper>
   );

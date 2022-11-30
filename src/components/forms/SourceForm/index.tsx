@@ -2,23 +2,19 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 
-interface userData {
-  username: string
-  lastname: string
-  birthday: string
+interface sourceData {
+  source: string
 }
 
-type Props = userData & {
-  updateFields: (fields: Partial<userData>) => void
+type Props = sourceData & {
+  updateFields: (fields: Partial<sourceData>) => void
 }
 
-export const LegalNameForm = ({ updateFields }:Props) => {
+export const SourceForm = ({ updateFields }:Props) => {
   console.log(updateFields);
   const { title,subtitle } = config;
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <Input/>
-      <Input/>
       <Input/>
     </FormWrapper>
   );

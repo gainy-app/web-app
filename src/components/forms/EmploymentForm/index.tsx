@@ -2,17 +2,17 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 
-interface phoneData {
-  email: string
+interface tagsData {
+  tags: string[]
 }
 
-type Props = phoneData & {
-  updateFields: (fields: Partial<phoneData>) => void
+type Props = tagsData & {
+  updateFields: (fields: Partial<tagsData>) => void
 }
 
-export const PhoneNumberForm = ({ updateFields }:Props) => {
-  console.log(updateFields);
+export const EmploymentForm = ({ updateFields }:Props) => {
   const { title,subtitle } = config;
+  console.log(updateFields);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <Input/>

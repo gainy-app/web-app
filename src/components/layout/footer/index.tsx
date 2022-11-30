@@ -6,6 +6,7 @@ interface Props {
 }
 
 export const Footer = ({ footerClassName }: Props) => {
+  console.log(footerClassName);
   return (
     <footer className={classNames(styles.footer, {
       [footerClassName || '']: footerClassName,

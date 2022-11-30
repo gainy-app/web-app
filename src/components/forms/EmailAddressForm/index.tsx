@@ -10,8 +10,9 @@ type Props = emailData & {
   updateFields: (fields: Partial<emailData>) => void
 }
 
-export const EmailAddressForm = ({ updateFields,email }:Props) => {
+export const EmailAddressForm = ({ updateFields }:Props) => {
   const { title,subtitle } = config;
+  console.log(updateFields);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <Input/>
