@@ -25,15 +25,15 @@ jobs:
         with:
           env: ${{ inputs.env }}
         secrets:
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-          FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
-          FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
-          HASURA_URL: ${{ secrets.HASURA_URL }}
-          GTM_CONTAINER: ${{ secrets.GTM_CONTAINER }}
+          FIREBASE_API_KEY: "${{ secrets.FIREBASE_API_KEY }}"
+          FIREBASE_AUTH_DOMAIN: "${{ secrets.FIREBASE_AUTH_DOMAIN }}"
+          FIREBASE_PROJECT_ID: "${{ secrets.FIREBASE_PROJECT_ID }}"
+          FIREBASE_STORAGE_BUCKET: "${{ secrets.FIREBASE_STORAGE_BUCKET }}"
+          FIREBASE_SENDER_ID: "${{ secrets.FIREBASE_SENDER_ID }}"
+          FIREBASE_APP_ID: "${{ secrets.FIREBASE_APP_ID }}"
+          FIREBASE_MEASUREMENT_ID: "${{ secrets.FIREBASE_MEASUREMENT_ID }}"
+          HASURA_URL: "${{ secrets.HASURA_URL }}"
+          GTM_CONTAINER: "${{ secrets.GTM_CONTAINER }}"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
