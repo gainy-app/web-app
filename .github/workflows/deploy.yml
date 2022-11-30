@@ -21,7 +21,8 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: us-east-1
-      TF_VAR_env: ${{ inputs.env }}
+      env: ${{ inputs.env || 'production' }}
+      TF_VAR_env: ${{ inputs.env || 'production' }}
       TF_VAR_aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
       TF_VAR_aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       TF_VAR_cloudflare_email: ${{ secrets.CLOUDFLARE_EMAIL }}
@@ -38,13 +39,13 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config=backend-${{ env.TF_VAR_env }}.hcl -reconfigure
+        run: terraform init -backend-config=backend-${{ env.env }}.hcl -reconfigure
         working-directory: terraform
 
       - name: Build
         uses: ./.github/workflows/build.yml
         with:
-          env: ${{ inputs.env }}
+          env: ${{ env.env }}
           firebase_api_key: ${{ secrets.FIREBASE_API_KEY }}
           firebase_auth_domain: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
           firebase_project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
