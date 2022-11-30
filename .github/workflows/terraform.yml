@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build
+    uses: ./.github/workflows/build.yml
     with:
       env: ${{ inputs.env }}
     secrets:
