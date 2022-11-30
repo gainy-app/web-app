@@ -1,0 +1,51 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        type: string
+        required: true
+    secrets:
+      FIREBASE_API_KEY: { required: true }
+      FIREBASE_AUTH_DOMAIN: { required: true }
+      FIREBASE_PROJECT_ID: { required: true }
+      FIREBASE_STORAGE_BUCKET: { required: true }
+      FIREBASE_SENDER_ID: { required: true }
+      FIREBASE_APP_ID: { required: true }
+      FIREBASE_MEASUREMENT_ID: { required: true }
+      HASURA_URL: { required: true }
+      GTM_CONTAINER: { required: true }
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    env:
+      REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+      REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+      REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      REACT_APP_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+      REACT_APP_FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
+      REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+      REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+      REACT_APP_HASURA_URL: ${{ secrets.HASURA_URL }}
+      REACT_APP_GTM_CONTAINER: ${{ secrets.GTM_CONTAINER }}
+      REACT_APP_ENV: ${{ inputs.env }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+
+      - name: Install node.js
+        run: sudo apt install nodejs npm
+
+      - name: npm install
+        run: npm install
+
+      - name: npm run build
+        run: npm run build
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: build
+          path: build
