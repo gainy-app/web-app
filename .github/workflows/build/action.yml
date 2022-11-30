@@ -20,12 +20,15 @@ runs:
 
     - name: Install node.js
       run: sudo apt install nodejs npm
+      shell: bash
 
     - name: npm install
       run: npm install
+      shell: bash
 
     - name: npm run build
       run: npm run build
+      shell: bash
       env:
         REACT_APP_FIREBASE_API_KEY: ${{ inputs.firebase_api_key }}
         REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ inputs.firebase_auth_domain }}
