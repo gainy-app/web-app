@@ -9,8 +9,5 @@
   max-width: 1250px;
   margin: 0 auto;
   padding-top: 120px;
-
-  @include macbookThirteen {
-    max-width: 440px;
-  }
+  width: 440px;
 }
