@@ -12,22 +12,6 @@ on:
         required: true
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yml
-    environment: ${{ inputs.env }}
-    with:
-      env: ${{ inputs.env }}
-    secrets:
-      FIREBASE_API_KEY: "${{ secrets.FIREBASE_API_KEY }}"
-      FIREBASE_AUTH_DOMAIN: "${{ secrets.FIREBASE_AUTH_DOMAIN }}"
-      FIREBASE_PROJECT_ID: "${{ secrets.FIREBASE_PROJECT_ID }}"
-      FIREBASE_STORAGE_BUCKET: "${{ secrets.FIREBASE_STORAGE_BUCKET }}"
-      FIREBASE_SENDER_ID: "${{ secrets.FIREBASE_SENDER_ID }}"
-      FIREBASE_APP_ID: "${{ secrets.FIREBASE_APP_ID }}"
-      FIREBASE_MEASUREMENT_ID: "${{ secrets.FIREBASE_MEASUREMENT_ID }}"
-      HASURA_URL: "${{ secrets.HASURA_URL }}"
-      GTM_CONTAINER: "${{ secrets.GTM_CONTAINER }}"
-
   deploy:
     name: "Deploy"
     runs-on: ubuntu-latest
@@ -56,6 +40,20 @@ jobs:
         id: init
         run: terraform init -backend-config=backend-${{ env.TF_VAR_env }}.hcl -reconfigure
         working-directory: terraform
+
+      - name: Build
+        uses: ./.github/workflows/build.yml
+        with:
+          env: ${{ inputs.env }}
+          firebase_api_key: ${{ secrets.FIREBASE_API_KEY }}
+          firebase_auth_domain: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+          firebase_project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
+          firebase_storage_bucket: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+          firebase_sender_id: ${{ secrets.FIREBASE_SENDER_ID }}
+          firebase_app_id: ${{ secrets.FIREBASE_APP_ID }}
+          firebase_measurement_id: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+          hasura_url: ${{ secrets.HASURA_URL }}
+          gtm_container: ${{ secrets.GTM_CONTAINER }}
 
       - uses: actions/download-artifact@master
         with:

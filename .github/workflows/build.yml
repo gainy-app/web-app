@@ -3,34 +3,31 @@ name: Build
 on:
   workflow_call:
     inputs:
-      env:
-        type: string
-        required: true
-    secrets:
-      FIREBASE_API_KEY: { required: true }
-      FIREBASE_AUTH_DOMAIN: { required: true }
-      FIREBASE_PROJECT_ID: { required: true }
-      FIREBASE_STORAGE_BUCKET: { required: true }
-      FIREBASE_SENDER_ID: { required: true }
-      FIREBASE_APP_ID: { required: true }
-      FIREBASE_MEASUREMENT_ID: { required: true }
-      HASURA_URL: { required: true }
-      GTM_CONTAINER: { required: true }
+      env: { required: true }
+      firebase_api_key: { required: true }
+      firebase_auth_domain: { required: true }
+      firebase_project_id: { required: true }
+      firebase_storage_bucket: { required: true }
+      firebase_sender_id: { required: true }
+      firebase_app_id: { required: true }
+      firebase_measurement_id: { required: true }
+      hasura_url: { required: true }
+      gtm_container: { required: true }
 
 jobs:
   build:
     name: "Build"
     runs-on: ubuntu-latest
     env:
-      REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-      REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
-      REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-      REACT_APP_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
-      REACT_APP_FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
-      REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-      REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
-      REACT_APP_HASURA_URL: ${{ secrets.HASURA_URL }}
-      REACT_APP_GTM_CONTAINER: ${{ secrets.GTM_CONTAINER }}
+      REACT_APP_FIREBASE_API_KEY: ${{ inputs.firebase_api_key }}
+      REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ inputs.firebase_auth_domain }}
+      REACT_APP_FIREBASE_PROJECT_ID: ${{ inputs.firebase_project_id }}
+      REACT_APP_FIREBASE_STORAGE_BUCKET: ${{ inputs.firebase_storage_bucket }}
+      REACT_APP_FIREBASE_SENDER_ID: ${{ inputs.firebase_sender_id }}
+      REACT_APP_FIREBASE_APP_ID: ${{ inputs.firebase_app_id }}
+      REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ inputs.firebase_measurement_id }}
+      REACT_APP_HASURA_URL: ${{ inputs.hasura_url }}
+      REACT_APP_GTM_CONTAINER: ${{ inputs.gtm_container }}
       REACT_APP_ENV: ${{ inputs.env }}
     steps:
       - uses: actions/checkout@v2
