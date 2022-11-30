@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: ./.github/workflow/build
+      - uses: ./.github/workflow/build.yml
         with:
           env: ${{ inputs.env }}
         secrets:
