@@ -12,6 +12,22 @@ on:
         required: true
 
 jobs:
+  build:
+    uses: ./.github/workflows/build
+    environment: ${{ inputs.env }}
+    with:
+      env: ${{ inputs.env }}
+    secrets:
+      FIREBASE_API_KEY: "${{ secrets.FIREBASE_API_KEY }}"
+      FIREBASE_AUTH_DOMAIN: "${{ secrets.FIREBASE_AUTH_DOMAIN }}"
+      FIREBASE_PROJECT_ID: "${{ secrets.FIREBASE_PROJECT_ID }}"
+      FIREBASE_STORAGE_BUCKET: "${{ secrets.FIREBASE_STORAGE_BUCKET }}"
+      FIREBASE_SENDER_ID: "${{ secrets.FIREBASE_SENDER_ID }}"
+      FIREBASE_APP_ID: "${{ secrets.FIREBASE_APP_ID }}"
+      FIREBASE_MEASUREMENT_ID: "${{ secrets.FIREBASE_MEASUREMENT_ID }}"
+      HASURA_URL: "${{ secrets.HASURA_URL }}"
+      GTM_CONTAINER: "${{ secrets.GTM_CONTAINER }}"
+
   deploy:
     name: "Deploy"
     runs-on: ubuntu-latest
@@ -41,19 +57,10 @@ jobs:
         run: terraform init -backend-config=backend-${{ env.TF_VAR_env }}.hcl -reconfigure
         working-directory: terraform
 
-      - uses: ./.github/workflow/build
+      - uses: actions/download-artifact@master
         with:
-          env: ${{ inputs.env }}
-        secrets:
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-          FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
-          FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
-          HASURA_URL: ${{ secrets.HASURA_URL }}
-          GTM_CONTAINER: ${{ secrets.GTM_CONTAINER }}
+          name: build
+          path: terraform/build
 
       - name: Terraform Apply
         id: apply
