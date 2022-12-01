@@ -105,7 +105,7 @@ export const Kyc = () => {
     <CustomerAgreementForm/>,
     null
   ]);
-
+  console.log(data);
   const buttonsRender = () => {
     switch (true) {
       case isFirstStep:

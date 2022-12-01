@@ -10,7 +10,6 @@ interface Props {
   step: number
 }
 export const StepControl = ({ stepNumber,withEdit, stepTitle, activeStep, onEdit, step }: Props) => {
-  console.log(step);
   return (
     <div className={classNames(styles.wrapper, {
       [styles.active]: activeStep

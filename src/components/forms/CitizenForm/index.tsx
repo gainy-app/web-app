@@ -19,6 +19,8 @@ export const CitizenForm = ({ country, updateFields }: Props) => {
           onChange={(e) => updateFields({ country: e.target.value }) }
         >
           <option value={'us'}> us </option>
+          <option value={'by'}> by </option>
+          <option value={'ru'}> ru </option>
         </select>
       </label>
       <p>{formContent}</p>
