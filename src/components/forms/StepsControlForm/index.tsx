@@ -1,4 +1,5 @@
 import { StepControl } from 'components';
+import { FormWrapper } from '../FormWrapper';
 
 interface Props {
   currentStepIndex: number
@@ -13,7 +14,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   ];
 
   return (
-    <div>
+    <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>
       {steps.map((step, i) => {
         return (
           <StepControl
@@ -27,6 +28,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
           />
         );
       })}
-    </div>
+    </FormWrapper>
   );
 };

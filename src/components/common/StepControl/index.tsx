@@ -20,7 +20,6 @@ export const StepControl = ({ stepNumber,withEdit, stepTitle, activeStep, onEdit
             {stepNumber}
           </div>
         )}
-
         <span className={styles.stepTitle}>{stepTitle}</span>
       </div>
       {withEdit && (

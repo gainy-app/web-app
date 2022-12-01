@@ -49,6 +49,7 @@ label {
 
   .input {
     padding: 1.429vw;
+    background: transparent;
 
     @include macbookThirteen {
       padding: 20px;

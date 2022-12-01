@@ -3,19 +3,24 @@ import { config } from './config';
 import { Input } from '../../common/Input';
 
 interface tagsData {
-  tags: string[]
+  tag: string
 }
 
 type Props = tagsData & {
   updateFields: (fields: Partial<tagsData>) => void
 }
-
+const tags = [
+  'employment',
+  'test'
+];
 export const EmploymentForm = ({ updateFields }:Props) => {
   const { title,subtitle } = config;
   console.log(updateFields);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <Input/>
+      {tags.map(tag => {
+        return <div onClick={() => updateFields({ tag: tag })}>{tag}</div>;
+      })}
     </FormWrapper>
   );
 };

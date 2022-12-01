@@ -2,10 +2,9 @@ import { ReactElement } from 'react';
 import styles from './field.module.scss';
 
 interface Props {
-  children: ReactElement[]
-  id: string
+  children: ReactElement[] | ReactElement
 }
-export const Field = ({ children , id }:Props) => {
+export const Field = ({ children }:Props) => {
   return (
     <div className={styles.fieldWrapper}>
       {children}
