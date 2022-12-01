@@ -1,6 +1,9 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
+import { useFormContext } from '../../../contexts/FormContext';
+import { NumberFormatValues, PatternFormat } from 'react-number-format';
+import React from 'react';
 
 interface verifyData {
   verifyCode: string
@@ -10,12 +13,25 @@ type Props = verifyData & {
   updateFields: (fields: Partial<verifyData>) => void
 }
 
-export const VerifyPhoneNumberForm = ({ updateFields }:Props) => {
-  console.log(updateFields);
-  const { title,subtitle } = config;
+export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
+  const { data: { phone } } = useFormContext();
+  const { title,subtitle } = config(phone);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <Input/>
+      <Input>
+        <PatternFormat
+          placeholder={'* * *  * * *'}
+          valueIsNumericString
+          format="# # #  # # #"
+          mask="*"
+          name={'verifyCode'}
+          onValueChange={(values: NumberFormatValues) => {
+            console.log(values);
+            updateFields({ verifyCode: values.value });
+          }}
+          value={verifyCode}
+        />
+      </Input>
     </FormWrapper>
   );
 };

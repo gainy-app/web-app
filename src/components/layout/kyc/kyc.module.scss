@@ -10,4 +10,16 @@
   margin: 0 auto;
   padding-top: 120px;
   width: 440px;
+
+  @include iPhone {
+    width: 350px;
+  }
+
+  @include phone {
+    width: 300px;
+  }
+
+  @media (min-height: 720px) and (min-width: 1400px) {
+    padding-top: 0;
+  }
 }

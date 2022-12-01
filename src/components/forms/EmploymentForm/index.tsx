@@ -1,6 +1,5 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
-import { Input } from '../../common/Input';
 
 interface tagsData {
   tag: string

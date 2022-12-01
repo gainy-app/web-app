@@ -5,7 +5,7 @@ interface Props {
   label: string
 }
 
-export const Checkbox = ({ id,label,onChange }: Props) => {
+export const Checkbox = ({ id,onChange }: Props) => {
   return (
     <div className={styles.switch}>
       <input

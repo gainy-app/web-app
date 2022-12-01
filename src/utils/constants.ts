@@ -11,7 +11,8 @@ export const imageTypes = {
   apple: 'apple',
   google: 'google',
   logoWhite: 'logoWhite',
-  divider: 'divider'
+  divider: 'divider',
+  arrow: 'arrow'
 };
 
 export const phoneMasks = {

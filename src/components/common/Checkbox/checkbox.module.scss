@@ -10,7 +10,7 @@
 
   .slider {
     background-color: #e7eaee;
-    bottom: 0;
+    bottom: 1px;
     cursor: pointer;
     left: 0;
     position: absolute;
@@ -20,13 +20,13 @@
 
     &::before {
       background-color: #fff;
-      bottom: 0;
+      bottom: 1px;
       content: "";
-      height: 32px;
-      left: 4px;
+      height: 29px;
+      left: 2px;
       position: absolute;
       transition: .4s;
-      width: 32px;
+      width: 29px;
     }
   }
 
@@ -35,7 +35,7 @@
   }
 
   input:checked + .slider::before {
-    transform: translateX(28px);
+    transform: translateX(19px);
   }
 }
 

@@ -30,6 +30,7 @@
         "object-curly-spacing": ["error", "always"],
         "react/display-name": "off",
         "@typescript-eslint/ban-ts-comment": "off",
-        "react/jsx-key": "off"
+        "react/jsx-key": "off",
+        "@typescript-eslint/no-explicit-any": "off"
     }
 }

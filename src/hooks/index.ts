@@ -13,7 +13,7 @@ export const usePage = () => {
     withFooter
   };
 };
-type IuseMultistepForm = ReactElement | null
+export type IuseMultistepForm = ReactElement | null
 
 export const useMultistepForm = (steps: IuseMultistepForm[]) => {
   const [currentStepIndex,setCurrentStepIndex] = useState(0);

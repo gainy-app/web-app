@@ -1,4 +1,3 @@
-import { FormWrapper } from '../FormWrapper';
 import styles from './privacy.module.scss';
 import { Button } from '../../common/Button';
 import { useFormContext } from '../../../contexts/FormContext';

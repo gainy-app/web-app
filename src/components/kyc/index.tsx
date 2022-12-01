@@ -1,22 +1,18 @@
-import { useMultistepForm } from '../../hooks';
 import {
   StepsControlForm, Button,
-  KycLayout, CitizenForm, CitizenshipForm, CustomerAgreementForm,
-  CompanyForm, PrivacyPolicyForm, EmailAddressForm, ResidentAddressForm,
-  VerifyPhoneNumberForm, PhoneNumberForm, EmploymentForm, LegalNameForm,
-  LetUsKnowForm, SocialSecurityForm, InvestmentProfileForm, SourceForm
+  KycLayout, Image
 } from 'components';
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './kyc.module.scss';
 import { useFormContext } from '../../contexts/FormContext';
-
+import { imageTypes } from '../../utils/constants';
 
 export const Kyc = () => {
 
   const { isFirstStep, isContinue, isLastPage, step, currentStepIndex, goToStep, isPrivacy,isControls,back,
-    next } = useFormContext();
+    next, data } = useFormContext();
 
-
+  console.log(currentStepIndex);
   const buttonsRender = () => {
     switch (true) {
       case isFirstStep:
@@ -27,16 +23,20 @@ export const Kyc = () => {
         return (
           <Button type={'button'} onClick={next}>{'Continue'}</Button>
         );
-      // case isPrivacy :
-      //   return (
-      //     <Button type={'button'} onClick={next}>{'I accept'}</Button>
-      //   );
       case isLastPage :
         return (
           <Button type={'button'} onClick={next}>{'Done ! Open my account'}</Button>
         );
       default: return (
-        <Button type={'button'} onClick={next}>{'Next'}</Button>
+        <Button
+          type={'button'}
+          onClick={next}
+          disabled={
+            (currentStepIndex === 4 && !data.email)
+            || (currentStepIndex === 5 && !data.phone)
+            || (currentStepIndex === 6 && data.verifyCode.length !== 6)
+          }
+        >{'Next'}</Button>
       );
     }
   };
@@ -50,7 +50,7 @@ export const Kyc = () => {
 
         <div className={styles.buttons}>
           {!isPrivacy && buttonsRender()}
-          {isControls && !isLastPage && !isPrivacy && <button type={'button'} style={{ marginLeft: '104px' }} onClick={back}>back</button>}
+          {isControls && !isLastPage && !isPrivacy && <div className={styles.arrow} onClick={back}><Image type={imageTypes.arrow}/></div> }
         </div>
       </form>
     </KycLayout>

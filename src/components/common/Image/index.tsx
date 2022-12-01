@@ -8,6 +8,15 @@ interface Props {
 
 export const Image = ({ type, className, onClick }: Props) => {
   switch (type) {
+    case imageTypes.arrow: {
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={onClick}>
+          <path d="M19 12H5" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 19L5 12L12 5" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      );
+    }
+
     case imageTypes.logo: {
       return (
         <svg onClick={onClick} width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>

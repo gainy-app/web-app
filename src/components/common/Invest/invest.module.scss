@@ -1,17 +1,12 @@
 @import "../../../styles/mixins";
 
 .title {
-  font-size: $fz-24;
   font-family: "SF Pro Display Heavy", sans-serif;
   line-height: 32px;
   font-weight: 700;
-  margin-bottom: $fz-24;
-
-  @include macbookThirteen {
-    font-size: 24px;
-    max-width: 440px;
-    margin-bottom: 24px;
-  }
+  font-size: 24px;
+  max-width: 440px;
+  margin-bottom: 24px;
 
   @include phone {
     font-size: 20px;
@@ -23,16 +18,10 @@
   font-family: "SF Pro Display Medium", sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: $fz-16;
-  line-height: $fz-24;
-  margin-bottom: 2.286vw;
-
-  @include macbookThirteen {
-    font-size: 16px;
-    max-width: 440px;
-    line-height: 24px;
-    margin-bottom: 32px;
-  }
+  font-size: 16px;
+  max-width: 440px;
+  line-height: 24px;
+  margin-bottom: 32px;
 }
 
 label {
@@ -48,22 +37,15 @@ label {
   }
 
   .input {
-    padding: 1.429vw;
+    padding: 20px;
     background: transparent;
-
-    @include macbookThirteen {
-      padding: 20px;
-    }
   }
 }
 
 .button {
-  padding: 1.143vw 4.857vw;
   transition: all .4s ease-in-out;
   opacity: 0;
   font-family: "SF Pro Display Medium", sans-serif;
-  font-size: 1.143vw;
-  line-height: 1.429vw;
 
   @include flex(row, center, center);
   text-decoration: none;
@@ -71,16 +53,11 @@ label {
   cursor: pointer;
   color: $white;
   background-color: $blue;
-  border-radius: 1.429vw;
   max-width: 400px;
-
-  @include macbookThirteen {
-    font-size: 16px;
-    line-height: 20px;
-    padding: 16px 68px;
-    border-radius: 20px;
-    max-width: 200px;
-  }
+  font-size: 16px;
+  line-height: 20px;
+  padding: 16px 68px;
+  border-radius: 20px;
 
   &:hover,
   &:active {

@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useMultistepForm } from '../hooks';
 import {
-  Button,
   CitizenForm,
   CitizenshipForm, CompanyForm, CustomerAgreementForm,
   EmailAddressForm, EmploymentForm, InvestmentProfileForm, LegalNameForm, LetUsKnowForm,
@@ -9,7 +8,6 @@ import {
   PrivacyPolicyForm, ResidentAddressForm, SocialSecurityForm, SourceForm,
   VerifyPhoneNumberForm
 } from '../components';
-import { User as FirebaseUser } from '@firebase/auth';
 interface formData {
   country: string
   citizenship: boolean
@@ -73,31 +71,20 @@ const INITIAL_DATA = {
   objectives: '',
   risk: '',
 };
-interface IFormContext {
-  step: string,
-  isFirstStep: boolean,
-  back: () => void,
-  next: () => void,
-  goToStep: () => void,
-  isLastPage: boolean,
-  isContinue: boolean,
-  isControls: boolean,
-  isPrivacy: boolean,
-  currentStepIndex: number,
-}
+// interface IFormContext {
+//   step: string,
+//   isFirstStep: boolean,
+//   back: () => void,
+//   next: () => void,
+//   goToStep: (index:number) => void,
+//   isLastPage: boolean,
+//   isContinue: boolean,
+//   isControls: boolean,
+//   isPrivacy: boolean,
+//   currentStepIndex: number,
+// }
 
-const FormContext = React.createContext<any>({
-  step: '',
-  isFirstStep: false,
-  back: () => {},
-  next: () => {},
-  goToStep: () => {},
-  isLastPage: false,
-  isContinue: false,
-  isControls: false,
-  isPrivacy: false,
-  currentStepIndex: 0,
-});
+const FormContext = React.createContext<any>({});
 
 export function useFormContext() {
   return useContext(FormContext);
@@ -154,7 +141,8 @@ export function FormProvider ({ children }: Props) {
     isControls,
     currentStepIndex,
     goToStep,
-    isPrivacy
+    isPrivacy,
+    data
   };
 
   return (
