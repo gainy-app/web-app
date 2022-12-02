@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.1",
     "@hookform/resolvers": "^2.9.10",
+    "@types/react-html-parser": "^2.0.2",
     "classnames": "^2.3.2",
     "firebase": "^9.14.0",
     "graphql": "^16.6.0",
