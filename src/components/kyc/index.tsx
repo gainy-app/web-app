@@ -48,7 +48,7 @@ export const Kyc = () => {
           : <StepsControlForm currentStepIndex={currentStepIndex} goToStep={goToStep}/>}
 
         <div className={styles.buttons}>
-          {!isPrivacy && buttonsRender()}
+          {!isPrivacy &&  buttonsRender()}
           {isControls && !isLastPage && !isPrivacy && <div className={styles.arrow} onClick={back}><Image type={imageTypes.arrow}/></div> }
         </div>
       </form>

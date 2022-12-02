@@ -17,7 +17,6 @@ export type IuseMultistepForm = ReactElement | null
 
 export const useMultistepForm = (steps: IuseMultistepForm[]) => {
   const [currentStepIndex,setCurrentStepIndex] = useState(0);
-
   const next = () => {
     setCurrentStepIndex(prev => {
       if(prev >= steps.length - 1) return prev;
@@ -42,7 +41,7 @@ export const useMultistepForm = (steps: IuseMultistepForm[]) => {
     currentStepIndex === 11
   );
   const isEditor = currentStepIndex !== 7 && currentStepIndex !== 11;
-  const isPrivacy = currentStepIndex === 2 || currentStepIndex === 17;
+  const isPrivacy = currentStepIndex === 2 || currentStepIndex === steps.length - 2;
 
   return {
     currentStepIndex,
@@ -55,6 +54,6 @@ export const useMultistepForm = (steps: IuseMultistepForm[]) => {
     isLastPage: currentStepIndex === steps.length - 1,
     isContinue,
     isControls: currentStepIndex >= 2 && isEditor,
-    isPrivacy
+    isPrivacy,
   };
 };

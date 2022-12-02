@@ -2,8 +2,7 @@ import styles from './privacy.module.scss';
 import { Button } from 'components';
 import { useFormContext } from 'contexts/FormContext';
 import { config } from './config';
-// @ts-ignore
-import ReactHtmlParser from 'react-html-parser';
+import parse from 'html-react-parser';
 
 export const PrivacyPolicyForm = () => {
   const { next } = useFormContext();
@@ -22,10 +21,10 @@ export const PrivacyPolicyForm = () => {
                   <p className={styles.mainItemTitle}>{i.subtitle}</p>
                 )}
                 {i.content && (
-                  <p className={styles.mainItemContent}>{ReactHtmlParser(i.content)}</p>
+                  <p className={styles.mainItemContent}>{parse(i.content)}</p>
                 )}
                 {i.subcontent && (
-                  <p className={styles.mainItemContent}>{ReactHtmlParser(i.subcontent)}</p>
+                  <p className={styles.mainItemContent}>{parse(i.subcontent)}</p>
                 )}
                 {i.ol && (
                   <ol className={styles.innerList}>
