@@ -2,6 +2,8 @@ import { signInWithPopup, User as FirebaseUser } from 'firebase/auth';
 import React, { useContext, useState, useEffect } from 'react';
 import { appleProvider, auth, googleProvider } from '../firebase';
 import { onAuthChange } from 'services/auth';
+import { useMutation } from '@apollo/client';
+import { CREATE_APP_LINK } from '../services/gql/queries';
 
 interface IAuthContext {
   currentUser: FirebaseUser | null,
@@ -29,7 +31,8 @@ interface Props {
 
 export function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(true);
+  const [applink] = useMutation(CREATE_APP_LINK);
 
   async function logout() {
     await auth.signOut();
@@ -44,12 +47,16 @@ export function AuthProvider({ children }: Props) {
   }
 
   async function signInWithApple () {
-    await signInWithPopup(auth, appleProvider);
+    try {
+      await signInWithPopup(auth, appleProvider);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(
-      (user) => onAuthChange(user, setCurrentUser, setLoading)
+      (user) => onAuthChange(user, setCurrentUser, setUserLoading, applink)
     );
 
     return unsubscribe;
@@ -59,7 +66,7 @@ export function AuthProvider({ children }: Props) {
     currentUser,
     logout,
     signInWithGoogle,
-    loading,
+    loading: userLoading,
     signInWithApple,
   };
 

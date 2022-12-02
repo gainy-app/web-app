@@ -7,7 +7,7 @@ import React, { FormEvent, useState } from 'react';
 import styles from './getApp.module.scss';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { useMutation } from '@apollo/client';
-import { SEND_APP_LINK } from 'services/gql/queries/appLink';
+import { SEND_APP_LINK } from 'services/gql/queries';
 
 export default function GetApp () {
   const [phoneState, setPhoneState] = useState<string>('');

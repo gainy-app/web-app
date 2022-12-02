@@ -1,14 +1,15 @@
 import { getAuth, User as FirebaseUser } from 'firebase/auth';
 
-type IonAuthChange = (user: FirebaseUser | null, setUser: (user:FirebaseUser | null) => void, setLoading: (erg: boolean) => void) => void
+type IonAuthChange = (user: FirebaseUser | null, setUser: (user:FirebaseUser | null) => void, setLoading: (erg: boolean) => void, appLink: any) => void
 
-export const onAuthChange: IonAuthChange = (user, setUser, setLoading) => {
+export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appLink) => {
   const auth = getAuth();
   setLoading(true);
 
   if(user) {
     setUser(user);
     setLoading(false);
+    // appLink()
     user.getIdToken()
       .then(token => auth.currentUser?.getIdTokenResult()
         .then(result => {
