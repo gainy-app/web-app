@@ -19,6 +19,18 @@
   }
 }
 
+@mixin largeTablet {
+  @media (max-width: $large-tablet) {
+    @content;
+  }
+}
+
+@mixin mediumTablet {
+  @media (max-width: $medium-tablet) {
+    @content;
+  }
+}
+
 @mixin tablet {
   @media (max-width: $small-tablet) {
     @content;

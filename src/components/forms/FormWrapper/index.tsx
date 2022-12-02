@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import styles from './formwrapper.module.scss';
 
 interface Props {
   title?: string
@@ -8,8 +9,8 @@ interface Props {
 export const FormWrapper = ({ title, subtitle, children }: Props) => {
   return (
     <>
-      <h2>{title}</h2>
-      <p>{subtitle}</p>
+      <h2 className={styles.title}>{title}</h2>
+      <p className={styles.subtitle}>{subtitle}</p>
       {children}
     </>
   );

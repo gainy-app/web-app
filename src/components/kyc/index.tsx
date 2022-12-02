@@ -12,7 +12,6 @@ export const Kyc = () => {
   const { isFirstStep, isContinue, isLastPage, step, currentStepIndex, goToStep, isPrivacy,isControls,back,
     next, data } = useFormContext();
 
-  console.log(currentStepIndex);
   const buttonsRender = () => {
     switch (true) {
       case isFirstStep:

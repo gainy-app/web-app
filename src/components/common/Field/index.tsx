@@ -1,8 +1,7 @@
-import { ReactElement } from 'react';
 import styles from './field.module.scss';
 
 interface Props {
-  children: ReactElement[] | ReactElement
+  children: any
 }
 export const Field = ({ children }:Props) => {
   return (

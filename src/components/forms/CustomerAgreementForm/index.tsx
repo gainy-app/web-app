@@ -1,9 +1,30 @@
-import { FormWrapper } from '../FormWrapper';
+import styles from '../PrivacyPolicyForm/privacy.module.scss';
+import { Button } from 'components';
+import { useFormContext } from 'contexts/FormContext';
 
 export const CustomerAgreementForm = () => {
+  const { next } = useFormContext();
   return (
-    <FormWrapper>
-      <p>Gainy Customer Agreement</p>
-    </FormWrapper>
+    <>
+      <div className={styles.privacyWrapper}>
+        <h1>Gainy Customer Agreement</h1>
+        <p>At Gainy Inc., we take privacy and security seriously. This Privacy Policy outlines how Gainy, Inc., a Delaware corporation with its mailing address 773 Vista Tulocay Ln, Unit 215, Napa, CA, 94559, USA company file number 5045873 and its affiliates (collectively, the “Company,” “Gainy,” “we,” “our,” or “us”) process the information we collect about you through our websites, mobile apps, and other online services (collectively, the “Services”) and when you otherwise interact with us, such as through our customer service channels.</p>
+        <h2>I. TYPES OF INFORMATION COLLECTED
+          AND HOW WE COLLECT THEM</h2>
+        <h3>Personal Information You Provide:
+
+          We may collect the following personal information you provide when you use our Services, like when you sign up for an account, request a transaction, enroll in a promotion or program, or otherwise engage or communicate with us:
+          ‍
+          1. Identity Data includes your full name, date of birth, gender and other data on government-issued identification documents.
+
+          2. Contact Data includes your email address.
+
+          3. Profile Data includes your job title, investment approach, investment amount and your interests, preferences, feedback, and survey responses.</h3>
+        <div className={styles.acceptBlock}>
+          <Button onClick={next}>I accept</Button>
+          <p>We use cookies to provide you with the best experience and show you relevant information. Learn more</p>
+        </div>
+      </div>
+    </>
   );
 };

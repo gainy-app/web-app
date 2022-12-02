@@ -122,13 +122,12 @@ export function FormProvider ({ children }: Props) {
     <SocialSecurityForm {...data} updateFields={updateFields}/>,
     null,
     <EmploymentForm {...data} updateFields={updateFields}/>,
-    <CompanyForm {...data} updateFields={updateFields}/>,
-    <SourceForm {...data} updateFields={updateFields}/>,
+    data.tag === 'employment' ? [<CompanyForm {...data} updateFields={updateFields}/>, <SourceForm {...data} updateFields={updateFields}/> ]: <SourceForm  {...data} updateFields={updateFields}/>,
     <LetUsKnowForm {...data} updateFields={updateFields}/>,
     <InvestmentProfileForm {...data} updateFields={updateFields}/>,
     <CustomerAgreementForm/>,
     null
-  ]);
+  ].flat());
 
 
   const value = {

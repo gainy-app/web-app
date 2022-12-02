@@ -2,6 +2,7 @@
 
 .buttons {
   @include flex(row,space-between,center);
+  margin-top: 40px;
 
   .arrow {
     padding: 16px;
