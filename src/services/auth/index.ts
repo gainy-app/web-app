@@ -15,7 +15,7 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appLink, 
   if(user) {
     setUser(user);
     setLoading(false);
-    // appLink()
+
     user.getIdToken()
       .then(token => auth.currentUser?.getIdTokenResult()
         .then(result => {

@@ -11,7 +11,7 @@ interface IAuthContext {
   signInWithGoogle: () => Promise<void>
   signInWithApple: () => Promise<void>
   loading: boolean,
-  profileId: any
+  appId: any
 }
 
 const AuthContext = React.createContext<IAuthContext>({
@@ -20,7 +20,7 @@ const AuthContext = React.createContext<IAuthContext>({
   signInWithGoogle: async () => {},
   signInWithApple: async () => {},
   loading: true,
-  profileId: {}
+  appId: {}
 });
 
 export function useAuth() {
@@ -78,7 +78,7 @@ export function AuthProvider({ children }: Props) {
     signInWithGoogle,
     loading: userLoading,
     signInWithApple,
-    profileId: data
+    appId:data
   };
 
   return (

@@ -5,12 +5,17 @@ import {
 import React from 'react';
 import styles from './kyc.module.scss';
 import { useFormContext } from '../../contexts/FormContext';
-import { imageTypes } from '../../utils/constants';
+import { imageTypes, regExps } from '../../utils/constants';
 
 export const Kyc = () => {
 
-  const { isFirstStep, isContinue, isLastPage, step, currentStepIndex, goToStep, isPrivacy,isControls,back,
-    next, data } = useFormContext();
+  const {
+    isFirstStep, isContinue, isLastPage,
+    step, currentStepIndex, goToStep,
+    isPrivacy,isControls,back,
+    next, data, verifyCode,
+    appId
+  } = useFormContext();
 
   const buttonsRender = () => {
     switch (true) {
@@ -20,7 +25,9 @@ export const Kyc = () => {
         );
       case isContinue :
         return (
-          <Button type={'button'} onClick={next}>{'Continue'}</Button>
+          <Button type={'button'} onClick={next}>
+            {'Continue'}
+          </Button>
         );
       case isLastPage :
         return (
@@ -29,9 +36,26 @@ export const Kyc = () => {
       default: return (
         <Button
           type={'button'}
-          onClick={next}
+          onClick={() => {
+            if(currentStepIndex === 5) {
+              verifyCode.verifyCode({
+                variables: {
+                  profile_id:  appId?.app_profiles[0].id,
+                  channel: 'SMS',
+                  address: +1 + String(data.phone)
+                }
+              });
+              if(verifyCode.data) {
+                next();
+              }
+            }
+            if(currentStepIndex !== 5) {
+              next();
+            }
+
+          }}
           disabled={
-            (currentStepIndex === 4 && !data.email)
+            (currentStepIndex === 4 && !regExps.email.test(data.email_address?.placeholder))
             || (currentStepIndex === 5 && !data.phone)
             || (currentStepIndex === 6 && data.verifyCode.length !== 6)
           }
