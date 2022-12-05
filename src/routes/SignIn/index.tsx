@@ -4,15 +4,12 @@ import styles from './signin.module.scss';
 import { imageTypes, routes } from 'utils/constants';
 import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
-import { useMutation } from '@apollo/client';
-import { CREATE_APP_LINK, SEND_APP_LINK } from 'services/gql/queries';
 
 export default function SignIn () {
   const { title,form, description, subDescription } = config;
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { signInWithGoogle, currentUser, signInWithApple } = useAuth();
-  const [applink, { loading, error, data }] = useMutation(CREATE_APP_LINK);
 
   if(currentUser) {
     return <Navigate to={routes.home} replace state={{ path: pathname }}/>;
@@ -23,7 +20,6 @@ export default function SignIn () {
       .finally(() => {
         navigate(routes.getApp);
       });
-    console.log(currentUser);
   };
 
   return (

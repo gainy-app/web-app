@@ -24,3 +24,11 @@ export const CREATE_APP_LINK = gql`
     }
   }
 `;
+
+export const GET_APP_PROFILE = gql`
+   query GetAppProfile {
+     app_profiles {
+       id
+     }
+}
+  `;
