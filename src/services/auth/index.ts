@@ -1,14 +1,21 @@
 import { getAuth, User as FirebaseUser } from 'firebase/auth';
 
-type IonAuthChange = (user: FirebaseUser | null, setUser: (user:FirebaseUser | null) => void, setLoading: (erg: boolean) => void) => void
+type IonAuthChange = (user: FirebaseUser | null,
+  setUser: (user:FirebaseUser | null) => void,
+  setLoading: (erg: boolean) => void,
+  appLink: any,
+  id: any,
+  loading: any,
+  ) => void
 
-export const onAuthChange: IonAuthChange = (user, setUser, setLoading) => {
+export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appLink, id, loading) => {
   const auth = getAuth();
   setLoading(true);
 
   if(user) {
     setUser(user);
     setLoading(false);
+
     user.getIdToken()
       .then(token => auth.currentUser?.getIdTokenResult()
         .then(result => {
@@ -18,8 +25,18 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading) => {
           return refreshToken(user);
         }))
       .then(res => {
-        res &&
-        localStorage.setItem('token', res);
+        if(res) {
+          localStorage.setItem('token', res);
+          const [tempUser, ...rest] = user.displayName?.split(' ') || [];
+          if(!id && !loading) {
+            appLink({ variables: {
+              email: user.email,
+              firstName: tempUser,
+              lastName: String(rest),
+              userID: user.uid
+            } });
+          }
+        }
       })
       .catch(rej => console.log(rej));
   } else {

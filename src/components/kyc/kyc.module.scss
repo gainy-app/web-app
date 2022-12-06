@@ -12,5 +12,9 @@
 
   button {
     padding: 16px 83px;
+
+    @include phone {
+      padding: 16px 65px;
+    }
   }
 }

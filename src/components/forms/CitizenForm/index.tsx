@@ -2,56 +2,73 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Field } from '../../common/Field';
 import styles from './citizenform.module.scss';
-import { useState } from 'react';
+import {  useState } from 'react';
 import { Image } from 'components';
 import { imageTypes } from 'utils/constants';
+import { useOutBoardingClick } from 'hooks';
+import parse from 'html-react-parser';
+import { useFormContext } from '../../../contexts/FormContext';
 
 interface citizenData {
-  country: string
+  address_country: {
+    placeholder: string
+    flag: string
+  }
 }
 
 type Props = citizenData & {
   updateFields: (fields: Partial<citizenData>) => void
 }
 
-export const CitizenForm = ({ updateFields }: Props) => {
-  const { title,subtitle } = config;
+export const CitizenForm = ({ updateFields, address_country }: Props) => {
+  const { title,subtitle, description, notAvailable } = config;
+  const { countries } = useFormContext();
 
   const [openDropdown, setOpenDropdown] = useState(false);
-  const options = [
-    'us',
-    'ge',
-  ];
+
+  const { ref } = useOutBoardingClick(() => setOpenDropdown(false));
+
+  const toggleVisiblePopUp = () => {
+    setOpenDropdown(!openDropdown);
+  };
+
+  const listRender = countries?.countries?.map((country: { name: string, alpha2: string, flag_w40_url: string }, i: number) => {
+    return <li onClick={() => {
+      updateFields({ address_country: {
+        placeholder:  country?.alpha2,
+        flag: country?.flag_w40_url
+      } });
+    }}
+    className={`${styles.listItem} ${country?.alpha2 === address_country?.placeholder ? styles.activeCountry : ''}`}
+    key={i.toString()}
+    >
+      <img src={country.flag_w40_url} className={styles.flag} alt=""/>
+      <span>{country?.name}</span>
+    </li>;
+  });
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <label className={styles.select}  onClick={(e: any) => {
-        setOpenDropdown(true);
-        if(e.target.tagName === 'LI' || e.target.tagName === 'UL') {
-          setOpenDropdown(false);
-        }
-      }}>
+      <label
+        ref={ref}
+        onClick={toggleVisiblePopUp}
+      >
         <Field>
-          <div>
-            <div>country</div>
+          <div className={styles.countryWrapper}>
+            <img src={address_country?.flag} alt={address_country?.placeholder}/>
+            <div>{address_country?.placeholder}</div>
           </div>
           <Image type={imageTypes.arrowDropdown} className={openDropdown ? styles.rotate : ''}/>
-          {openDropdown && (
-            <ul className={styles.dropdownInner}>
-              {options.map(option => {
-                return <li onClick={() => {
-                  updateFields({ country: option });
-                  setOpenDropdown(false);
-                }
-                }>{option}</li>;
-              })}
-            </ul>
-          )}
+          <ul className={`${styles.dropdownInner} ${openDropdown ? styles.openDropdown : ''}`}>
+            {listRender}
+          </ul>
         </Field>
       </label>
       <div className={styles.content}>
-        <p>By pressing Continue, you agree to our <a href='https://www.gainy.app/terms-of-service' target={'_blank'} rel="noreferrer">Terms & Conditions</a>  and <a href="https://www.gainy.app/privacy-policy" target={'_blank'} rel="noreferrer">Privacy Policy.</a>  Your data will be securely collected by Drive Wealth</p>
+        {address_country?.placeholder === 'USA' || address_country?.placeholder === 'US'
+          ? <p>{parse(description)}</p>
+          : <p>{notAvailable}</p>}
       </div>
-
     </FormWrapper>
   );
 };

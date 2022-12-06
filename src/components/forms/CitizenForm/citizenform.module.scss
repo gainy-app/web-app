@@ -11,6 +11,32 @@
   margin: 0;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
+  z-index: -1;
+  max-height: 400px;
+  overflow-y: scroll;
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  opacity: 0;
+  transition: all .4s ease-in-out;
+
+  .listItem {
+    display: flex;
+    padding: 16px 0;
+
+    img {
+      margin-right: 16px;
+    }
+  }
+
+  .activeCountry {
+    border-bottom: 1px solid #0062ff;
+  }
+}
+
+.openDropdown {
+  opacity: 1;
   z-index: 2;
 }
 
@@ -28,6 +54,25 @@
   }
 }
 
+.countryWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+
+  img {
+    margin-right: 16px;
+  }
+}
+
 .rotate {
   transform: rotateZ(180deg);
+}
+
+.flag {
+  height: 20px;
+  width: 24px;
 }

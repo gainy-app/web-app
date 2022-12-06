@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { routes } from 'utils/constants';
-import { ReactElement, useState } from 'react';
-
+import { ReactElement, useEffect, useRef, useState } from 'react';
 
 export const usePage = () => {
   const { pathname } = useLocation();
@@ -17,6 +16,7 @@ export type IuseMultistepForm = ReactElement | null
 
 export const useMultistepForm = (steps: IuseMultistepForm[]) => {
   const [currentStepIndex,setCurrentStepIndex] = useState(0);
+
   const next = () => {
     setCurrentStepIndex(prev => {
       if(prev >= steps.length - 1) return prev;
@@ -56,4 +56,24 @@ export const useMultistepForm = (steps: IuseMultistepForm[]) => {
     isControls: currentStepIndex >= 2 && isEditor,
     isPrivacy,
   };
+};
+
+export const useOutBoardingClick = (cb:any) => {
+  const ref = useRef(null);
+
+  const handleOutsideClick = (e:any) => {
+    if(!e.path.includes(ref.current)) {
+      cb();
+    }
+  };
+
+  useEffect(() => {
+    document.body.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      document.body.removeEventListener('click', handleOutsideClick);
+    };
+  }, []);
+
+  return { ref };
 };

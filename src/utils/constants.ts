@@ -19,3 +19,7 @@ export const imageTypes = {
 export const phoneMasks = {
   us: 'us'
 };
+
+export const regExps = {
+  email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+};

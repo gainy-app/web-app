@@ -20,7 +20,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
         <PatternFormat
           placeholder={'Mobile number'}
           valueIsNumericString
-          format="(###) ###-####"
+          format="(##) ###-##-##"
           mask="_"
           name={'phone'}
           onValueChange={(values: NumberFormatValues) => {

@@ -13,9 +13,9 @@ export const PrivacyPolicyForm = () => {
         <h1>Gainy Inc. Privacy Policy</h1>
         <h2 className={styles.mainTitle}>{title}</h2>
         <ol className={styles.mainList}>
-          {lists.map(i => {
+          {lists.map((i, index) => {
             return (
-              <li className={styles.mainItem}>
+              <li className={styles.mainItem} key={index.toString()}>
                 {i.title}
                 {i.subtitle && (
                   <p className={styles.mainItemTitle}>{i.subtitle}</p>
@@ -28,8 +28,8 @@ export const PrivacyPolicyForm = () => {
                 )}
                 {i.ol && (
                   <ol className={styles.innerList}>
-                    {i.ol.map(j => {
-                      return <li>{j}</li> ;
+                    {i.ol.map((j, jIndex) => {
+                      return <li key={jIndex.toString()}>{j}</li> ;
                     })}
                   </ol>
                 )}
