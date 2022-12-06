@@ -1,21 +1,116 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
-import { Input } from '../../common/Input';
+import React, { useRef, useState } from 'react';
+import styles from './social.module.scss';
 
-interface socialSecurityData {
-  socialSecurityNumber: string
+const PIN_LENGTH = 9;
+
+type Props =  {
+  updateFields: (fields: any) => void
 }
 
-type Props = socialSecurityData & {
-  updateFields: (fields: Partial<socialSecurityData>) => void
-}
+const PIN_MIN_VALUE = 0;
+const PIN_MAX_VALUE = 9;
+const BACKSPACE_KEY = 'Backspace';
 
 export const SocialSecurityForm = ({ updateFields }:Props) => {
-  console.log(updateFields);
+
+  const [pin, setPin] = useState<Array<number | undefined>>(
+    new Array(PIN_LENGTH)
+  );
+  const [open, setOpen] = useState(true);
+  const inputRefs = useRef<HTMLInputElement[]>([]);
+
+  const onPinChanged = (pinEntry: number | undefined, index: number) => {
+    const newPin = [...pin];
+    newPin[index] = pinEntry;
+    setPin(newPin);
+    updateFields({ socialSecurityNumber: newPin.join('') });
+  };
+
+  const changePinFocus = (pinIndex: number) => {
+    const ref = inputRefs.current[pinIndex];
+    if (ref) {
+      ref.focus();
+    }
+  };
+
+  const removeValuesFromArray = (valuesArray: string[], value: string) => {
+
+    const valueIndex = valuesArray.findIndex(entry => entry === value);
+    if(valueIndex === -1) {
+      return;
+    }
+    valuesArray.splice(valueIndex, 1);
+  };
+
+  const onChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const previousValue = event.target.defaultValue;
+    const valuesArray = event.target.value.split('');
+    removeValuesFromArray(valuesArray, previousValue);
+    const value = valuesArray.pop();
+    if (!value) {
+      return;
+    }
+    const pinNumber = Number(value.trim());
+    if (isNaN(pinNumber) || value.length === 0) {
+      return;
+    }
+
+    if (pinNumber >= PIN_MIN_VALUE && pinNumber <= PIN_MAX_VALUE) {
+      onPinChanged(pinNumber, index);
+      if (index < PIN_LENGTH - 1) {
+        changePinFocus(index + 1);
+      }
+    }
+  };
+
+  const onKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const keyboardKeyCode = event.nativeEvent.code;
+    if (keyboardKeyCode !== BACKSPACE_KEY) {
+      return;
+    }
+
+    if (pin[index] === undefined) {
+      changePinFocus(index - 1);
+    } else {
+      onPinChanged(undefined, index);
+    }
+  };
+
   const { title,subtitle } = config;
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <Input/>
+      <label className={styles.pinInputLabel} htmlFor={'first'}>
+        <div className={styles.pinInputWrapper}>
+          <div className={styles.pinInput}>
+            {Array.from({ length: PIN_LENGTH }, (_, index) => (
+              <input
+                id={index === 0 ? 'first' : ''}
+                placeholder={'*'}
+                onKeyDown={(event) => onKeyDown(event, index)}
+                key={index}
+                type={open ? 'password' : 'text'}
+                ref={(el) => {
+                  if (el) {
+                    inputRefs.current[index] = el;
+                  }
+                }}
+                onChange={(event) => onChange(event, index)}
+                value={pin[index] || ''}
+              />
+            ))}
+          </div>
+          <span onClick={() => setOpen(!open)} className={styles.pinInputShow}>Show</span>
+        </div>
+      </label>
     </FormWrapper>
   );
 };

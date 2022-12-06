@@ -7,10 +7,11 @@ import {
   PhoneNumberForm,
   PrivacyPolicyForm, ResidentAddressForm, SocialSecurityForm, SourceForm,
   VerifyPhoneNumberForm
-} from '../components';
+} from 'components';
 import { useAuth } from './AuthContext';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_COUNTRIES, GET_FORM_CONFIG, VERIFICATION_SEND_CODE } from '../services/gql/queries';
+import { GET_COUNTRIES, GET_FORM_CONFIG, VERIFICATION_SEND_CODE } from 'services/gql/queries';
+
 interface formData {
   address_country: {
     placeholder: string
@@ -22,8 +23,8 @@ interface formData {
   }
   phone: string
   verifyCode: string
-  username: string
-  lastname: string
+  first_name: string
+  last_name: string
   birthday: string
   addressLine: string
   addressLine2: string
@@ -48,19 +49,6 @@ interface formData {
   risk: string
 }
 
-// interface IFormContext {
-//   step: string,
-//   isFirstStep: boolean,
-//   back: () => void,
-//   next: () => void,
-//   goToStep: (index:number) => void,
-//   isLastPage: boolean,
-//   isContinue: boolean,
-//   isControls: boolean,
-//   isPrivacy: boolean,
-//   currentStepIndex: number,
-// }
-
 const FormContext = React.createContext<any>({});
 
 export function useFormContext() {
@@ -73,7 +61,6 @@ interface Props {
 
 export function FormProvider ({ children }: Props) {
   const { appId } = useAuth();
-  console.log(appId);
 
   const { data: kycFormConfig } = useQuery(GET_FORM_CONFIG, {
     variables: {
@@ -95,8 +82,8 @@ export function FormProvider ({ children }: Props) {
     },
     phone: '',
     verifyCode: '',
-    username: '',
-    lastname: '',
+    first_name: '',
+    last_name: '',
     birthday: '',
     addressLine: '',
     addressLine2: '',
@@ -131,7 +118,9 @@ export function FormProvider ({ children }: Props) {
       },
       email_address: {
         placeholder: kycFormConfig?.kyc_get_form_config?.email_address?.placeholder
-      }
+      },
+      first_name: kycFormConfig?.kyc_get_form_config?.first_name?.placeholder,
+      last_name: kycFormConfig?.kyc_get_form_config?.last_name?.placeholder
     });
   }, [kycFormConfig]);
 
@@ -167,7 +156,6 @@ export function FormProvider ({ children }: Props) {
     null
   ].flat());
 
-
   const value = {
     step,
     isFirstStep,
@@ -181,7 +169,7 @@ export function FormProvider ({ children }: Props) {
     isPrivacy,
     data,
     countries,
-    verifyCode: {
+    verifyCodeRequest: {
       verifyCode,
       loading: verifyLoading,
       data: verifyNumber,

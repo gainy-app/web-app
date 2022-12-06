@@ -44,6 +44,17 @@ export const GET_COUNTRIES =  gql`
 }
 `;
 
+export const VERIFICATION_VERIFY_CODE = gql`
+mutation VerificationVerifyCode($verification_code_id: String!, $user_input: String!) {
+  verification_verify_code(
+    verification_code_id: $verification_code_id
+    user_input: $user_input
+  ){
+    ok
+  }
+}
+`;
+
 export const VERIFICATION_SEND_CODE = gql`
 mutation VerificationSendCode($profile_id: Int!, $channel: String!, $address: String!) {
   verification_send_code(

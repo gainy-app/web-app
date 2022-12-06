@@ -4,8 +4,8 @@ import {
 } from 'components';
 import React from 'react';
 import styles from './kyc.module.scss';
-import { useFormContext } from '../../contexts/FormContext';
-import { imageTypes, regExps } from '../../utils/constants';
+import { useFormContext } from 'contexts/FormContext';
+import { imageTypes, regExps } from 'utils/constants';
 
 export const Kyc = () => {
 
@@ -13,7 +13,7 @@ export const Kyc = () => {
     isFirstStep, isContinue, isLastPage,
     step, currentStepIndex, goToStep,
     isPrivacy,isControls,back,
-    next, data, verifyCode,
+    next, data, verifyCodeRequest,
     appId
   } = useFormContext();
 
@@ -38,16 +38,14 @@ export const Kyc = () => {
           type={'button'}
           onClick={() => {
             if(currentStepIndex === 5) {
-              verifyCode.verifyCode({
+              verifyCodeRequest.verifyCode({
                 variables: {
                   profile_id:  appId?.app_profiles[0].id,
                   channel: 'SMS',
-                  address: +1 + String(data.phone)
+                  address: `+375${String(data.phone)}`
                 }
               });
-              if(verifyCode.data) {
-                next();
-              }
+              next();
             }
             if(currentStepIndex !== 5) {
               next();
@@ -58,6 +56,13 @@ export const Kyc = () => {
             (currentStepIndex === 4 && !regExps.email.test(data.email_address?.placeholder))
             || (currentStepIndex === 5 && !data.phone)
             || (currentStepIndex === 6 && data.verifyCode.length !== 6)
+            || (currentStepIndex === 8 && !data.first_name)
+            || (currentStepIndex === 8 && !data.last_name)
+            || (currentStepIndex === 8 && !data.birthday)
+            || (currentStepIndex === 9 && !data.addressLine)
+            || (currentStepIndex === 9 && !data.city)
+            || (currentStepIndex === 9 && !data.state)
+            || (currentStepIndex === 9 && !data.zipcode)
           }
         >{'Next'}</Button>
       );

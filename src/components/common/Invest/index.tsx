@@ -38,7 +38,11 @@ export const Invest = React.memo(({
         />
       </Input>
       <div className={sum ? styles.hidden : ''}>
-        <Button onClick={() => setStart(true)} className={styles.button}>{buttonText}</Button>
+        <Button
+          onClick={() => setStart(true)}
+          className={styles.button}
+          disabled={!sum}
+        >{buttonText}</Button>
       </div>
     </KycLayout>
   );

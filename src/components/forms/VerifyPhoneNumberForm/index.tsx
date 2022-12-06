@@ -1,9 +1,11 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
-import { useFormContext } from '../../../contexts/FormContext';
+import { useFormContext } from 'contexts/FormContext';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useMutation } from '@apollo/client';
+import { VERIFICATION_VERIFY_CODE } from 'services/gql/queries';
 
 interface verifyData {
   verifyCode: string
@@ -14,8 +16,24 @@ type Props = verifyData & {
 }
 
 export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
-  const { data: { phone } } = useFormContext();
+  const { data: { phone }, verifyCodeRequest } = useFormContext();
   const { title,subtitle } = config(phone);
+
+
+  const [verificationCode] = useMutation(VERIFICATION_VERIFY_CODE);
+
+  useEffect(() => {
+    if(verifyCodeRequest?.data) {
+      verificationCode({
+        variables: {
+          verification_code_id: verifyCodeRequest?.data?.verification_send_code?.verification_code_id,
+          user_input: `+375${String(phone)}`
+        }
+      });
+    }
+
+  }, [verifyCodeRequest]);
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <Input>

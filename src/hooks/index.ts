@@ -2,7 +2,6 @@ import { useLocation } from 'react-router-dom';
 import { routes } from 'utils/constants';
 import { ReactElement, useEffect, useRef, useState } from 'react';
 
-
 export const usePage = () => {
   const { pathname } = useLocation();
   const withHeader = (!pathname.includes(routes.signIn) && !pathname.includes(routes.getApp));

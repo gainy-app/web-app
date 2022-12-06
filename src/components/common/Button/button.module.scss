@@ -50,4 +50,10 @@
       padding: 16px 89px;
     }
   }
+
+  &_continue {
+    @include phone {
+      padding: 16px 65px;
+    }
+  }
 }
