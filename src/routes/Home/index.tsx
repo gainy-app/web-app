@@ -8,12 +8,12 @@ export default function Home () {
   const { invest } = config;
 
   const [start, setStart] = useState<boolean>(false);
-
+  const investSumFromStorage = localStorage.getItem('invest');
 
   return (
     <Layout footerClassName={styles.footer}>
       {
-        start ?  <Kyc/> : <Invest invest={invest} setStart={setStart}/>
+        start || investSumFromStorage ?  <Kyc/> : <Invest invest={invest} setStart={setStart}/>
       }
     </Layout>
   );

@@ -3,6 +3,9 @@ import { config } from './config';
 import { FloatingInput } from '../../common/FloatingInput';
 import styles from './residentaddress.module.scss';
 import React from 'react';
+import { Button } from '../../common/Button';
+import { useFormContext } from '../../../contexts/FormContext';
+import { ButtonsGroup } from '../../common/ButtonsGroup';
 
 interface residentData {
   addressLine: string
@@ -18,6 +21,29 @@ type Props = residentData & {
 
 export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, city, state, zipcode }:Props) => {
   const { title,subtitle } = config;
+  const { next, back, sendKycFormRequest, appId , data } = useFormContext();
+
+  const onNextClick = () => {
+    sendKycFormRequest.sendKycForm({
+      variables: {
+        profile_id:  appId?.app_profiles[0].id,
+        country: data?.address_country?.placeholder,
+        citizenship: data.citizenship ? 'US' : 'any',
+        email_address: data.email_address.placeholder,
+        phone_number: data.phone,
+        last_name: data.last_name,
+        birthdate: data.birthday,
+        first_name: data.first_name,
+        address_street1: addressLine,
+        address_street2: addressLine2,
+        address_city: city,
+        address_postal_code: zipcode
+      },
+    });
+    next();
+  };
+
+  const disabled = !addressLine || !city || !state || !zipcode;
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.residentFormWrapper}>
@@ -69,6 +95,9 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
           value={zipcode}
         />
       </div>
+      <ButtonsGroup onBack={back}>
+        <Button type={'button'} disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
+      </ButtonsGroup>
     </FormWrapper>
   );
 };

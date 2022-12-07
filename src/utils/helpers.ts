@@ -18,3 +18,7 @@ export const parseGQLerror = (error?: ApolloError) => {
   // @ts-ignore
   return extention?.extensions?.internal?.response?.body?.message || '';
 };
+
+export const parseFormResponse = (data: any, field: string) => {
+  return data?.insert_app_kyc_form?.returning[0][field];
+};

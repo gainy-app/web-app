@@ -2,8 +2,8 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Field } from '../../common/Field';
 import styles from './citizenform.module.scss';
-import {  useState } from 'react';
-import { Image } from 'components';
+import React, {  useState } from 'react';
+import { Button, Image } from 'components';
 import { imageTypes } from 'utils/constants';
 import { useOutBoardingClick } from 'hooks';
 import parse from 'html-react-parser';
@@ -22,7 +22,7 @@ type Props = citizenData & {
 
 export const CitizenForm = ({ updateFields, address_country }: Props) => {
   const { title,subtitle, description, notAvailable } = config;
-  const { countries } = useFormContext();
+  const { countries, next, sendKycFormRequest, appId } = useFormContext();
 
   const [openDropdown, setOpenDropdown] = useState(false);
 
@@ -30,6 +30,19 @@ export const CitizenForm = ({ updateFields, address_country }: Props) => {
 
   const toggleVisiblePopUp = () => {
     setOpenDropdown(!openDropdown);
+  };
+  const witheList = address_country?.placeholder === 'USA' ||address_country?.placeholder === 'US';
+
+  const onNextClick = () => {
+    if(witheList) {
+      sendKycFormRequest.sendKycForm({
+        variables: {
+          profile_id:  appId?.app_profiles[0].id,
+          country: address_country.placeholder,
+        },
+      });
+      next();
+    }
   };
 
   const listRender = countries?.countries?.map((country: { name: string, alpha2: string, flag_w40_url: string }, i: number) => {
@@ -68,6 +81,7 @@ export const CitizenForm = ({ updateFields, address_country }: Props) => {
         {address_country?.placeholder === 'USA' || address_country?.placeholder === 'US'
           ? <p>{parse(description)}</p>
           : <p>{notAvailable}</p>}
+        <Button type={'button'} onClick={onNextClick}>{witheList ? 'Continue' : 'Notify me'}</Button>
       </div>
     </FormWrapper>
   );

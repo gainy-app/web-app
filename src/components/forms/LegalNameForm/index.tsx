@@ -4,6 +4,9 @@ import styles from './legalname.module.scss';
 import { FloatingInput } from '../../common/FloatingInput';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import React from 'react';
+import { Button } from '../../common/Button';
+import { useFormContext } from '../../../contexts/FormContext';
+import { ButtonsGroup } from '../../common/ButtonsGroup';
 
 interface userData {
   first_name: string
@@ -17,6 +20,23 @@ type Props = userData & {
 
 export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:Props) => {
   const { title,subtitle } = config;
+  const { next ,back, sendKycFormRequest, appId, data } = useFormContext();
+  const disable = !first_name || !first_name || birthday.length === 9;
+  const onNextClick = () => {
+    sendKycFormRequest.sendKycForm({
+      variables: {
+        profile_id:  appId?.app_profiles[0].id,
+        country: data?.address_country?.placeholder,
+        citizenship: data.citizenship ? 'US' : 'any',
+        email_address: data.email_address.placeholder,
+        phone_number: data.phone,
+        last_name: last_name,
+        birthdate: birthday,
+        first_name: first_name
+      },
+    });
+    next();
+  };
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.inputFormWrapper}>
@@ -54,9 +74,10 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
             value={birthday}
           />
         </FloatingInput>
-
-
       </div>
+      <ButtonsGroup onBack={back}>
+        <Button disabled={disable} type={'button'} onClick={onNextClick}>{'Next'}</Button>
+      </ButtonsGroup>
     </FormWrapper>
   );
 };

@@ -4,6 +4,8 @@ import { Input } from '../../common/Input';
 import { useFormContext } from 'contexts/FormContext';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import React from 'react';
+import { Button } from '../../common/Button';
+import { ButtonsGroup } from '../../common/ButtonsGroup';
 
 interface verifyData {
   verifyCode: string
@@ -14,7 +16,7 @@ type Props = verifyData & {
 }
 
 export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
-  const { data: { phone } } = useFormContext();
+  const { data: { phone } , verificationCodeRequest, verifyCodeRequest, back } = useFormContext();
   const { title,subtitle } = config(phone);
 
   return (
@@ -32,6 +34,16 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
           value={verifyCode}
         />
       </Input>
+      <ButtonsGroup onBack={back}>
+        <Button type={'button'} onClick={() => {
+          verificationCodeRequest.verificationCode({
+            variables: {
+              verification_code_id: verifyCodeRequest?.data?.verification_send_code?.verification_code_id,
+              user_input: verifyCode,
+            }
+          });
+        }}>{'Next'}</Button>
+      </ButtonsGroup>
     </FormWrapper>
   );
 };

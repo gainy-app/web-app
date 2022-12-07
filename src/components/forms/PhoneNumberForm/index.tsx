@@ -5,6 +5,8 @@ import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import React from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { parseGQLerror } from '../../../utils/helpers';
+import { Button } from '../../common/Button';
+import { ButtonsGroup } from '../../common/ButtonsGroup';
 
 interface phoneData {
   phone: string
@@ -16,7 +18,18 @@ type Props = phoneData & {
 
 export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
   const { title,subtitle } = config;
-  const { verifyCodeRequest } = useFormContext();
+  const { verifyCodeRequest, appId, back } = useFormContext();
+
+  const onNextClick = () => {
+    verifyCodeRequest.verifyCode({
+      variables: {
+        profile_id:  appId?.app_profiles[0].id,
+        channel: 'SMS',
+        address: `+1${String(phone)}`
+      }
+    });
+  };
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <Input style={{ padding: '20px 0' }}>
@@ -35,6 +48,12 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
       <p style={{ color: 'red' }}>
         {parseGQLerror(verifyCodeRequest?.error)}
       </p>
+      <ButtonsGroup onBack={back}>
+        <Button
+          type={'button'}
+          disabled={phone.length <= 9}
+          onClick={onNextClick}>{'Next'}</Button>
+      </ButtonsGroup>
 
     </FormWrapper>
   );

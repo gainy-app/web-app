@@ -2,6 +2,9 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import React, { useRef, useState } from 'react';
 import styles from './social.module.scss';
+import { Button } from '../../common/Button';
+import { useFormContext } from '../../../contexts/FormContext';
+import { ButtonsGroup } from '../../common/ButtonsGroup';
 
 const PIN_LENGTH = 9;
 
@@ -14,6 +17,7 @@ const PIN_MAX_VALUE = 9;
 const BACKSPACE_KEY = 'Backspace';
 
 export const SocialSecurityForm = ({ updateFields }:Props) => {
+  const { next, back } = useFormContext();
 
   const [pin, setPin] = useState<Array<number | undefined>>(
     new Array(PIN_LENGTH)
@@ -111,6 +115,9 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
           <span onClick={() => setOpen(!open)} className={styles.pinInputShow}>Show</span>
         </div>
       </label>
+      <ButtonsGroup onBack={back}>
+        <Button type={'button'} onClick={next}>{'Next'}</Button>
+      </ButtonsGroup>
     </FormWrapper>
   );
 };
