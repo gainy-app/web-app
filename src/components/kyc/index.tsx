@@ -2,7 +2,7 @@ import {
   StepsControlForm, Button,
   KycLayout, Image
 } from 'components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './kyc.module.scss';
 import { useFormContext } from 'contexts/FormContext';
 import { imageTypes, regExps } from 'utils/constants';
@@ -14,8 +14,35 @@ export const Kyc = () => {
     step, currentStepIndex, goToStep,
     isPrivacy,isControls,back,
     next, data, verifyCodeRequest,
-    appId
+    appId, verificationCodeRequest,
+    sendKycFormRequest
   } = useFormContext();
+
+  useEffect(() => {
+    if(verifyCodeRequest.data) {
+      next();
+    }
+  }, [verifyCodeRequest.data]);
+
+  useEffect(() => {
+    if(verificationCodeRequest.data) {
+      next();
+    }
+  }, [verificationCodeRequest.data]);
+
+  console.log(currentStepIndex);
+  console.log(data);
+
+  const sendData = () => {
+    sendKycFormRequest.sendKycForm({
+      variables: {
+        profile_id:  appId?.app_profiles[0].id,
+        email_address: data?.email_address?.placeholder,
+        country: data?.address_country?.placeholder
+      },
+    });
+    localStorage.setItem('formData', JSON.stringify(data));
+  };
 
   const buttonsRender = () => {
     switch (true) {
@@ -25,7 +52,10 @@ export const Kyc = () => {
         );
       case isContinue :
         return (
-          <Button type={'button'} onClick={next}>
+          <Button type={'button'} onClick={() => {
+            sendData();
+            next();
+          }}>
             {'Continue'}
           </Button>
         );
@@ -37,24 +67,32 @@ export const Kyc = () => {
         <Button
           type={'button'}
           onClick={() => {
-            if(currentStepIndex === 5) {
+            if(currentStepIndex === 5 && data.phone.length <= 10) {
               verifyCodeRequest.verifyCode({
                 variables: {
                   profile_id:  appId?.app_profiles[0].id,
                   channel: 'SMS',
-                  address: `+375${String(data.phone)}`
+                  address: `+1${String(data.phone)}`
                 }
               });
-              next();
             }
-            if(currentStepIndex !== 5) {
+            if(currentStepIndex === 6) {
+              verificationCodeRequest.verificationCode({
+                variables: {
+                  verification_code_id: verifyCodeRequest?.data?.verification_send_code?.verification_code_id,
+                  user_input: data?.verifyCode,
+                }
+              });
+            }
+            sendData();
+            if(currentStepIndex !== 5 && currentStepIndex !== 6) {
               next();
             }
 
           }}
           disabled={
             (currentStepIndex === 4 && !regExps.email.test(data.email_address?.placeholder))
-            || (currentStepIndex === 5 && !data.phone)
+            || (currentStepIndex === 5 && data.phone.length <= 9)
             || (currentStepIndex === 6 && data.verifyCode.length !== 6)
             || (currentStepIndex === 8 && !data.first_name)
             || (currentStepIndex === 8 && !data.last_name)

@@ -10,7 +10,13 @@ import {
 } from 'components';
 import { useAuth } from './AuthContext';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_COUNTRIES, GET_FORM_CONFIG, VERIFICATION_SEND_CODE } from 'services/gql/queries';
+import {
+  GET_COUNTRIES,
+  GET_FORM_CONFIG,
+  SEND_KYC_FORM,
+  VERIFICATION_SEND_CODE,
+  VERIFICATION_VERIFY_CODE
+} from 'services/gql/queries';
 
 interface formData {
   address_country: {
@@ -69,7 +75,15 @@ export function FormProvider ({ children }: Props) {
   });
   const { data: countries } = useQuery(GET_COUNTRIES);
 
-  const [verifyCode, { loading: verifyLoading, data:verifyNumber, error: verifyError }] = useMutation(VERIFICATION_SEND_CODE);
+  const [verifyCode
+    , { loading: verifyLoading, data:verifyNumber, error: verifyError }
+  ] = useMutation(VERIFICATION_SEND_CODE);
+
+  const [verificationCode,
+    { loading: verificationCodeLoading,error: verificationCodeError,data: verificationCodeData }
+  ] = useMutation(VERIFICATION_VERIFY_CODE);
+
+  const [sendKycForm, { loading: sendKycFormLoading,data: sendKycFormData,error: sendKycFormError }] = useMutation(SEND_KYC_FORM);
 
   const INITIAL_DATA = {
     address_country: {
@@ -174,6 +188,18 @@ export function FormProvider ({ children }: Props) {
       loading: verifyLoading,
       data: verifyNumber,
       error: verifyError
+    },
+    verificationCodeRequest: {
+      verificationCode,
+      loading: verificationCodeLoading,
+      data: verificationCodeData,
+      error: verificationCodeError
+    },
+    sendKycFormRequest: {
+      sendKycForm,
+      loading: sendKycFormLoading,
+      data: sendKycFormData,
+      error: sendKycFormError
     },
     appId
   };
