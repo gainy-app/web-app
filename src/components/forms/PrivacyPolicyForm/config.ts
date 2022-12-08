@@ -1,7 +1,7 @@
 export const config = {
   title: 'At Gainy Inc., we take privacy and security seriously. This Privacy Policy outlines how Gainy, Inc., a Delaware corporation with its mailing address 75 Broadway, Suite 202 San Francisco, California 94111,  company file number 5045873 and its affiliates (collectively, the “Company,” “Gainy,” “we,” “our,” or “us”) process the information we collect about you through our websites, mobile apps, and other online services (collectively, the “Services”) and when you otherwise interact with us, such as through our customer service channels.',
   buttonText: 'I accept',
-  cookie: 'We use cookies to provide you with the best experience and show you relevant information. Learn more',
+  cookie: 'We use cookies to provide you with the best experience and show you relevant information. <a href="https://www.gainy.app/legal-hub" target="_blank" rel="noreferrer" >Learn more</a>',
   lists: [
     {
       title: 'TYPES OF INFORMATION COLLECTED AND HOW WE COLLECT THEM',

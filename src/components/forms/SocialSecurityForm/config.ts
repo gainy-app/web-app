@@ -1,4 +1,4 @@
 export const config = {
   title: 'Social security number',
-  subtitle: 'By law, we need your legal address to verify you and open your investment account.',
+  subtitle: 'Gainy is required by law to collect this information. Please be sure to enter your SSN correctly or your account cannot be opened.'
 };

@@ -9,8 +9,14 @@ import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 
 interface userData {
-  first_name: string
-  last_name: string
+  first_name: {
+    placeholder?: string
+    prevValue?: string
+  }
+  last_name: {
+    placeholder?: string
+    prevValue?: string
+  }
   birthday: string
 }
 
@@ -20,21 +26,11 @@ type Props = userData & {
 
 export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:Props) => {
   const { title,subtitle } = config;
-  const { next ,back, sendKycFormRequest, appId, data } = useFormContext();
-  const disable = !first_name || !first_name || birthday.length === 9;
+  const { next ,back, onSendData } = useFormContext();
+
+  const disable = !first_name.prevValue || !first_name.prevValue || birthday?.length !== 8;
   const onNextClick = () => {
-    sendKycFormRequest.sendKycForm({
-      variables: {
-        profile_id:  appId?.app_profiles[0].id,
-        country: data?.address_country?.placeholder,
-        citizenship: data.citizenship ? 'US' : 'any',
-        email_address: data.email_address.placeholder,
-        phone_number: data.phone,
-        last_name: last_name,
-        birthdate: birthday,
-        first_name: first_name
-      },
-    });
+    onSendData();
     next();
   };
   return (
@@ -45,18 +41,30 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
           placeholder={' '}
           label={'Legal first name'}
           onChange={(e) => {
-            updateFields({ first_name: e.target.value });
+            updateFields(
+              {
+                first_name : {
+                  placeholder: e.target.value,
+                  prevValue: e.target.value
+                }
+              }
+            );
           }}
-          value={first_name}
+          value={first_name?.prevValue ? first_name.prevValue : first_name.placeholder}
         />
         <FloatingInput
           id={'last_name'}
           placeholder={' '}
           label={'Legal last name'}
           onChange={(e) => {
-            updateFields({ last_name: e.target.value });
+            updateFields({
+              last_name: {
+                placeholder: e.target.value,
+                prevValue: e.target.value
+              }
+            });
           }}
-          value={last_name}
+          value={last_name?.prevValue ? last_name.prevValue : last_name.placeholder}
         />
         <FloatingInput
           id={'birthday'}
@@ -65,7 +73,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
         >
           <PatternFormat
             valueIsNumericString
-            format="##.##.####"
+            format="####.##.##"
             placeholder={'Birthday'}
             name={'Birthday'}
             onValueChange={(values: NumberFormatValues) => {

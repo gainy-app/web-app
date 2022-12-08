@@ -3,7 +3,7 @@ import styles from './formwrapper.module.scss';
 
 interface Props {
   title?: string
-  subtitle?: string
+  subtitle?: any
   children: ReactNode
 }
 export const FormWrapper = ({ title, subtitle, children }: Props) => {

@@ -39,7 +39,7 @@ export const PrivacyPolicyForm = () => {
         </ol>
         <div className={styles.acceptBlock}>
           <Button onClick={next}>{buttonText}</Button>
-          <p className={styles.paragraph}>{cookie}</p>
+          <p className={styles.paragraph}>{parse(cookie)}</p>
         </div>
       </div>
     </>

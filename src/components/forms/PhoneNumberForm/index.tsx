@@ -51,7 +51,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
       <ButtonsGroup onBack={back}>
         <Button
           type={'button'}
-          disabled={phone.length <= 9}
+          disabled={phone?.length <= 9}
           onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
 

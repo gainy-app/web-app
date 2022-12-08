@@ -44,8 +44,6 @@ label {
 
 .button {
   transition: all .4s ease-in-out;
-  opacity: 0;
-  display: none;
   font-family: "SF Pro Display Medium", sans-serif;
 
   @include flex(row, center, center);
@@ -53,17 +51,14 @@ label {
   border: none;
   cursor: pointer;
   color: $white;
+  max-width: 200px;
   background-color: $blue;
-  max-width: 400px;
   font-size: 16px;
   line-height: 20px;
   padding: 16px 68px;
   border-radius: 20px;
-}
 
-.hidden {
-  button {
-    opacity: 1;
-    display: block;
+  &:disabled {
+    background-color: $gray-light;
   }
 }

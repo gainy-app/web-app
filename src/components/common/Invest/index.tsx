@@ -37,16 +37,14 @@ export const Invest = React.memo(({
           onValueChange={onSumChange}
         />
       </Input>
-      <div className={sum ? styles.hidden : ''}>
-        <Button
-          onClick={() => {
-            setStart(true);
-            localStorage.setItem('invest', String(sum));
-          }}
-          className={styles.button}
-          disabled={!sum}
-        >{buttonText}</Button>
-      </div>
+      <Button
+        onClick={() => {
+          setStart(true);
+          localStorage.setItem('invest', String(sum));
+        }}
+        className={styles.button}
+        disabled={!sum}
+      >{buttonText}</Button>
     </KycLayout>
   );
 });

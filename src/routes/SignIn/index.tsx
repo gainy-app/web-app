@@ -18,7 +18,7 @@ export default function SignIn () {
   const onSignIn = (cb:() => Promise<void>) => {
     cb()
       .finally(() => {
-        navigate(routes.getApp);
+        navigate(routes.home);
       });
   };
 

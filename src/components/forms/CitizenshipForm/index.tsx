@@ -9,7 +9,11 @@ import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 
 interface citizenData {
-  citizenship: boolean
+  citizenship: {
+    placeholder?: string
+    prevValue?: string
+    choices?: any
+  }
 }
 
 type Props = citizenData & {
@@ -18,17 +22,11 @@ type Props = citizenData & {
 
 export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   const { title,subtitle } = config;
-  const {  next, back , sendKycFormRequest, appId, data } = useFormContext();
-  const disable = !citizenship;
+  const {  next, back , onSendData } = useFormContext();
+  const disable = citizenship.prevValue !== 'USA';
 
   const onNextClick = () => {
-    sendKycFormRequest.sendKycForm({
-      variables: {
-        profile_id:  appId?.app_profiles[0].id,
-        country: data?.address_country?.placeholder,
-        citizenship: citizenship ? 'US' : 'any'
-      },
-    });
+    onSendData();
     next();
   };
 
@@ -38,13 +36,28 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
         <label htmlFor={'test'}>
           <Field>
             <p>U.S. citizen</p>
-            <Checkbox value={citizenship} label={'US citizen'} id={'test'} onChange={(e) => updateFields({ citizenship: e.target.checked })}/>
+            <Checkbox
+              value={citizenship.prevValue ?  citizenship.prevValue === 'USA' : citizenship.placeholder === 'USA'}
+              label={'US citizen'}
+              id={'test'}
+              onChange={(e) => {
+                updateFields({
+                  citizenship: {
+                    prevValue : e.target.checked ? 'USA' : undefined
+                  }
+                });
+              }}
+            />
           </Field>
         </label>
         <label htmlFor={'test1'}>
           <Field>
             <p>Not a U.S. citizen, but live here legaly</p>
-            <Checkbox value={false} label={'Not a U.S. citizen, but live here legaly'} id={'test1'} onChange={(e) => updateFields({ citizenship: e.target.checked })}/>
+            <Checkbox
+              value={false}
+              label={'Not a U.S. citizen, but live here legaly'}
+              id={'test1'}
+            />
           </Field>
         </label>
 

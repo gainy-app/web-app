@@ -17,12 +17,19 @@ const PIN_MAX_VALUE = 9;
 const BACKSPACE_KEY = 'Backspace';
 
 export const SocialSecurityForm = ({ updateFields }:Props) => {
-  const { next, back } = useFormContext();
+  const { next, back, onSendData, data } = useFormContext();
+
+  const onNextClick = () => {
+    onSendData();
+    next();
+  };
 
   const [pin, setPin] = useState<Array<number | undefined>>(
-    new Array(PIN_LENGTH)
+    data.socialSecurityNumber ? data.socialSecurityNumber.split('') : new Array(PIN_LENGTH)
   );
+
   const [open, setOpen] = useState(true);
+
   const inputRefs = useRef<HTMLInputElement[]>([]);
 
   const onPinChanged = (pinEntry: number | undefined, index: number) => {
@@ -112,11 +119,11 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
               />
             ))}
           </div>
-          <span onClick={() => setOpen(!open)} className={styles.pinInputShow}>Show</span>
+          <span onClick={() => setOpen(!open)} className={styles.pinInputShow}>{open ? 'Show': 'Hide'}</span>
         </div>
       </label>
       <ButtonsGroup onBack={back}>
-        <Button type={'button'} onClick={next}>{'Next'}</Button>
+        <Button type={'button'} onClick={onNextClick} disabled={pin.filter(Boolean).length < 9}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>
   );

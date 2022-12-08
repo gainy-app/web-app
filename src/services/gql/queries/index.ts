@@ -67,6 +67,57 @@ mutation VerificationSendCode($profile_id: Int!, $channel: String!, $address: St
 }
 `;
 
+export const GET_KYC_FORM = gql`
+query GetKycForm($profile_id: Int!) {
+  app_kyc_form_by_pk(profile_id: $profile_id) {
+    address_city
+    address_country
+    address_postal_code
+    address_province
+    address_street1
+    address_street2
+    birthdate
+    citizenship
+    country
+    disclosures_drivewealth_customer_agreement
+    disclosures_drivewealth_data_sharing
+    disclosures_drivewealth_ira_agreement
+    disclosures_drivewealth_market_data_agreement
+    disclosures_drivewealth_privacy_policy
+    disclosures_drivewealth_terms_of_use
+    disclosures_extended_hours_agreement
+    disclosures_rule14b
+    disclosures_signed_by
+    email_address
+    employment_affiliated_with_a_broker
+    employment_company_name
+    employment_is_director_of_a_public_company
+    employment_position
+    employment_status
+    employment_type
+    first_name
+    gender
+    investor_profile_annual_income
+    investor_profile_experience
+    investor_profile_net_worth_liquid
+    investor_profile_net_worth_total
+    investor_profile_objectives
+    investor_profile_risk_tolerance
+    tax_treaty_with_us
+    tax_id_value
+    tax_id_type
+    profile_id
+    politically_exposed_names
+    phone_number
+    marital_status
+    last_name
+    language
+    is_us_tax_payer
+    irs_backup_withholdings_notified
+  }
+}
+`;
+
 export const SEND_KYC_FORM = gql`
 mutation UpsertKycForm (
   $address_city: String

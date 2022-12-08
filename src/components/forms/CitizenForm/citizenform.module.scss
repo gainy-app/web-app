@@ -52,6 +52,20 @@
     all: unset;
     color: $blue;
   }
+
+  button {
+    padding: 16px 83px;
+    margin-top: 40px;
+
+    @include phone {
+      padding: 16px 65px;
+    }
+  }
+
+  p {
+    margin: 0;
+    line-height: 20px;
+  }
 }
 
 .countryWrapper {

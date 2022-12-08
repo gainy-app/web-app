@@ -10,9 +10,11 @@ import parse from 'html-react-parser';
 import { useFormContext } from '../../../contexts/FormContext';
 
 interface citizenData {
-  address_country: {
+  country: {
     placeholder: string
     flag: string
+    prevValue?: string
+    choices?: any
   }
 }
 
@@ -20,9 +22,9 @@ type Props = citizenData & {
   updateFields: (fields: Partial<citizenData>) => void
 }
 
-export const CitizenForm = ({ updateFields, address_country }: Props) => {
+export const CitizenForm = ({ updateFields, country }: Props) => {
   const { title,subtitle, description, notAvailable } = config;
-  const { countries, next, sendKycFormRequest, appId } = useFormContext();
+  const { flags, next, onSendData } = useFormContext();
 
   const [openDropdown, setOpenDropdown] = useState(false);
 
@@ -31,32 +33,34 @@ export const CitizenForm = ({ updateFields, address_country }: Props) => {
   const toggleVisiblePopUp = () => {
     setOpenDropdown(!openDropdown);
   };
-  const witheList = address_country?.placeholder === 'USA' ||address_country?.placeholder === 'US';
+
+  const witheList = country?.prevValue === 'USA' || country?.prevValue === 'US';
 
   const onNextClick = () => {
     if(witheList) {
-      sendKycFormRequest.sendKycForm({
-        variables: {
-          profile_id:  appId?.app_profiles[0].id,
-          country: address_country.placeholder,
-        },
-      });
+      onSendData();
       next();
     }
   };
 
-  const listRender = countries?.countries?.map((country: { name: string, alpha2: string, flag_w40_url: string }, i: number) => {
+  const GE = flags.countries.find((i:any) => i.alpha2 === 'DE');
+
+  const listRender = country?.choices?.map((item: { name: string, value: string }, i: number) => {
+    const selectedFlag = flags?.countries.find((flag: any) => flag.name === item.name)?.flag_w40_url;
     return <li onClick={() => {
-      updateFields({ address_country: {
-        placeholder:  country?.alpha2,
-        flag: country?.flag_w40_url
-      } });
+      updateFields({ country : { ...country,   placeholder: country.placeholder,
+        flag: selectedFlag,
+        prevValue: item.value }
+      });
     }}
-    className={`${styles.listItem} ${country?.alpha2 === address_country?.placeholder ? styles.activeCountry : ''}`}
+    className={`${styles.listItem}
+      ${item?.name === country?.prevValue ? styles.activeCountry : ''}
+     `}
     key={i.toString()}
+
     >
-      <img src={country.flag_w40_url} className={styles.flag} alt=""/>
-      <span>{country?.name}</span>
+      <img src={selectedFlag} className={styles.flag} alt=""/>
+      <span>{item?.name}</span>
     </li>;
   });
 
@@ -68,8 +72,8 @@ export const CitizenForm = ({ updateFields, address_country }: Props) => {
       >
         <Field>
           <div className={styles.countryWrapper}>
-            <img src={address_country?.flag} alt={address_country?.placeholder}/>
-            <div>{address_country?.placeholder}</div>
+            <img src={witheList ? country?.flag: GE.flag_w40_url} alt={country?.prevValue}/>
+            <div>{witheList ? country?.prevValue : GE.alpha3}</div>
           </div>
           <Image type={imageTypes.arrowDropdown} className={openDropdown ? styles.rotate : ''}/>
           <ul className={`${styles.dropdownInner} ${openDropdown ? styles.openDropdown : ''}`}>
@@ -78,9 +82,14 @@ export const CitizenForm = ({ updateFields, address_country }: Props) => {
         </Field>
       </label>
       <div className={styles.content}>
-        {address_country?.placeholder === 'USA' || address_country?.placeholder === 'US'
+        {witheList
           ? <p>{parse(description)}</p>
-          : <p>{notAvailable}</p>}
+          : (
+            <div>
+              <p>{notAvailable.title}</p>
+              <p>{notAvailable.subtitle}</p>
+            </div>
+          )}
         <Button type={'button'} onClick={onNextClick}>{witheList ? 'Continue' : 'Notify me'}</Button>
       </div>
     </FormWrapper>

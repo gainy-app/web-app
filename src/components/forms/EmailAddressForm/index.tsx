@@ -10,6 +10,7 @@ import { regExps } from '../../../utils/constants';
 interface emailData {
   email_address: {
     placeholder?: string
+    prevValue?: string
   }
 }
 
@@ -19,18 +20,11 @@ type Props = emailData & {
 
 export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
   const { title,subtitle } = config;
-  const {  next, back, sendKycFormRequest, appId, data } = useFormContext();
+  const {  next, back, data, onSendData } = useFormContext();
   const disabled = !regExps.email.test(data.email_address?.placeholder);
 
   const onNextClick = () => {
-    sendKycFormRequest.sendKycForm({
-      variables: {
-        profile_id:  appId?.app_profiles[0].id,
-        country: data?.address_country?.placeholder,
-        citizenship: data.citizenship ? 'US' : 'any',
-        email_address: email_address.placeholder,
-      },
-    });
+    onSendData();
     next();
   };
 
@@ -38,10 +32,11 @@ export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
     <FormWrapper title={title} subtitle={subtitle}>
       <Input
         placeholder={email_address?.placeholder}
-        value={email_address.placeholder}
+        value={email_address.prevValue ? email_address.prevValue : email_address.placeholder}
         onChange={
           (e) => updateFields({ email_address: {
-            placeholder: e.target.value
+            placeholder: e.target.value,
+            prevValue:  e.target.value
           } })
         }
       />
