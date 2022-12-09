@@ -1,13 +1,11 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
-import { Field } from '../../common/Field';
 import styles from './citizenform.module.scss';
 import React, {  useState } from 'react';
-import { Button, Image } from 'components';
-import { imageTypes } from 'utils/constants';
-import { useOutBoardingClick } from 'hooks';
+import { Button } from 'components';
 import parse from 'html-react-parser';
 import { useFormContext } from '../../../contexts/FormContext';
+import { Dropdown } from '../../common/Dropdown';
 
 interface citizenData {
   country: {
@@ -28,7 +26,6 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
   const [openDropdown, setOpenDropdown] = useState(false);
 
-  const { ref } = useOutBoardingClick(() => setOpenDropdown(false));
 
   const toggleVisiblePopUp = () => {
     setOpenDropdown(!openDropdown);
@@ -66,21 +63,17 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <label
-        ref={ref}
+      <Dropdown
+        openDropdown={openDropdown}
+        setOpenDropdown={setOpenDropdown}
         onClick={toggleVisiblePopUp}
+        list={listRender}
       >
-        <Field>
-          <div className={styles.countryWrapper}>
-            <img src={witheList ? country?.flag: GE.flag_w40_url} alt={country?.prevValue}/>
-            <div>{witheList ? country?.prevValue : GE.alpha3}</div>
-          </div>
-          <Image type={imageTypes.arrowDropdown} className={openDropdown ? styles.rotate : ''}/>
-          <ul className={`${styles.dropdownInner} ${openDropdown ? styles.openDropdown : ''}`}>
-            {listRender}
-          </ul>
-        </Field>
-      </label>
+        <div className={styles.countryWrapper}>
+          <img src={witheList ? country?.flag: GE.flag_w40_url} alt={country?.prevValue}/>
+          <div>{witheList ? country?.prevValue : GE.alpha3}</div>
+        </div>
+      </Dropdown>
       <div className={styles.content}>
         {witheList
           ? <p>{parse(description)}</p>

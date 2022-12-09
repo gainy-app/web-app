@@ -28,7 +28,10 @@ interface formData {
   }
   citizenship: {
     placeholder?: string
-    prevValue?: string
+    prevValue?: {
+      name?:string
+      value?:string
+    }
     choices?: any
   }
   email_address: {
@@ -110,7 +113,10 @@ export function FormProvider ({ children }: Props) {
     address_country: '',
     citizenship: {
       placeholder: '',
-      prevValue: '',
+      prevValue: {
+        name: '',
+        value: ''
+      },
       choices: []
     },
     country: {
@@ -169,7 +175,11 @@ export function FormProvider ({ children }: Props) {
       },
       citizenship: {
         placeholder: kycFormConfig?.kyc_get_form_config?.citizenship?.placeholder,
-        prevValue: form?.app_kyc_form_by_pk?.citizenship,
+        prevValue: {
+          name: kycFormConfig?.kyc_get_form_config?.citizenship?.choices.find((i: {name:string, value:string}) =>
+            i.value === form?.app_kyc_form_by_pk?.citizenship).name,
+          value: form?.app_kyc_form_by_pk?.citizenship
+        },
         choices:  kycFormConfig?.kyc_get_form_config?.citizenship?.choices
       },
       email_address: {
@@ -206,7 +216,7 @@ export function FormProvider ({ children }: Props) {
       variables: {
         profile_id:  appId?.app_profiles[0].id,
         country: data.country.prevValue,
-        citizenship: data.citizenship.prevValue,
+        citizenship: data.citizenship.prevValue?.value,
         email_address: data.email_address.prevValue,
         phone_number: data.phone,
         last_name: data.last_name.prevValue,
@@ -225,9 +235,7 @@ export function FormProvider ({ children }: Props) {
 
   const {
     step, isFirstStep, back,
-    next, isLastPage, isContinue,
-    isControls, currentStepIndex, goToStep
-    ,isPrivacy
+    next, isLastPage, currentStepIndex, goToStep
   } = useMultistepForm([
     null,
     <CitizenForm {...data} updateFields={updateFields}/>,
@@ -255,11 +263,8 @@ export function FormProvider ({ children }: Props) {
     back,
     next,
     isLastPage,
-    isContinue,
-    isControls,
     currentStepIndex,
     goToStep,
-    isPrivacy,
     data,
     flags: countries,
     countries: [],

@@ -32,10 +32,15 @@ interface Props {
 }
 
 export function AuthProvider({ children }: Props) {
+  const token = localStorage.getItem('token');
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [userLoading, setUserLoading] = useState(true);
+
   const [applink] = useMutation(CREATE_APP_LINK);
-  const { data, loading } = useQuery(GET_APP_PROFILE);
+
+  const { data, loading } = useQuery(GET_APP_PROFILE, {
+    skip: !token
+  });
 
   async function logout() {
     await auth.signOut();

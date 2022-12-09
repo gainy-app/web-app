@@ -34,14 +34,6 @@ export const useMultistepForm = (steps: IuseMultistepForm[]) => {
   const goToStep = (index: number) => {
     setCurrentStepIndex(index);
   };
-  const isContinue = (
-    currentStepIndex === 1 ||
-    currentStepIndex === 3 ||
-    currentStepIndex === 7 ||
-    currentStepIndex === 11
-  );
-  const isEditor = currentStepIndex !== 7 && currentStepIndex !== 11;
-  const isPrivacy = currentStepIndex === 2 || currentStepIndex === steps.length - 2;
 
   return {
     currentStepIndex,
@@ -52,9 +44,6 @@ export const useMultistepForm = (steps: IuseMultistepForm[]) => {
     steps,
     isFirstStep: currentStepIndex === 0,
     isLastPage: currentStepIndex === steps.length - 1,
-    isContinue,
-    isControls: currentStepIndex >= 2 && isEditor,
-    isPrivacy,
   };
 };
 

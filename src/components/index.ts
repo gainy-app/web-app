@@ -9,6 +9,7 @@ export { StepControl } from 'components/common/StepControl';
 export { StepsControlForm } from 'components/forms/StepsControlForm';
 export { KycLayout } from 'components/layout/kyc';
 export { Kyc } from 'components/kyc';
+export { Field } from 'components/common/Field';
 
 //forms
 export { CitizenForm } from 'components/forms/CitizenForm';

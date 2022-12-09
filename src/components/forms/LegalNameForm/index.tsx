@@ -2,11 +2,13 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import styles from './legalname.module.scss';
 import { FloatingInput } from '../../common/FloatingInput';
-import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../../common/Button';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
+import dayjs from 'dayjs';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 interface userData {
   first_name: {
@@ -27,12 +29,16 @@ type Props = userData & {
 export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:Props) => {
   const { title,subtitle } = config;
   const { next ,back, onSendData } = useFormContext();
+  const [value, onChange] = useState(dayjs(birthday).toDate() ? dayjs(birthday).toDate() : new Date());
+  const [onShowCalender, setOnShowCalender] = useState(false);
 
-  const disable = !first_name.prevValue || !first_name.prevValue || birthday?.length !== 8;
   const onNextClick = () => {
     onSendData();
     next();
   };
+  const isYoungster = dayjs().diff(dayjs(value), 'hour') < 157680;
+  const disable = !first_name.prevValue || !first_name.prevValue || isYoungster;
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.inputFormWrapper}>
@@ -66,23 +72,37 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
           }}
           value={last_name?.prevValue ? last_name.prevValue : last_name.placeholder}
         />
-        <FloatingInput
-          id={'birthday'}
-          label={'Birthday'}
-          value={birthday}
-        >
-          <PatternFormat
-            valueIsNumericString
-            format="####.##.##"
-            placeholder={'Birthday'}
-            name={'Birthday'}
-            onValueChange={(values: NumberFormatValues) => {
-              updateFields({ birthday: values.value });
-            }}
-            value={birthday}
-          />
-        </FloatingInput>
+
+        <div style={{ position: 'relative' }}>
+          <FloatingInput
+            id={'birthday'}
+            label={'Birthday'}
+            readOnly
+            onClick={() => setOnShowCalender(!onShowCalender)}
+            value={dayjs(value).format('YYYY.MM.DD')}
+          >
+
+          </FloatingInput>
+          {onShowCalender && (
+            <div style={{ position: 'absolute', top: '58px' }}>
+              <Calendar onChange={
+                // eslint-disable-next-line @typescript-eslint/no-shadow
+                (value: any) => {
+                  onChange(value);
+                  updateFields({
+                    birthday: dayjs(value).format('YYYY.MM.DD')
+                  });
+                }}
+              value={value}
+              maxDate={dayjs(new Date()).toDate()}
+              minDate={dayjs(new Date()).subtract(100, 'year').toDate()}/>
+            </div>
+          )}
+        </div>
       </div>
+      {isYoungster && (
+        <p>You are under 18</p>
+      )}
       <ButtonsGroup onBack={back}>
         <Button disabled={disable} type={'button'} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
