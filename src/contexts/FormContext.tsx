@@ -56,7 +56,10 @@ interface formData {
   zipcode: string
   socialSecurityNumber: string
   tax_id_type: string
-  tag: string
+  employment_status: {
+    choices?: any,
+    prevValue: string
+  },
   companyName: string
   industry: string
   jobTitle: string
@@ -146,7 +149,10 @@ export function FormProvider ({ children }: Props) {
     zipcode: '',
     socialSecurityNumber: '',
     tax_id_type: 'SSN',
-    tag: '',
+    employment_status: {
+      choices: [],
+      prevValue: ''
+    },
     companyName: '',
     industry: '',
     jobTitle: '',
@@ -177,7 +183,7 @@ export function FormProvider ({ children }: Props) {
         placeholder: kycFormConfig?.kyc_get_form_config?.citizenship?.placeholder,
         prevValue: {
           name: kycFormConfig?.kyc_get_form_config?.citizenship?.choices.find((i: {name:string, value:string}) =>
-            i.value === form?.app_kyc_form_by_pk?.citizenship).name,
+            i?.value === form?.app_kyc_form_by_pk?.citizenship)?.name,
           value: form?.app_kyc_form_by_pk?.citizenship
         },
         choices:  kycFormConfig?.kyc_get_form_config?.citizenship?.choices
@@ -201,7 +207,11 @@ export function FormProvider ({ children }: Props) {
       state: form?.app_kyc_form_by_pk?.address_province,
       zipcode: form?.app_kyc_form_by_pk?.address_postal_code,
       city: form?.app_kyc_form_by_pk?.address_city,
-      socialSecurityNumber: form?.app_kyc_form_by_pk?.tax_id_value
+      socialSecurityNumber: form?.app_kyc_form_by_pk?.tax_id_value,
+      employment_status: {
+        choices: kycFormConfig?.kyc_get_form_config?.employment_status?.choices,
+        prevValue: form?.app_kyc_form_by_pk?.employment_status
+      }
     });
   }, [kycFormConfig]);
 
@@ -228,7 +238,8 @@ export function FormProvider ({ children }: Props) {
         address_postal_code: data.zipcode,
         address_city: data.city,
         tax_id_value: data.socialSecurityNumber,
-        tax_id_type: data.tax_id_type
+        tax_id_type: data.tax_id_type,
+        employment_status: data.employment_status.prevValue
       },
     });
   };
@@ -250,7 +261,7 @@ export function FormProvider ({ children }: Props) {
     <SocialSecurityForm {...data} updateFields={updateFields}/>,
     null,
     <EmploymentForm {...data} updateFields={updateFields}/>,
-    data.tag === 'employment' ? [<CompanyForm {...data} updateFields={updateFields}/>, <SourceForm {...data} updateFields={updateFields}/> ]: <SourceForm  {...data} updateFields={updateFields}/>,
+    data?.employment_status?.prevValue === 'employment' ? [<CompanyForm {...data} updateFields={updateFields}/>, <SourceForm {...data} updateFields={updateFields}/> ]: <SourceForm  {...data} updateFields={updateFields}/>,
     <LetUsKnowForm {...data} updateFields={updateFields}/>,
     <InvestmentProfileForm {...data} updateFields={updateFields}/>,
     <CustomerAgreementForm/>,

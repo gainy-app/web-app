@@ -75,7 +75,7 @@ export function AuthProvider({ children }: Props) {
     );
 
     return unsubscribe;
-  }, []);
+  }, [currentUser?.refreshToken]);
 
   const value = {
     currentUser,

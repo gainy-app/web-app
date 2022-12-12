@@ -10,9 +10,12 @@ export { StepsControlForm } from 'components/forms/StepsControlForm';
 export { KycLayout } from 'components/layout/kyc';
 export { Kyc } from 'components/kyc';
 export { Field } from 'components/common/Field';
+export { Tag } from 'components/common/Tag';
+export { ButtonsGroup } from 'components/common/ButtonsGroup';
 
 //forms
 export { CitizenForm } from 'components/forms/CitizenForm';
+export { FormWrapper } from 'components/forms/FormWrapper';
 export { CitizenshipForm } from 'components/forms/CitizenshipForm';
 export { EmailAddressForm } from 'components/forms/EmailAddressForm';
 export { PhoneNumberForm } from 'components/forms/PhoneNumberForm';

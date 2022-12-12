@@ -1,0 +1,12 @@
+@import "../../../styles/mixins";
+
+.tag {
+  background-color: $white;
+  border-radius: 20px;
+  padding: 10px 16px;
+}
+
+.activeTag {
+  background-color: $blue;
+  color: $white;
+}

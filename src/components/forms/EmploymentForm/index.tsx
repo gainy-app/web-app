@@ -1,31 +1,50 @@
-import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
-import { Button } from '../../common/Button';
+import { Button, Tag, ButtonsGroup, FormWrapper } from 'components';
 import React from 'react';
-import { useFormContext } from '../../../contexts/FormContext';
-import { ButtonsGroup } from '../../common/ButtonsGroup';
+import styles from './emloymentform.module.scss';
+import { useFormContext } from 'contexts/FormContext';
 
 interface tagsData {
-  tag: string
+  employment_status: {
+    choices?: any,
+    prevValue: string
+  },
 }
 
 type Props = tagsData & {
   updateFields: (fields: Partial<tagsData>) => void
 }
-const tags = [
-  'employment',
-  'test'
-];
-export const EmploymentForm = ({ updateFields }:Props) => {
+
+export const EmploymentForm = ({ updateFields, employment_status }:Props) => {
   const { title,subtitle } = config;
-  const {  next, back } = useFormContext();
+  const { next, back, onSendData } = useFormContext();
+
+  const onNextClick = () => {
+    onSendData();
+    next();
+  };
+
+  const onTagClick = (tag: {value: string}) => updateFields({ employment_status: {
+    ...employment_status,
+    prevValue: tag.value
+  } });
+
+  const disabled = !employment_status.prevValue;
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      {tags.map(tag => {
-        return <div onClick={() => updateFields({ tag: tag })}>{tag}</div>;
-      })}
+      <div className={styles.tagsWrapper}>
+        {employment_status?.choices?.map((tag: {name:string, value: string}) => {
+          return <Tag
+            key={tag.name}
+            activeTag={employment_status.prevValue === tag.value}
+            name={tag.name}
+            onClick={() => onTagClick(tag)}/>;
+        })}
+      </div>
+
       <ButtonsGroup onBack={back}>
-        <Button type={'button'} onClick={next}>{'Next'}</Button>
+        <Button disabled={disabled} type={'button'} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>
   );
