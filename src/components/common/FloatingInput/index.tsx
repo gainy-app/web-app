@@ -5,7 +5,7 @@ interface Props {
   placeholder?: string
   label?: string
   onChange?: (e: any) => void
-  value?: string
+  value?: any
   children?: any
   readOnly?: boolean
   onClick?: () => void

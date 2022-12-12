@@ -21,17 +21,17 @@ type Props = citizenData & {
 }
 
 export const CitizenForm = ({ updateFields, country }: Props) => {
-  const { title,subtitle, description, notAvailable } = config;
   const { flags, next, onSendData } = useFormContext();
-
   const [openDropdown, setOpenDropdown] = useState(false);
 
-
+  const [selectedCountry, setSelectedCountry] = useState('');
   const toggleVisiblePopUp = () => {
+
     setOpenDropdown(!openDropdown);
   };
-
   const witheList = country?.prevValue === 'USA' || country?.prevValue === 'US';
+
+  const { title,subtitle, description, notAvailable } = config(selectedCountry);
 
   const onNextClick = () => {
     if(witheList) {
@@ -40,21 +40,20 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
     }
   };
 
-  const GE = flags.countries.find((i:any) => i.alpha2 === 'DE');
-
   const listRender = country?.choices?.map((item: { name: string, value: string }, i: number) => {
     const selectedFlag = flags?.countries.find((flag: any) => flag.name === item.name)?.flag_w40_url;
     return <li onClick={() => {
+      setSelectedCountry(item.name);
       updateFields({ country : { ...country,   placeholder: country.placeholder,
         flag: selectedFlag,
-        prevValue: item.value }
+        prevValue: item.value
+      }
       });
     }}
     className={`${styles.listItem}
       ${item?.name === country?.prevValue ? styles.activeCountry : ''}
      `}
     key={i.toString()}
-
     >
       <img src={selectedFlag} className={styles.flag} alt=""/>
       <span>{item?.name}</span>
@@ -70,8 +69,8 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
         list={listRender}
       >
         <div className={styles.countryWrapper}>
-          <img src={witheList ? country?.flag: GE.flag_w40_url} alt={country?.prevValue}/>
-          <div>{witheList ? country?.prevValue : GE.alpha3}</div>
+          <img src={ country?.flag} alt={country?.prevValue}/>
+          <div>{country?.prevValue}</div>
         </div>
       </Dropdown>
       <div className={styles.content}>

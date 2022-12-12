@@ -5,7 +5,7 @@ import {
   CitizenshipForm, CompanyForm, CustomerAgreementForm,
   EmailAddressForm, EmploymentForm, InvestmentProfileForm, LegalNameForm, LetUsKnowForm,
   PhoneNumberForm,
-  PrivacyPolicyForm, ResidentAddressForm, SocialSecurityForm, SourceForm,
+  PrivacyPolicyForm, ResidentAddressForm, SocialSecurityForm,
   VerifyPhoneNumberForm
 } from 'components';
 import { useAuth } from './AuthContext';
@@ -61,19 +61,48 @@ interface formData {
     prevValue: string
   },
   companyName: string
-  industry: string
-  jobTitle: string
+  employment_type: {
+    prevValue: string
+    choices?: any,
+    name: string,
+  }
+  employment_position: {
+    prevValue: string
+    choices?: any,
+    name: string,
+  }
   source: string
-  broker: boolean
-  person: string
-  tradedCompany: string
-  notify: boolean
-  anualIncome: string
-  networthTotal: string
-  networthLiqued: string
-  exp: string
-  objectives: string
-  risk: string
+  employment_affiliated_with_a_broker: boolean
+  politically_exposed_names: string | null
+  employment_is_director_of_a_public_company: string | null
+  irs_backup_withholdings_notified: boolean
+  investor_profile_annual_income: {
+    formattedValue:string
+    value: string
+  }
+  investor_profile_net_worth_total: {
+    formattedValue: string
+    value: string
+  }
+  investor_profile_net_worth_liquid: {
+    formattedValue: string
+    value: string
+  }
+  investor_profile_experience: {
+    choices?: any
+    prevValue: string
+    name: string
+  }
+  investor_profile_objectives: {
+    choices?: any
+    prevValue: string
+    name: string
+  }
+  investor_profile_risk_tolerance: {
+    choices?: any
+    prevValue: string
+    name: string
+  }
 }
 
 const FormContext = React.createContext<any>({});
@@ -154,19 +183,48 @@ export function FormProvider ({ children }: Props) {
       prevValue: ''
     },
     companyName: '',
-    industry: '',
-    jobTitle: '',
+    employment_type: {
+      prevValue: '',
+      choices: [],
+      name: '',
+    },
+    employment_position: {
+      prevValue: '',
+      choices: [],
+      name: '',
+    },
     source: '',
-    broker: false,
-    person: '',
-    tradedCompany: '',
-    notify: false,
-    anualIncome: '',
-    networthTotal: '',
-    networthLiqued: '',
-    exp: '',
-    objectives: '',
-    risk: '',
+    employment_affiliated_with_a_broker: false,
+    politically_exposed_names: null,
+    employment_is_director_of_a_public_company: null,
+    irs_backup_withholdings_notified: false,
+    investor_profile_annual_income: {
+      formattedValue:'',
+      value: '',
+    },
+    investor_profile_net_worth_total: {
+      formattedValue:'',
+      value: '',
+    },
+    investor_profile_net_worth_liquid: {
+      formattedValue:'',
+      value: '',
+    },
+    investor_profile_experience: {
+      prevValue: '',
+      choices: [],
+      name: '',
+    },
+    investor_profile_objectives: {
+      prevValue: '',
+      choices: [],
+      name: '',
+    },
+    investor_profile_risk_tolerance: {
+      prevValue: '',
+      choices: [],
+      name: '',
+    },
   };
 
   const [data, setData] = useState<formData>(INITIAL_DATA);
@@ -211,7 +269,53 @@ export function FormProvider ({ children }: Props) {
       employment_status: {
         choices: kycFormConfig?.kyc_get_form_config?.employment_status?.choices,
         prevValue: form?.app_kyc_form_by_pk?.employment_status
-      }
+      },
+      companyName: form?.app_kyc_form_by_pk?.employment_company_name,
+      employment_position: {
+        choices: kycFormConfig?.kyc_get_form_config?.employment_position?.choices,
+        prevValue: form?.app_kyc_form_by_pk?.employment_position,
+        name:  kycFormConfig?.kyc_get_form_config?.employment_position?.choices.find((i: {name:string, value:string}) =>
+          i?.value === form?.app_kyc_form_by_pk?.employment_position)?.name,
+      },
+      employment_type: {
+        choices: kycFormConfig?.kyc_get_form_config?.employment_type?.choices,
+        prevValue: form?.app_kyc_form_by_pk?.employment_type,
+        name:  kycFormConfig?.kyc_get_form_config?.employment_type?.choices?.find((i: {name:string, value:string}) =>
+          i?.value === form?.app_kyc_form_by_pk?.employment_type)?.name,
+      },
+      employment_affiliated_with_a_broker: form?.app_kyc_form_by_pk?.employment_affiliated_with_a_broker,
+      irs_backup_withholdings_notified: form?.app_kyc_form_by_pk?.employment_affiliated_with_a_broker,
+      politically_exposed_names: form?.app_kyc_form_by_pk?.politically_exposed_names,
+      investor_profile_annual_income: {
+        formattedValue: form?.app_kyc_form_by_pk?.investor_profile_annual_income,
+        value: form?.app_kyc_form_by_pk?.investor_profile_annual_income
+      },
+      investor_profile_net_worth_total: {
+        formattedValue: form?.app_kyc_form_by_pk?.investor_profile_net_worth_total,
+        value: form?.app_kyc_form_by_pk?.investor_profile_net_worth_total
+      } ,
+      investor_profile_net_worth_liquid: {
+        formattedValue: form?.app_kyc_form_by_pk?.investor_profile_net_worth_liquid,
+        value: form?.app_kyc_form_by_pk?.investor_profile_net_worth_liquid
+      } ,
+      investor_profile_experience: {
+        choices: kycFormConfig?.kyc_get_form_config?.investor_profile_experience?.choices,
+        prevValue: form?.app_kyc_form_by_pk?.investor_profile_experience,
+        name:  kycFormConfig?.kyc_get_form_config?.investor_profile_experience?.choices?.find((i: {name:string, value:string}) =>
+          i?.value === form?.app_kyc_form_by_pk?.investor_profile_experience)?.name,
+      },
+      investor_profile_objectives: {
+        choices: kycFormConfig?.kyc_get_form_config?.investor_profile_objectives?.choices,
+        prevValue: form?.app_kyc_form_by_pk?.investor_profile_objectives,
+        name:  kycFormConfig?.kyc_get_form_config?.investor_profile_objectives?.choices?.find((i: {name:string, value:string}) =>
+          i?.value === form?.app_kyc_form_by_pk?.investor_profile_objectives)?.name,
+      },
+      investor_profile_risk_tolerance: {
+        choices: kycFormConfig?.kyc_get_form_config?.investor_profile_risk_tolerance?.choices,
+        prevValue: form?.app_kyc_form_by_pk?.investor_profile_risk_tolerance,
+        name:  kycFormConfig?.kyc_get_form_config?.investor_profile_risk_tolerance?.choices?.find((i: {name:string, value:string}) =>
+          i?.value === form?.app_kyc_form_by_pk?.investor_profile_risk_tolerance)?.name,
+      },
     });
   }, [kycFormConfig]);
 
@@ -225,13 +329,13 @@ export function FormProvider ({ children }: Props) {
     sendKycForm({
       variables: {
         profile_id:  appId?.app_profiles[0].id,
-        country: data.country.prevValue,
+        country: data.country.prevValue ? data.country.prevValue : data.country.placeholder,
         citizenship: data.citizenship.prevValue?.value,
-        email_address: data.email_address.prevValue,
+        email_address: data.email_address.prevValue ? data.email_address.prevValue :  data.email_address.placeholder,
         phone_number: data.phone,
-        last_name: data.last_name.prevValue,
+        last_name: data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder,
         birthdate: data.birthday,
-        first_name: data.last_name.prevValue,
+        first_name: data.first_name.prevValue ? data.first_name.prevValue : data.first_name.placeholder,
         address_street1: data.addressLine,
         address_street2: data.addressLine2,
         address_province: data.state,
@@ -239,7 +343,20 @@ export function FormProvider ({ children }: Props) {
         address_city: data.city,
         tax_id_value: data.socialSecurityNumber,
         tax_id_type: data.tax_id_type,
-        employment_status: data.employment_status.prevValue
+        employment_status: data.employment_status.prevValue,
+        employment_company_name: data.companyName,
+        employment_position: data.employment_position.prevValue,
+        employment_type: data.employment_type.prevValue,
+        employment_affiliated_with_a_broker: data.employment_affiliated_with_a_broker,
+        politically_exposed_names: data.politically_exposed_names,
+        employment_is_director_of_a_public_company: data.employment_is_director_of_a_public_company,
+        irs_backup_withholdings_notified: data.irs_backup_withholdings_notified,
+        investor_profile_annual_income: data.investor_profile_annual_income?.value,
+        investor_profile_net_worth_total: data.investor_profile_net_worth_total?.value,
+        investor_profile_net_worth_liquid: data.investor_profile_net_worth_liquid?.value,
+        investor_profile_experience: data.investor_profile_experience.prevValue,
+        investor_profile_objectives: data.investor_profile_objectives.prevValue,
+        investor_profile_risk_tolerance: data.investor_profile_risk_tolerance.prevValue,
       },
     });
   };
@@ -261,8 +378,7 @@ export function FormProvider ({ children }: Props) {
     <SocialSecurityForm {...data} updateFields={updateFields}/>,
     null,
     <EmploymentForm {...data} updateFields={updateFields}/>,
-    data?.employment_status?.prevValue === 'employment' ? [<CompanyForm {...data} updateFields={updateFields}/>, <SourceForm {...data} updateFields={updateFields}/> ]: <SourceForm  {...data} updateFields={updateFields}/>,
-    <LetUsKnowForm {...data} updateFields={updateFields}/>,
+    data?.employment_status?.prevValue === 'EMPLOYED' ? [<CompanyForm {...data} updateFields={updateFields}/>,  <LetUsKnowForm {...data} updateFields={updateFields}/>]: <LetUsKnowForm {...data} updateFields={updateFields}/>,
     <InvestmentProfileForm {...data} updateFields={updateFields}/>,
     <CustomerAgreementForm/>,
     null

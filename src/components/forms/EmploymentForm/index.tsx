@@ -20,6 +20,10 @@ export const EmploymentForm = ({ updateFields, employment_status }:Props) => {
   const { next, back, onSendData } = useFormContext();
 
   const onNextClick = () => {
+    if(employment_status?.prevValue === 'EMPLOYED') {
+      next();
+      return;
+    }
     onSendData();
     next();
   };

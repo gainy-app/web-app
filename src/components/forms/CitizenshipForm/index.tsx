@@ -70,7 +70,6 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
             <p>U.S. citizen</p>
             <Checkbox
               value={first}
-              label={'US citizen'}
               id={'test'}
               onChange={() => {
                 updateFields({
@@ -91,15 +90,14 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
             <p>Not a U.S. citizen, but live here legaly</p>
             <Checkbox
               value={citizenship.prevValue?.value !== 'USA'}
-              label={'Not a U.S. citizen, but live here legaly'}
               id={'test1'}
               onChange={() => {
                 updateFields({
                   citizenship: {
                     ...citizenship,
                     prevValue : {
-                      value: undefined,
-                      name: undefined
+                      value: citizenship.prevValue?.value === 'USA' ? undefined : citizenship.prevValue?.value,
+                      name: citizenship.prevValue?.value === 'USA' ? undefined : citizenship.prevValue?.value
                     },
                   }
                 });

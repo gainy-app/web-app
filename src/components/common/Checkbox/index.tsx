@@ -2,8 +2,7 @@ import styles from './checkbox.module.scss';
 interface Props {
   onChange?: (e: any) => void
   id: string
-  label: string
-  value: boolean
+  value?: boolean
 }
 
 export const Checkbox = ({ id,onChange, value }: Props) => {
