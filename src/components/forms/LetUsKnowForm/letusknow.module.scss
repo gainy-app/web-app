@@ -7,10 +7,11 @@
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
+
     & > div {
       p {
         width: 320px;
-        font-family: 'SF Pro Display Medium', sans-serif;
+        font-family: "SF Pro Display Medium", sans-serif;
         font-style: normal;
         font-weight: 500;
         font-size: 13px;
@@ -37,11 +38,10 @@
       background-color: #fff;
       margin-top: -27px;
       margin-bottom: 16px;
-      font-family: 'SF Pro Display Medium', sans-serif;
+      font-family: "SF Pro Display Medium", sans-serif;
       font-weight: 500;
       font-size: 13px;
       line-height: 16px;
-
 
       & > div:last-child {
         background-color: #f7f8f9;
@@ -51,6 +51,7 @@
         }
       }
     }
+
     .wrapper {
       display: flex;
       justify-content: space-between;

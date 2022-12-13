@@ -28,9 +28,8 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   const { title,subtitle } = config;
   const {  next, back , onSendData } = useFormContext();
 
-
   const [openDropdown, setOpenDropdown] = useState(false);
-  const disable = citizenship.prevValue?.value !== 'USA' && !citizenship.prevValue?.name ;
+  const disable = citizenship.placeholder === 'USA' || !!citizenship.prevValue?.value;
 
   const toggleVisiblePopUp = () => {
     setOpenDropdown(!openDropdown);
@@ -61,9 +60,6 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
     </li>;
   });
 
-  const first = citizenship.prevValue?.value === 'USA' ?  !citizenship.prevValue?.value : !citizenship.placeholder;
-  console.log(citizenship);
-  console.log(first);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.formWrapper}>
@@ -71,7 +67,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
           <Field>
             <p>U.S. citizen</p>
             <Checkbox
-              value={first}
+              value={citizenship.placeholder === 'USA'}
               id={'test'}
               onChange={() => {
                 updateFields({
@@ -79,8 +75,8 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
                     ...citizenship,
                     placeholder: 'USA',
                     prevValue: {
-                      name: 'USA',
-                      value: 'USA'
+                      value: '',
+                      name: ''
                     }
                   }
                 });
@@ -92,16 +88,16 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
           <Field>
             <p>Not a U.S. citizen, but live here legaly</p>
             <Checkbox
-              value={citizenship.prevValue?.value !== 'USA'}
+              value={citizenship.placeholder !== 'USA'}
               id={'test1'}
               onChange={() => {
                 updateFields({
                   citizenship: {
                     ...citizenship,
-                    placeholder: citizenship.prevValue?.value,
+                    placeholder: citizenship.prevValue?.value === 'USA' ? '' : citizenship.prevValue?.value,
                     prevValue : {
-                      value: citizenship.prevValue?.value === 'USA' ? undefined : citizenship.prevValue?.value,
-                      name: citizenship.prevValue?.value === 'USA' ? undefined : citizenship.prevValue?.value
+                      value: citizenship.prevValue?.value ? '' : citizenship.prevValue?.value,
+                      name: citizenship.prevValue?.name ? '' : citizenship.prevValue?.name
                     },
                   }
                 });
@@ -109,7 +105,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
             />
           </Field>
         </label>
-        {citizenship.prevValue?.value !== 'USA' && (
+        {citizenship.placeholder !== 'USA' && (
           <div>
             <p>Which country are you a citizen of?</p>
             <Dropdown
@@ -123,7 +119,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
         )}
       </div>
       <ButtonsGroup onBack={back}>
-        <Button disabled={disable} type={'button'} onClick={onNextClick}>{'Continue'}</Button>
+        <Button disabled={!disable} type={'button'} onClick={onNextClick}>{'Continue'}</Button>
       </ButtonsGroup>
     </FormWrapper>
   );

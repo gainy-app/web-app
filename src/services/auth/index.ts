@@ -25,7 +25,6 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appIdCond
         }))
       .then(res => {
         if(res) {
-          localStorage.setItem('token', res);
           const [tempUser, ...rest] = user.displayName?.split(' ') || [];
           if(!appIdCondition) {
             appLink({ variables: {
@@ -34,6 +33,7 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appIdCond
               lastName: String(rest),
               userID: user.uid
             } });
+            localStorage.setItem('token', res);
           }
         }
       })

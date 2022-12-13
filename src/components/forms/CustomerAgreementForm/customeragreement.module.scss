@@ -1,0 +1,129 @@
+@import "../../../styles/mixins";
+
+.privacyWrapper {
+  overflow-y: scroll;
+  max-height: 600px;
+  margin-left: -95px;
+  margin-right: -145px;
+  position: relative;
+
+  a {
+    all: unset;
+    color: $blue;
+  }
+
+  @include largeTablet {
+    margin-left: -95px;
+    margin-right: -54px;
+  }
+
+  @include mediumTablet {
+    margin-left: -22px;
+    margin-right: -10px;
+  }
+
+  @include iPhone {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  h1 {
+    font-family: "SF Pro Display Heavy", sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    margin-bottom: 48px;
+  }
+
+  .mainTitle {
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .mainList {
+    padding-left: 0;
+    list-style: inside upper-roman;
+
+    .mainItem {
+      font-family: "SF Pro Display Medium", sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    .innerList {
+      padding-left: 0;
+      list-style: inside numeric;
+
+      li {
+        font-family: "SF Pro Display Medium", sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 12px;
+      }
+    }
+  }
+
+  .acceptBlock {
+    position: sticky;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    background: #f7f8f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    border-top: 1px solid rgba(0, 0, 0, .24);
+
+    @include phone {
+      flex-direction: column;
+    }
+
+    button {
+      padding: 16px 73px;
+
+      @include iPhone {
+        padding: 16px 32px;
+      }
+
+      @include phone {
+        padding: 16px 73px;
+        margin-bottom: 20px;
+      }
+    }
+
+    .paragraph {
+      padding: 0;
+      margin: 0;
+      max-width: 360px;
+      font-family: "SF Pro Display Medium", sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 24px;
+
+      @include largeTablet {
+        max-width: 320px;
+      }
+
+      @include mediumTablet {
+        max-width: 230px;
+      }
+
+      @include iPhone {
+        max-width: 180px;
+        font-size: 14px;
+      }
+
+      @include phone {
+        width: 100%;
+        max-width: 100%;
+        flex-direction: column;
+      }
+    }
+  }
+}

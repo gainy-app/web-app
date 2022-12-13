@@ -35,7 +35,7 @@ interface Props {
 export function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [userLoading, setUserLoading] = useState(true);
-  const { data: appId, loading: addIdLoading, error } = useQuery(GET_APP_PROFILE, {
+  const { data: appId, loading: addIdLoading } = useQuery(GET_APP_PROFILE, {
     skip: !currentUser
   });
 
@@ -49,9 +49,6 @@ export function AuthProvider({ children }: Props) {
   }
 
   const appIdCondition = appIdAppId;
-
-  console.log(appIdCondition);
-  console.log(appIdAppId);
 
   async function signInWithGoogle ()  {
     try {

@@ -287,6 +287,7 @@ export function FormProvider ({ children }: Props) {
       employment_affiliated_with_a_broker: form?.app_kyc_form_by_pk?.employment_affiliated_with_a_broker,
       irs_backup_withholdings_notified: form?.app_kyc_form_by_pk?.employment_affiliated_with_a_broker,
       politically_exposed_names: form?.app_kyc_form_by_pk?.politically_exposed_names,
+      employment_is_director_of_a_public_company: form?.app_kyc_form_by_pk?.employment_is_director_of_a_public_company,
       investor_profile_annual_income: {
         formattedValue: form?.app_kyc_form_by_pk?.investor_profile_annual_income,
         value: form?.app_kyc_form_by_pk?.investor_profile_annual_income
@@ -327,7 +328,6 @@ export function FormProvider ({ children }: Props) {
   };
 
   const onSendData = () => {
-    console.log(sendKycFormError);
     sendKycForm({
       variables: {
         profile_id:  appId,
@@ -419,7 +419,7 @@ export function FormProvider ({ children }: Props) {
     appId,
     formLoading: formLoading && kycFormConfigLoader
   };
-  // if(loading) return <Loader/>;
+
   return (
     <FormContext.Provider value={value}>
       {children}

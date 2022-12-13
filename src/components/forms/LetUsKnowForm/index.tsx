@@ -32,13 +32,8 @@ export const LetUsKnowForm = ({
   const {  next, back, onSendData } = useFormContext();
   const [politicallyOpen, setPoliticallyOpen] = useState(politically_exposed_names ? politically_exposed_names : false);
   const [directorOpen, setDirectorOpen] = useState(employment_is_director_of_a_public_company ? employment_is_director_of_a_public_company : false);
-  console.log(politically_exposed_names, 'names');
-  const disabled =
-    !employment_affiliated_with_a_broker
-    || (!politically_exposed_names)
-    // || !employment_is_director_of_a_public_company
-    || !irs_backup_withholdings_notified;
 
+  const disabled = (!employment_is_director_of_a_public_company && !!directorOpen) || (!politically_exposed_names && !!politicallyOpen);
   const onNextClick = () => {
     onSendData();
     next();
@@ -151,7 +146,9 @@ export const LetUsKnowForm = ({
         </label>
       </div>
       <ButtonsGroup onBack={back}>
-        <Button type={'button'} onClick={onNextClick} disabled={disabled}>{'Next'}</Button>
+        <Button type={'button'} onClick={onNextClick}
+          disabled={disabled}
+        >{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>
   );

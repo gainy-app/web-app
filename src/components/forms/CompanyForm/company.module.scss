@@ -2,22 +2,22 @@
   font-family: "SF Pro Display Medium", sans-serif;
   font-weight: 500;
   font-size: 16px;
+
   & > div {
     margin-bottom: 16px;
   }
+
   .label {
     position: absolute;
     color: #b1bdc8;
-    //top: 20px;
     transform-origin: 0 0;
     transition: transform .2s ease-in-out;
   }
+
   .activeLabel {
-    //top: 0;
     color: #b1bdc8;
     position: absolute;
     transition: transform .2s ease-in-out;
     transform: translateY(-20px);
   }
-
 }

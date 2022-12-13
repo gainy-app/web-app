@@ -6,6 +6,7 @@ import { Button } from 'components';
 import parse from 'html-react-parser';
 import { useFormContext } from '../../../contexts/FormContext';
 import { Dropdown } from '../../common/Dropdown';
+import { logFirebaseEvent } from '../../../utils/helpers';
 
 interface citizenData {
   country: {
@@ -29,12 +30,15 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
     setOpenDropdown(!openDropdown);
   };
-  const witheList = country?.prevValue === 'USA' || country?.placeholder === 'USA';
+  const witheList = country?.prevValue === 'USA';
 
   const { title,subtitle, description, notAvailable } = config(selectedCountry);
 
   const onNextClick = () => {
     if(witheList) {
+      logFirebaseEvent('dw_kyc_ios_none_usa', {
+        country
+      });
       onSendData();
       next();
     }

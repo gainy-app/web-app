@@ -7,7 +7,7 @@ import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { FloatingInput } from '../../common/FloatingInput';
 import { Dropdown } from '../../common/Dropdown';
 import { NumberFormatValues, NumericFormat } from 'react-number-format';
-import styles from '../../common/Invest/invest.module.scss';
+import styles from './investmentProfile.module.scss';
 
 interface profileData {
   investor_profile_annual_income: {
@@ -80,7 +80,9 @@ export const InvestmentProfileForm = ({
           name: choice.name
         }
       });}
-    }>{choice.name}</div>;
+    }
+    key={choice.value}
+    >{choice.name}</div>;
   });
 
   const objList = investor_profile_objectives?.choices?.map((choice: {value: string, name: string}) => {
@@ -92,7 +94,9 @@ export const InvestmentProfileForm = ({
           name: choice.name
         }
       });}
-    }>{choice.name}</div>;
+    }
+    key={choice.value}
+    >{choice.name}</div>;
   });
 
   const toleranceList = investor_profile_risk_tolerance?.choices?.map((choice: {value: string, name: string}) => {
@@ -104,78 +108,84 @@ export const InvestmentProfileForm = ({
           name: choice.name
         }
       });}
-    }>{choice.name}</div>;
+    }
+    key={choice.value}
+    >{choice.name}</div>;
   });
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <h2>What is your approximate annual income?</h2>
-      <FloatingInput id={'investor_profile_annual_income'} label={'Approximate annual income'}>
-        <NumericFormat
-          value={investor_profile_annual_income?.formattedValue}
-          prefix={'$'}
-          thousandSeparator allowNegative={false}
-          placeholder={'$'}
-          className={styles.input}
-          onValueChange={(values: NumberFormatValues) => {
-            console.log(values);
-            updateFields({
-              //@ts-ignore
-              investor_profile_annual_income: values
-            });
-          }}
-        />
-      </FloatingInput>
-      <h2>What is your total net worth?</h2>
-      <FloatingInput
-        id={'investor_profile_net_worth_total'}
-        label={'estimated total net worth'}
-      >
-        <NumericFormat
-          value={investor_profile_net_worth_total?.formattedValue}
-          prefix={'$'}
-          thousandSeparator allowNegative={false}
-          placeholder={'$'}
-          className={styles.input}
-          onValueChange={(values: NumberFormatValues) => {
-            updateFields({
-              //@ts-ignore
-              investor_profile_net_worth_total: values
-            });
-          }}
-        />
-      </FloatingInput>
-      <h2>What is your liquid net worth?</h2>
-      <FloatingInput
-        id={'investor_profile_net_worth_liquid'}
-        label={'estimated liquid net worth'}
-      >
-        <NumericFormat
-          value={investor_profile_net_worth_liquid?.formattedValue}
-          prefix={'$'}
-          thousandSeparator allowNegative={false}
-          placeholder={'$'}
-          className={styles.input}
-          onValueChange={(values: NumberFormatValues) => {
-            updateFields({
-              //@ts-ignore
-              investor_profile_net_worth_liquid: values
-            });
-          }}
-        />
-      </FloatingInput>
-      <h2>What is your investment experience?</h2>
-      <Dropdown list={expList} openDropdown={openExp} onClick={() => setOpenExp(!openExp)} setOpenDropdown={setOpenExp}>
-        <div>{investor_profile_experience.name}</div>
-      </Dropdown>
-      <h2>What are your investment objectives?</h2>
-      <Dropdown list={objList} openDropdown={openObj} onClick={() => setOpenObj(!openObj)} setOpenDropdown={setOpenObj}>
-        <div>{investor_profile_objectives.name}</div>
-      </Dropdown>
-      <h2>What is your risk tolerance?</h2>
-      <Dropdown list={toleranceList} openDropdown={openTolerance} onClick={() => setOpenTolerance(!openTolerance)} setOpenDropdown={setOpenTolerance}>
-        <div>{investor_profile_risk_tolerance.name}</div>
-      </Dropdown>
+      <div className={styles.investmentProfile}>
+        <h2>What is your approximate annual income?</h2>
+        <FloatingInput id={'investor_profile_annual_income'} label={'Approximate annual income'}>
+          <NumericFormat
+            value={investor_profile_annual_income?.formattedValue}
+            prefix={'$'}
+            thousandSeparator allowNegative={false}
+            placeholder={'$'}
+            className={styles.input}
+            onValueChange={(values: NumberFormatValues) => {
+              console.log(values);
+              updateFields({
+                //@ts-ignore
+                investor_profile_annual_income: values
+              });
+            }}
+          />
+        </FloatingInput>
+        <h2>What is your total net worth?</h2>
+        <p>Your assets minus your liabilities. Assets includes figures from checking, savings, liquid securities etc.</p>
+        <FloatingInput
+          id={'investor_profile_net_worth_total'}
+          label={'estimated total net worth'}
+        >
+          <NumericFormat
+            value={investor_profile_net_worth_total?.formattedValue}
+            prefix={'$'}
+            thousandSeparator allowNegative={false}
+            placeholder={'$'}
+            className={styles.input}
+            onValueChange={(values: NumberFormatValues) => {
+              updateFields({
+                //@ts-ignore
+                investor_profile_net_worth_total: values
+              });
+            }}
+          />
+        </FloatingInput>
+        <h2>What is your liquid net worth?</h2>
+        <p>{'the amount of money you\'ve got in cash  or cash equivalents after you deducted your liabilities from your liquid assets.'}</p>
+        <FloatingInput
+          id={'investor_profile_net_worth_liquid'}
+          label={'estimated liquid net worth'}
+        >
+          <NumericFormat
+            value={investor_profile_net_worth_liquid?.formattedValue}
+            prefix={'$'}
+            thousandSeparator allowNegative={false}
+            placeholder={'$'}
+            className={styles.input}
+            onValueChange={(values: NumberFormatValues) => {
+              updateFields({
+                //@ts-ignore
+                investor_profile_net_worth_liquid: values
+              });
+            }}
+          />
+        </FloatingInput>
+        <h2>What is your investment experience?</h2>
+        <Dropdown list={expList} openDropdown={openExp} onClick={() => setOpenExp(!openExp)} setOpenDropdown={setOpenExp}>
+          <div>{investor_profile_experience.name}</div>
+        </Dropdown>
+        <h2>What are your investment objectives?</h2>
+        <Dropdown list={objList} openDropdown={openObj} onClick={() => setOpenObj(!openObj)} setOpenDropdown={setOpenObj}>
+          <div>{investor_profile_objectives.name}</div>
+        </Dropdown>
+        <h2>What is your risk tolerance?</h2>
+        <Dropdown list={toleranceList} openDropdown={openTolerance} onClick={() => setOpenTolerance(!openTolerance)} setOpenDropdown={setOpenTolerance}>
+          <div>{investor_profile_risk_tolerance.name}</div>
+        </Dropdown>
+      </div>
       <ButtonsGroup onBack={back}>
         <Button type={'button'} disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>

@@ -88,12 +88,6 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
         />
         <Dropdown list={typeList} openDropdown={openType} onClick={toggleVisibleTypePopUp} setOpenDropdown={setOpenType}>
           <div className={employment_type.name ? styles.activeLabel : styles.label}>Industry</div>
-          {/*{*/}
-          {/*  !employment_type.name && (*/}
-          {/*   */}
-          {/*  )*/}
-          {/*}*/}
-
           <div>{employment_type.name}</div>
           <div></div>
         </Dropdown>
