@@ -13,7 +13,8 @@ export const imageTypes = {
   logoWhite: 'logoWhite',
   divider: 'divider',
   arrow: 'arrow',
-  arrowDropdown: 'arrowDropdown'
+  arrowDropdown: 'arrowDropdown',
+  shield: 'shield'
 };
 
 export const phoneMasks = {

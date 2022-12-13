@@ -4,7 +4,7 @@ import React, {  useState } from 'react';
 import { Invest, Kyc, Layout } from 'components';
 
 
-export default function Home () {
+export const Home = () =>  {
   const { invest } = config;
 
   const [start, setStart] = useState<boolean>(false);
@@ -17,4 +17,4 @@ export default function Home () {
       }
     </Layout>
   );
-}
+};

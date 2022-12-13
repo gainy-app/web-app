@@ -10,10 +10,10 @@ interface Props {
 export const PrivateRoute = ({ children }: Props) => {
   const { currentUser } = useAuth();
   const location = useLocation();
-  const token = localStorage.getItem('token');
-
+  // const token = localStorage.getItem('token');
+  console.log(currentUser);
   //@ts-ignore
-  if (currentUser?.accessToken !== token) {
+  if (!currentUser) {
     return <Navigate to={routes.signIn} replace state={{ path: location.pathname }}/>;
   }
   return  children;

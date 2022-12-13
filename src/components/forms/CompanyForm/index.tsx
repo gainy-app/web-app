@@ -1,6 +1,7 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Button } from '../../common/Button';
+import styles from './company.module.scss';
 import React, { useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
@@ -73,25 +74,35 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>
-      <FloatingInput
-        id={'company_name'}
-        placeholder={' '}
-        label={'Company name'}
-        value={companyName}
-        onChange={(e) => {
-          updateFields({
-            companyName: e.target.value
-          });
-        }}
-      />
-      <Dropdown list={typeList} openDropdown={openType} onClick={toggleVisibleTypePopUp} setOpenDropdown={setOpenType}>
-        <div>Industry</div>
-        <div>{employment_type.name}</div>
-      </Dropdown>
-      <Dropdown list={positionList} openDropdown={openPosition} onClick={toggleVisibleOpenPopUp} setOpenDropdown={setOpenPosition}>
-        <div>Your job title</div>
-        <div>{employment_position.name}</div>
-      </Dropdown>
+      <div className={styles.companyInnerForm}>
+        <FloatingInput
+          id={'company_name'}
+          placeholder={' '}
+          label={'Company name'}
+          value={companyName}
+          onChange={(e) => {
+            updateFields({
+              companyName: e.target.value
+            });
+          }}
+        />
+        <Dropdown list={typeList} openDropdown={openType} onClick={toggleVisibleTypePopUp} setOpenDropdown={setOpenType}>
+          <div className={employment_type.name ? styles.activeLabel : styles.label}>Industry</div>
+          {/*{*/}
+          {/*  !employment_type.name && (*/}
+          {/*   */}
+          {/*  )*/}
+          {/*}*/}
+
+          <div>{employment_type.name}</div>
+          <div></div>
+        </Dropdown>
+        <Dropdown list={positionList} openDropdown={openPosition} onClick={toggleVisibleOpenPopUp} setOpenDropdown={setOpenPosition}>
+          <div className={employment_position.name ? styles.activeLabel : styles.label}>Your job title</div>
+          <div>{employment_position.name}</div>
+        </Dropdown>
+      </div>
+
       <ButtonsGroup onBack={back}>
         <Button type={'button'}  disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>

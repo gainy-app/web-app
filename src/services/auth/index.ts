@@ -3,12 +3,11 @@ import { getAuth, User as FirebaseUser } from 'firebase/auth';
 type IonAuthChange = (user: FirebaseUser | null,
   setUser: (user:FirebaseUser | null) => void,
   setLoading: (erg: boolean) => void,
-  appLink: any,
-  id: any,
-  loading: any,
+  appIdCondition: boolean,
+  appLink: any
   ) => void
 
-export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appLink, id, loading) => {
+export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appIdCondition, appLink) => {
   const auth = getAuth();
   setLoading(true);
 
@@ -28,7 +27,7 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appLink, 
         if(res) {
           localStorage.setItem('token', res);
           const [tempUser, ...rest] = user.displayName?.split(' ') || [];
-          if(!id && !loading) {
+          if(!appIdCondition) {
             appLink({ variables: {
               email: user.email,
               firstName: tempUser,
@@ -45,7 +44,7 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appLink, 
   setLoading(false);
 };
 
-export const refreshToken = (user: FirebaseUser) => {
+export const refreshToken = (user: any) => {
   const endpoint = `https://us-central1-${process.env.REACT_APP_FIREBASE_PROJECT_ID}.cloudfunctions.net/refresh_token`;
 
   return fetch(`${endpoint}?uid=${user.uid}`)

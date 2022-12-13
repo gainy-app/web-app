@@ -29,7 +29,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
     setOpenDropdown(!openDropdown);
   };
-  const witheList = country?.prevValue === 'USA' || country?.prevValue === 'US';
+  const witheList = country?.prevValue === 'USA' || country?.placeholder === 'USA';
 
   const { title,subtitle, description, notAvailable } = config(selectedCountry);
 
@@ -70,7 +70,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
       >
         <div className={styles.countryWrapper}>
           <img src={ country?.flag} alt={country?.prevValue}/>
-          <div>{country?.prevValue}</div>
+          <div>{country?.prevValue ? country?.prevValue : country.placeholder}</div>
         </div>
       </Dropdown>
       <div className={styles.content}>

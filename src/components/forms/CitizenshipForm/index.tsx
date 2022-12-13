@@ -61,7 +61,9 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
     </li>;
   });
 
-  const first = citizenship.prevValue?.value === 'USA';
+  const first = citizenship.prevValue?.value === 'USA' ?  !citizenship.prevValue?.value : !citizenship.placeholder;
+  console.log(citizenship);
+  console.log(first);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.formWrapper}>
@@ -75,6 +77,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
                 updateFields({
                   citizenship: {
                     ...citizenship,
+                    placeholder: 'USA',
                     prevValue: {
                       name: 'USA',
                       value: 'USA'
@@ -95,6 +98,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
                 updateFields({
                   citizenship: {
                     ...citizenship,
+                    placeholder: citizenship.prevValue?.value,
                     prevValue : {
                       value: citizenship.prevValue?.value === 'USA' ? undefined : citizenship.prevValue?.value,
                       name: citizenship.prevValue?.value === 'USA' ? undefined : citizenship.prevValue?.value
@@ -107,8 +111,6 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
         </label>
         {citizenship.prevValue?.value !== 'USA' && (
           <div>
-            <p>Tell us a bit more about your citizenship status. How long have you lived in the U.S.?</p>
-            <div>More than 5 years</div>
             <p>Which country are you a citizen of?</p>
             <Dropdown
               list={listRender}

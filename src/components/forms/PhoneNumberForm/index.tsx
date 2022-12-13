@@ -23,7 +23,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
   const onNextClick = () => {
     verifyCodeRequest.verifyCode({
       variables: {
-        profile_id:  appId?.app_profiles[0].id,
+        profile_id:  appId,
         channel: 'SMS',
         address: `+1${String(phone)}`
       }

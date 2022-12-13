@@ -8,7 +8,6 @@ import {
   PrivacyPolicyForm, ResidentAddressForm, SocialSecurityForm,
   VerifyPhoneNumberForm
 } from 'components';
-import { useAuth } from './AuthContext';
 import { useMutation, useQuery } from '@apollo/client';
 import {
   GET_COUNTRIES,
@@ -17,6 +16,7 @@ import {
   VERIFICATION_SEND_CODE,
   VERIFICATION_VERIFY_CODE
 } from 'services/gql/queries';
+import { useAuth } from './AuthContext';
 
 interface formData {
   address_country: string
@@ -117,18 +117,19 @@ interface Props {
 
 export function FormProvider ({ children }: Props) {
   const { appId } = useAuth();
+  console.log(appId);
 
   const { data: kycFormConfig, loading: kycFormConfigLoader } = useQuery(GET_FORM_CONFIG, {
     variables: {
-      profile_id: appId?.app_profiles[0].id
-    }
+      profile_id: appId
+    },
   });
   const { data: countries } = useQuery(GET_COUNTRIES);
 
   const { data: form, loading: formLoading } = useQuery(GET_KYC_FORM, {
     variables: {
-      profile_id: appId?.app_profiles[0].id
-    }
+      profile_id:  appId
+    },
   });
 
   const [verifyCode
@@ -326,11 +327,12 @@ export function FormProvider ({ children }: Props) {
   };
 
   const onSendData = () => {
+    console.log(sendKycFormError);
     sendKycForm({
       variables: {
-        profile_id:  appId?.app_profiles[0].id,
+        profile_id:  appId,
         country: data.country.prevValue ? data.country.prevValue : data.country.placeholder,
-        citizenship: data.citizenship.prevValue?.value,
+        citizenship: data.citizenship.prevValue?.value ? data.citizenship.prevValue?.value : data.citizenship.placeholder,
         email_address: data.email_address.prevValue ? data.email_address.prevValue :  data.email_address.placeholder,
         phone_number: data.phone,
         last_name: data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder,
@@ -344,9 +346,9 @@ export function FormProvider ({ children }: Props) {
         tax_id_value: data.socialSecurityNumber,
         tax_id_type: data.tax_id_type,
         employment_status: data.employment_status.prevValue,
-        employment_company_name: data.companyName,
-        employment_position: data.employment_position.prevValue,
-        employment_type: data.employment_type.prevValue,
+        employment_company_name: data.employment_status.prevValue === 'EMPLOYED' ? data.companyName : null,
+        employment_position: data.employment_status.prevValue === 'EMPLOYED' ?  data.employment_position.prevValue : null,
+        employment_type: data.employment_status.prevValue === 'EMPLOYED' ? data.employment_type.prevValue : null,
         employment_affiliated_with_a_broker: data.employment_affiliated_with_a_broker,
         politically_exposed_names: data.politically_exposed_names,
         employment_is_director_of_a_public_company: data.employment_is_director_of_a_public_company,
@@ -417,7 +419,7 @@ export function FormProvider ({ children }: Props) {
     appId,
     formLoading: formLoading && kycFormConfigLoader
   };
-
+  // if(loading) return <Loader/>;
   return (
     <FormContext.Provider value={value}>
       {children}
