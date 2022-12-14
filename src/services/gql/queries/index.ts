@@ -55,6 +55,55 @@ mutation VerificationVerifyCode($verification_code_id: String!, $user_input: Str
 }
 `;
 
+export const VALIDATE_ADDRESS = gql`
+query KycValidateAddress(
+  $street1: String!
+  $street2: String
+  $city: String!
+  $province: String!
+  $postal_code: String!
+  $country: String
+) {
+  kyc_validate_address(
+    street1: $street1
+    street2: $street2
+    city: $city
+    province: $province
+    postal_code: $postal_code
+    country: $country
+  ){ 
+    ok 
+    suggested{
+      street1
+      street2
+      city
+      province
+      postal_code
+      country
+    }
+  }
+}
+`;
+
+export const TRADING_GET_PROFILE_STATUS = gql`
+query TradingGetProfileStatus($profile_id: Int!) {
+  trading_profile_status(where: {profile_id: {_eq: $profile_id}}) {
+    kyc_status # NOT_READY, READY, PROCESSING, APPROVED, INFO_REQUIRED, DOC_REQUIRED, MANUAL_REVIEW, DENIED
+    kyc_message
+    kyc_error_messages
+  }
+}`;
+
+export const KYC_SEND_FORM = gql`
+mutation KycSendForm($profile_id: Int!) {
+  kyc_send_form(profile_id: $profile_id) {
+    message
+    status # NOT_READY, READY, PROCESSING, APPROVED, INFO_REQUIRED, DOC_REQUIRED, MANUAL_REVIEW, DENIED
+    updated_at
+  }
+}
+`;
+
 export const VERIFICATION_SEND_CODE = gql`
 mutation VerificationSendCode($profile_id: Int!, $channel: String!, $address: String!) {
   verification_send_code(
@@ -546,6 +595,14 @@ query KycGetFormConfig($profile_id: Int!) {
       required
     }
     address_country {
+      choices {
+        value
+        name
+      }
+      placeholder
+      required
+    }
+    address_province {
       choices {
         value
         name

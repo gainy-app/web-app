@@ -49,7 +49,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
         />
       </Input>
       <ButtonsGroup onBack={back}>
-        <Button type={'button'} disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
+        <Button disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>
   );

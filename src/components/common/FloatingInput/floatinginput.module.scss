@@ -3,7 +3,7 @@
 .inputWrapper {
   position: relative;
   border-radius: 16px;
-  padding: 20px 16px;
+  padding: 20px 16px 12px;
   font-family: "SF Pro Display Medium", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -20,6 +20,7 @@
   label {
     position: absolute;
     left: 18px;
+    top: 16px;
     color: #b1bdc8;
     transform-origin: 0 0;
     transition: transform .2s ease-in-out;
@@ -27,7 +28,7 @@
 
   input:focus + label,
   input:not(:placeholder-shown) + label {
-    transform: translateY(-15px) scale(.8);
+    transform: translateY(-12px) scale(.8);
   }
 
   input::placeholder {

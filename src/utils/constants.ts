@@ -2,7 +2,8 @@ export const routes = {
   signIn: '/sign-in',
   notFound: '*',
   home: '/',
-  getApp: '/get-the-app'
+  getApp: '/get-the-app',
+  success: '/success'
 };
 
 export const imageTypes = {
@@ -14,7 +15,8 @@ export const imageTypes = {
   divider: 'divider',
   arrow: 'arrow',
   arrowDropdown: 'arrowDropdown',
-  shield: 'shield'
+  shield: 'shield',
+  checkbox: 'checkbox'
 };
 
 export const phoneMasks = {

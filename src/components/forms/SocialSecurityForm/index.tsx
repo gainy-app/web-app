@@ -123,7 +123,7 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
         </div>
       </label>
       <ButtonsGroup onBack={back}>
-        <Button type={'button'} onClick={onNextClick} disabled={pin.filter(Boolean).length < 9}>{'Next'}</Button>
+        <Button onClick={onNextClick} disabled={pin.filter(Boolean).length < 9}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>
   );

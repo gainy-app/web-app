@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useAuth } from 'contexts/AuthContext';
 import { PrivateRoute, Loader } from 'components';
-import { Home, NotFound, SignIn, GetApp } from 'routes';
+import { Home, NotFound, SignIn, GetApp, Success } from 'routes';
 import { routes } from 'utils/constants';
 import styles from './components/layout/layout.module.scss';
 import { usePage } from 'hooks';
@@ -34,6 +34,10 @@ function App() {
         </Route>
         <Route path={routes.getApp} element={<React.Suspense>
           <GetApp/>
+        </React.Suspense>}>
+        </Route>
+        <Route path={routes.success} element={<React.Suspense>
+          <Success/>
         </React.Suspense>}>
         </Route>
         <Route path={routes.notFound}

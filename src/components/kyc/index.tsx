@@ -1,6 +1,6 @@
 import {
   StepsControlForm,
-  KycLayout, Loader
+  KycLayout
 } from 'components';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'contexts/FormContext';
@@ -9,7 +9,7 @@ export const Kyc = () => {
   const {
     step, currentStepIndex, goToStep,
     next, verifyCodeRequest, verificationCodeRequest,
-    onSendData, formLoading
+    onSendData
   } = useFormContext();
 
   useEffect(() => {
@@ -24,8 +24,6 @@ export const Kyc = () => {
       next();
     }
   }, [verificationCodeRequest.data]);
-
-  if(formLoading)  return <Loader/>;
 
   return (
     <KycLayout>

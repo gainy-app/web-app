@@ -1,5 +1,5 @@
 .residentFormWrapper {
-  div {
+  & > div {
     margin-bottom: 16px;
   }
 
@@ -7,5 +7,18 @@
     display: flex;
     justify-content: space-between;
     column-gap: 20px;
+
+    & > div {
+      width: 50%;
+    }
+
+    & > label {
+      width: 50%;
+      margin-bottom: 0;
+
+      & > div {
+        margin-bottom: 0;
+      }
+    }
   }
 }

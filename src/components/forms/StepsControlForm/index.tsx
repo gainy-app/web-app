@@ -1,15 +1,21 @@
-import { Button, StepControl } from 'components';
+import { Button, Image, StepControl } from 'components';
 import { FormWrapper } from '../FormWrapper';
 import { useFormContext } from '../../../contexts/FormContext';
 import styles from './stepcontrol.module.scss';
-import React from 'react';
+import React, { useState } from 'react';
+import { imageTypes } from '../../../utils/constants';
+import { useMutation } from '@apollo/client';
+import { KYC_SEND_FORM } from '../../../services/gql/queries';
+// import { Navigate } from 'react-router-dom';
 
 interface Props {
   currentStepIndex: number
   goToStep: (step: number) => void
 }
 export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
-  const { isLastPage, next } = useFormContext();
+  const { isLastPage, next, onSendData, data, updateFields, appId } = useFormContext();
+  const [checked, setChecked] = useState(false);
+  const [sendFormFinale] = useMutation(KYC_SEND_FORM);
 
   const steps = [
     { title: 'Create your account', step: 0, redirect: 1 },
@@ -17,23 +23,38 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
     { title: 'Your investor profile', step: 11, redirect: 12 },
   ];
 
+  // if(sendFormData?.kyc_send_form?.status !== null) {
+  //   return <Navigate to={routes.success}></Navigate>;
+  // }
+
   const buttonRender = () => {
     switch (true) {
       case currentStepIndex === 0:
         return (
-          <Button type={'button'} onClick={next}>{'Start'}</Button>
+          <Button onClick={next}>{'Start'}</Button>
         );
       case currentStepIndex === 7:
         return (
-          <Button type={'button'} onClick={next}>{'Continue'}</Button>
+          <Button onClick={next}>{'Continue'}</Button>
         );
       case currentStepIndex === 11:
         return (
-          <Button type={'button'} onClick={next}>{'Continue'}</Button>
+          <Button onClick={next}>{'Continue'}</Button>
         );
       case isLastPage:
         return (
-          <Button type={'button'} onClick={next}>{'Done ! Open my account'}</Button>
+          <Button type={'button'}
+            disabled={!checked}
+            onClick={() => {
+              if(checked) {
+                onSendData();
+                sendFormFinale({
+                  variables: {
+                    profile_id: appId
+                  }
+                });
+              }
+            }}>{'Done ! Open my account'}</Button>
         );
     }
   };
@@ -53,6 +74,43 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
           />
         );
       })}
+      {isLastPage && (
+        <div className={styles.acceptTerms}>
+          <h2>Accept Terms & Conditions</h2>
+          <p>By tapping Open my account, you are opening a new Individual Investment Account.</p>
+          <p>You are electronically signing the <a href={'https://legal.drivewealth.com/customer-account-agreement'} target='_blank' rel="noreferrer">DriveWealth Account Agreements</a>   and Gainy Agreements, which include your agreement to:</p>
+          <ul>
+            <li>open a brokerage account with DriveWealth</li>
+            <li>receive account-related communication electronically</li>
+            <li>appoint Gainy as your Investment Advisor with limited discretion to buy and sell securities on your behalf</li>
+            <li>resolve disputes with us through arbitration</li>
+          </ul>
+          <p>You also certify that you’re not subject to IRS backup withholding, and acknowledge our Form CRS, and Form ADV Part 2.</p>
+          <label htmlFor="agree" className={styles.checkboxLabel}>
+            <div className={`${styles.checkbox} ${checked ? styles.activeCheckbox : ''}`}>
+              {checked && <Image type={imageTypes.checkbox}/>}
+            </div>
+            <input
+              type="checkbox"
+              id="agree"
+              checked={checked}
+              onChange={(e) => {
+                setChecked(e.target.checked);
+                updateFields({
+                  disclosures_drivewealth_customer_agreement: true,
+                  disclosures_drivewealth_terms_of_use: true,
+                  disclosures_drivewealth_ira_agreement: true,
+                  disclosures_drivewealth_market_data_agreement: true,
+                  disclosures_drivewealth_privacy_policy: true,
+                  disclosures_rule14b: true,
+                  disclosures_signed_by: data.last_name.prevValue
+                });
+              }}
+            />
+            I acknowledge and agree to the above
+          </label>
+        </div>
+      )}
       <div className={styles.button}>
         {buttonRender()}
       </div>

@@ -1,5 +1,17 @@
 @import "../../../styles/mixins";
 
+.placeholder {
+  position: absolute;
+  left: 20px;
+  transition: transform .2s ease-in-out;
+  color: #b1bdc8;
+}
+
+.active {
+  transform: translateY(-21px);
+  left: 23px;
+}
+
 .dropdownInner {
   position: absolute;
   top: 50px;

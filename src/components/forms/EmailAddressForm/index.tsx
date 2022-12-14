@@ -41,7 +41,7 @@ export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
         }
       />
       <ButtonsGroup onBack={back}>
-        <Button disabled={disabled} type={'button'} onClick={onNextClick}>{'Next'}</Button>
+        <Button disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>
   );

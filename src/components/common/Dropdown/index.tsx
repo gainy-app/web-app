@@ -10,13 +10,21 @@ interface Props {
   openDropdown: boolean
   onClick: () => void
   setOpenDropdown: (arg: boolean) => void
+  withPlaceholder?: string
+  value?: string
 }
 
-export const Dropdown = ({ children, openDropdown, list, onClick, setOpenDropdown }:Props) => {
+export const Dropdown = ({ children, openDropdown, list, onClick, setOpenDropdown, withPlaceholder, value }:Props) => {
   const { ref } = useOutBoardingClick(() => setOpenDropdown(false));
+
   return (
     <label ref={ref} onClick={onClick}>
       <Field>
+        {
+          withPlaceholder && (
+            <span className={`${styles.placeholder} ${value ? styles.active : ''}`}>{withPlaceholder}</span>
+          )
+        }
         {children}
         <Image type={imageTypes.arrowDropdown} className={openDropdown ? styles.rotate : ''}/>
         <ul className={`${styles.dropdownInner} ${openDropdown ? styles.openDropdown : ''}`}>

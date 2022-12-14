@@ -3,7 +3,7 @@ import { useMultistepForm } from '../hooks';
 import {
   CitizenForm,
   CitizenshipForm, CompanyForm, CustomerAgreementForm,
-  EmailAddressForm, EmploymentForm, InvestmentProfileForm, LegalNameForm, LetUsKnowForm,
+  EmailAddressForm, EmploymentForm, InvestmentProfileForm, LegalNameForm, LetUsKnowForm, Loader,
   PhoneNumberForm,
   PrivacyPolicyForm, ResidentAddressForm, SocialSecurityForm,
   VerifyPhoneNumberForm
@@ -17,6 +17,7 @@ import {
   VERIFICATION_VERIFY_CODE
 } from 'services/gql/queries';
 import { useAuth } from './AuthContext';
+import { refreshToken } from '../services/auth';
 
 interface formData {
   address_country: string
@@ -52,7 +53,10 @@ interface formData {
   addressLine: string
   addressLine2: string
   city: string
-  state: string
+  state: {
+    choices: any
+    prevValue: string
+  }
   zipcode: string
   socialSecurityNumber: string
   tax_id_type: string
@@ -77,16 +81,16 @@ interface formData {
   employment_is_director_of_a_public_company: string | null
   irs_backup_withholdings_notified: boolean
   investor_profile_annual_income: {
-    formattedValue:string
-    value: string
+    value: number
+    name: string
   }
   investor_profile_net_worth_total: {
-    formattedValue: string
-    value: string
+    value: number
+    name: string
   }
   investor_profile_net_worth_liquid: {
-    formattedValue: string
-    value: string
+    value: number
+    name: string
   }
   investor_profile_experience: {
     choices?: any
@@ -103,6 +107,13 @@ interface formData {
     prevValue: string
     name: string
   }
+  disclosures_drivewealth_customer_agreement: null | boolean
+  disclosures_drivewealth_terms_of_use: null | boolean
+  disclosures_drivewealth_ira_agreement: null | boolean
+  disclosures_drivewealth_market_data_agreement: null | boolean
+  disclosures_drivewealth_privacy_policy: null | boolean
+  disclosures_rule14b: null | boolean
+  disclosures_signed_by: string
 }
 
 const FormContext = React.createContext<any>({});
@@ -116,8 +127,7 @@ interface Props {
 }
 
 export function FormProvider ({ children }: Props) {
-  const { appId } = useAuth();
-  console.log(appId);
+  const { appId, currentUser } = useAuth();
 
   const { data: kycFormConfig, loading: kycFormConfigLoader } = useQuery(GET_FORM_CONFIG, {
     variables: {
@@ -175,7 +185,10 @@ export function FormProvider ({ children }: Props) {
     addressLine: '',
     addressLine2: '',
     city: '',
-    state: '',
+    state: {
+      choices: [],
+      prevValue: ''
+    },
     zipcode: '',
     socialSecurityNumber: '',
     tax_id_type: 'SSN',
@@ -200,16 +213,16 @@ export function FormProvider ({ children }: Props) {
     employment_is_director_of_a_public_company: null,
     irs_backup_withholdings_notified: false,
     investor_profile_annual_income: {
-      formattedValue:'',
-      value: '',
+      value: 25000,
+      name: ''
     },
     investor_profile_net_worth_total: {
-      formattedValue:'',
-      value: '',
+      value: 50000,
+      name: ''
     },
     investor_profile_net_worth_liquid: {
-      formattedValue:'',
-      value: '',
+      value: 50000,
+      name: ''
     },
     investor_profile_experience: {
       prevValue: '',
@@ -226,6 +239,13 @@ export function FormProvider ({ children }: Props) {
       choices: [],
       name: '',
     },
+    disclosures_drivewealth_customer_agreement: null,
+    disclosures_drivewealth_terms_of_use: null,
+    disclosures_drivewealth_ira_agreement: null,
+    disclosures_drivewealth_market_data_agreement: null,
+    disclosures_drivewealth_privacy_policy: null,
+    disclosures_rule14b: null,
+    disclosures_signed_by: ''
   };
 
   const [data, setData] = useState<formData>(INITIAL_DATA);
@@ -263,7 +283,10 @@ export function FormProvider ({ children }: Props) {
       birthday: form?.app_kyc_form_by_pk?.birthdate,
       addressLine: form?.app_kyc_form_by_pk?.address_street1,
       addressLine2: form?.app_kyc_form_by_pk?.address_street2,
-      state: form?.app_kyc_form_by_pk?.address_province,
+      state: {
+        choices: kycFormConfig?.kyc_get_form_config?.address_province?.choices,
+        prevValue:form?.app_kyc_form_by_pk?.address_province
+      },
       zipcode: form?.app_kyc_form_by_pk?.address_postal_code,
       city: form?.app_kyc_form_by_pk?.address_city,
       socialSecurityNumber: form?.app_kyc_form_by_pk?.tax_id_value,
@@ -289,15 +312,15 @@ export function FormProvider ({ children }: Props) {
       politically_exposed_names: form?.app_kyc_form_by_pk?.politically_exposed_names,
       employment_is_director_of_a_public_company: form?.app_kyc_form_by_pk?.employment_is_director_of_a_public_company,
       investor_profile_annual_income: {
-        formattedValue: form?.app_kyc_form_by_pk?.investor_profile_annual_income,
+        name: '',
         value: form?.app_kyc_form_by_pk?.investor_profile_annual_income
       },
       investor_profile_net_worth_total: {
-        formattedValue: form?.app_kyc_form_by_pk?.investor_profile_net_worth_total,
+        name: '',
         value: form?.app_kyc_form_by_pk?.investor_profile_net_worth_total
       } ,
       investor_profile_net_worth_liquid: {
-        formattedValue: form?.app_kyc_form_by_pk?.investor_profile_net_worth_liquid,
+        name: '',
         value: form?.app_kyc_form_by_pk?.investor_profile_net_worth_liquid
       } ,
       investor_profile_experience: {
@@ -318,6 +341,13 @@ export function FormProvider ({ children }: Props) {
         name:  kycFormConfig?.kyc_get_form_config?.investor_profile_risk_tolerance?.choices?.find((i: {name:string, value:string}) =>
           i?.value === form?.app_kyc_form_by_pk?.investor_profile_risk_tolerance)?.name,
       },
+      disclosures_drivewealth_customer_agreement: form?.app_kyc_form_by_pk?.disclosures_drivewealth_customer_agreement,
+      disclosures_drivewealth_terms_of_use: form?.app_kyc_form_by_pk?.disclosures_drivewealth_terms_of_use,
+      disclosures_drivewealth_ira_agreement: form?.app_kyc_form_by_pk?.disclosures_drivewealth_ira_agreement,
+      disclosures_drivewealth_market_data_agreement: form?.app_kyc_form_by_pk?.disclosures_drivewealth_market_data_agreement,
+      disclosures_drivewealth_privacy_policy: form?.app_kyc_form_by_pk?.disclosures_drivewealth_privacy_policy,
+      disclosures_rule14b: form?.app_kyc_form_by_pk?.disclosures_rule14b,
+      disclosures_signed_by: form?.app_kyc_form_by_pk?.disclosures_signed_by
     });
   }, [kycFormConfig]);
 
@@ -328,6 +358,12 @@ export function FormProvider ({ children }: Props) {
   };
 
   const onSendData = () => {
+    if(sendKycFormError?.message === 'Could not verify JWT: JWTExpired') {
+      refreshToken(currentUser).then(res => {
+        localStorage.setItem('token',res);
+      });
+      return;
+    }
     sendKycForm({
       variables: {
         profile_id:  appId,
@@ -340,7 +376,7 @@ export function FormProvider ({ children }: Props) {
         first_name: data.first_name.prevValue ? data.first_name.prevValue : data.first_name.placeholder,
         address_street1: data.addressLine,
         address_street2: data.addressLine2,
-        address_province: data.state,
+        address_province: data.state.prevValue,
         address_postal_code: data.zipcode,
         address_city: data.city,
         tax_id_value: data.socialSecurityNumber,
@@ -353,16 +389,23 @@ export function FormProvider ({ children }: Props) {
         politically_exposed_names: data.politically_exposed_names,
         employment_is_director_of_a_public_company: data.employment_is_director_of_a_public_company,
         irs_backup_withholdings_notified: data.irs_backup_withholdings_notified,
-        investor_profile_annual_income: data.investor_profile_annual_income?.value,
-        investor_profile_net_worth_total: data.investor_profile_net_worth_total?.value,
-        investor_profile_net_worth_liquid: data.investor_profile_net_worth_liquid?.value,
+        investor_profile_annual_income: data.investor_profile_annual_income.value,
+        investor_profile_net_worth_total: data.investor_profile_net_worth_total.value,
+        investor_profile_net_worth_liquid: data.investor_profile_net_worth_liquid.value,
         investor_profile_experience: data.investor_profile_experience.prevValue,
         investor_profile_objectives: data.investor_profile_objectives.prevValue,
         investor_profile_risk_tolerance: data.investor_profile_risk_tolerance.prevValue,
+        disclosures_drivewealth_customer_agreement: data.disclosures_drivewealth_customer_agreement,
+        disclosures_drivewealth_terms_of_use: data.disclosures_drivewealth_terms_of_use,
+        disclosures_drivewealth_ira_agreement: data.disclosures_drivewealth_ira_agreement,
+        disclosures_drivewealth_market_data_agreement: data.disclosures_drivewealth_market_data_agreement,
+        disclosures_drivewealth_privacy_policy: data.disclosures_drivewealth_privacy_policy,
+        disclosures_rule14b: data.disclosures_rule14b,
+        disclosures_signed_by: data.last_name.prevValue
       },
     });
   };
-
+  console.log(data);
   const {
     step, isFirstStep, back,
     next, isLastPage, currentStepIndex, goToStep
@@ -417,8 +460,10 @@ export function FormProvider ({ children }: Props) {
     },
     onSendData,
     appId,
-    formLoading: formLoading && kycFormConfigLoader
+    updateFields,
   };
+
+  if(formLoading && kycFormConfigLoader) return <Loader/>;
 
   return (
     <FormContext.Provider value={value}>

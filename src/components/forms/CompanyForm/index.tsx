@@ -34,27 +34,31 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
   const [openPosition,setOpenPosition] = useState(false);
 
   const typeList = employment_type?.choices?.map((choice: {value: string, name: string}) => {
-    return <div onClick={() => {
-      updateFields({
-        employment_type: {
-          ...employment_type,
-          prevValue: choice.value,
-          name: choice.name
-        }
-      });}
-    }>{choice.name}</div>;
+    return <div
+      key={choice.value}
+      onClick={() => {
+        updateFields({
+          employment_type: {
+            ...employment_type,
+            prevValue: choice.value,
+            name: choice.name
+          }
+        });}
+      }>{choice.name}</div>;
   });
 
   const positionList = employment_position?.choices?.map((choice: {value: string, name: string}) => {
-    return <div onClick={() => {
-      updateFields({
-        employment_position: {
-          ...employment_position,
-          prevValue: choice.value,
-          name: choice.name
-        }
-      });}
-    }>{choice.name}</div>;
+    return <div
+      key={choice.value}
+      onClick={() => {
+        updateFields({
+          employment_position: {
+            ...employment_position,
+            prevValue: choice.value,
+            name: choice.name
+          }
+        });}
+      }>{choice.name}</div>;
   });
 
   const toggleVisibleTypePopUp = () => {

@@ -30,7 +30,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
     setOpenDropdown(!openDropdown);
   };
-  const witheList = country?.prevValue === 'USA';
+  const witheList = country?.prevValue === 'USA' || country.placeholder === 'USA';
 
   const { title,subtitle, description, notAvailable } = config(selectedCountry);
 

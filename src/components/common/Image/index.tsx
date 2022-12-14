@@ -16,6 +16,13 @@ export const Image = ({ type, className, onClick }: Props) => {
         </svg>
       );
     }
+    case imageTypes.checkbox: {
+      return (
+        <svg width="14" height="9" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fillRule="evenodd" clipRule="evenodd" d="M13.7123 0.29589C14.0982 0.688063 14.0955 1.32122 13.7064 1.71009L6.653 8.75697C6.26498 9.14467 5.63893 9.14334 5.25254 8.75398L0.29066 3.75398C-0.0968868 3.36346 -0.0968868 2.73029 0.29066 2.33977C0.678207 1.94924 1.30655 1.94924 1.69409 2.33977L5.95722 6.63565L12.3089 0.289909C12.6981 -0.0989602 13.3264 -0.0962822 13.7123 0.29589Z" fill="white"/>
+        </svg>
+      );
+    }
 
     case imageTypes.shield: {
       return (

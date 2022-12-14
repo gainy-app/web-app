@@ -54,7 +54,6 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
       }
       }
       key={i.toString()}
-
     >
       <span>{item?.name}</span>
     </li>;
