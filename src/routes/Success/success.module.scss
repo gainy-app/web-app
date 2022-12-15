@@ -15,7 +15,7 @@
     padding-left: 24.3%;
     z-index: 2;
 
-    @include flex(column,start,start);
+    @include flex(column,flex-start,flex-start);
     color: $white;
     padding-top: 80px;
     max-width: 440px;
