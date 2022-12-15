@@ -25,6 +25,6 @@
     "scss/operator-no-newline-before": true,
     "scss/operator-no-newline-after": true,
     "scss/at-mixin-pattern": null,
-    "scss/at-import-partial-extension": null
+    "scss/at-import-partial-extension": null,
   }
 }

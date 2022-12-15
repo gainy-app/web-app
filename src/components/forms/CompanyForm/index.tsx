@@ -74,7 +74,7 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
     next();
   };
 
-  const disabled = false;
+  const disabled = !companyName || !employment_type.name || !employment_position.name;
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>
@@ -93,7 +93,6 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
         <Dropdown list={typeList} openDropdown={openType} onClick={toggleVisibleTypePopUp} setOpenDropdown={setOpenType}>
           <div className={employment_type.name ? styles.activeLabel : styles.label}>Industry</div>
           <div>{employment_type.name}</div>
-          <div></div>
         </Dropdown>
         <Dropdown list={positionList} openDropdown={openPosition} onClick={toggleVisibleOpenPopUp} setOpenDropdown={setOpenPosition}>
           <div className={employment_position.name ? styles.activeLabel : styles.label}>Your job title</div>

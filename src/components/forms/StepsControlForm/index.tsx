@@ -3,9 +3,10 @@ import { FormWrapper } from '../FormWrapper';
 import { useFormContext } from '../../../contexts/FormContext';
 import styles from './stepcontrol.module.scss';
 import React, { useState } from 'react';
-import { imageTypes } from '../../../utils/constants';
+import { imageTypes, routes } from '../../../utils/constants';
 import { useMutation } from '@apollo/client';
 import { KYC_SEND_FORM } from '../../../services/gql/queries';
+import { useNavigate } from 'react-router-dom';
 // import { Navigate } from 'react-router-dom';
 
 interface Props {
@@ -16,16 +17,13 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   const { isLastPage, next, onSendData, data, updateFields, appId } = useFormContext();
   const [checked, setChecked] = useState(false);
   const [sendFormFinale] = useMutation(KYC_SEND_FORM);
+  const navigate = useNavigate();
 
   const steps = [
     { title: 'Create your account', step: 0, redirect: 1 },
     { title: 'Verify your identity', step: 7, redirect: 8 },
     { title: 'Your investor profile', step: 11, redirect: 12 },
   ];
-
-  // if(sendFormData?.kyc_send_form?.status !== null) {
-  //   return <Navigate to={routes.success}></Navigate>;
-  // }
 
   const buttonRender = () => {
     switch (true) {
@@ -51,6 +49,10 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                 sendFormFinale({
                   variables: {
                     profile_id: appId
+                  }
+                }).then((res) => {
+                  if(res.data.kyc_send_form.status) {
+                    navigate(routes.success);
                   }
                 });
               }
@@ -103,7 +105,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                   disclosures_drivewealth_market_data_agreement: true,
                   disclosures_drivewealth_privacy_policy: true,
                   disclosures_rule14b: true,
-                  disclosures_signed_by: data.last_name.prevValue
+                  disclosures_signed_by: data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder
                 });
               }}
             />

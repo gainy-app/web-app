@@ -11,7 +11,6 @@ export const Kyc = () => {
     next, verifyCodeRequest, verificationCodeRequest,
     onSendData
   } = useFormContext();
-
   useEffect(() => {
     if(verifyCodeRequest.data) {
       onSendData();

@@ -10,14 +10,14 @@ import { FormProvider } from './contexts/FormContext';
 
 function App() {
   const { loading } = useAuth();
-  const { withHeader } = usePage();
+  const { withHeader, isSuccess } = usePage();
 
   if(loading) {
     return <Loader/>;
   }
 
   return (
-    <div className={`${styles.container} ${withHeader ? '' : styles.blue}`}>
+    <div className={`${styles.container} ${withHeader ? '' : styles.blue} ${isSuccess ? styles.reset : ''}`}>
       <Routes>
         <Route path={routes.home} element={
           <React.Suspense>
@@ -37,7 +37,9 @@ function App() {
         </React.Suspense>}>
         </Route>
         <Route path={routes.success} element={<React.Suspense>
-          <Success/>
+          <PrivateRoute>
+            <Success/>
+          </PrivateRoute>
         </React.Suspense>}>
         </Route>
         <Route path={routes.notFound}

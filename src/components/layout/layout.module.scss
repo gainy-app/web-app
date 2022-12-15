@@ -11,6 +11,12 @@
   }
 }
 
+.reset {
+  @include tablet {
+    padding: 0;
+  }
+}
+
 .blue {
   background: $blue;
 }

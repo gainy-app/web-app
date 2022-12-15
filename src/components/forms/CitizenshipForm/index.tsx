@@ -85,7 +85,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
         </label>
         <label htmlFor={'test1'}>
           <Field>
-            <p>Not a U.S. citizen, but live here legaly</p>
+            <p>Not a U.S. citizen, but live here legally</p>
             <Checkbox
               value={citizenship.placeholder !== 'USA'}
               id={'test1'}

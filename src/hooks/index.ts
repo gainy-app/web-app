@@ -6,10 +6,12 @@ export const usePage = () => {
   const { pathname } = useLocation();
   const withHeader = (!pathname.includes(routes.signIn) && !pathname.includes(routes.getApp));
   const withFooter = (!pathname.includes(routes.signIn) && !pathname.includes(routes.getApp));
+  const isSuccess = pathname.includes(routes.success);
 
   return {
     withHeader,
-    withFooter
+    withFooter,
+    isSuccess
   };
 };
 export type IuseMultistepForm = ReactElement | null

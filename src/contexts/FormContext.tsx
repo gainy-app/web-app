@@ -12,7 +12,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import {
   GET_COUNTRIES,
   GET_FORM_CONFIG, GET_KYC_FORM,
-  SEND_KYC_FORM,
+  SEND_KYC_FORM, TRADING_GET_PROFILE_STATUS,
   VERIFICATION_SEND_CODE,
   VERIFICATION_VERIFY_CODE
 } from 'services/gql/queries';
@@ -127,7 +127,7 @@ interface Props {
 }
 
 export function FormProvider ({ children }: Props) {
-  const { appId, currentUser } = useAuth();
+  const { appId, currentUser, appIdLoading } = useAuth();
 
   const { data: kycFormConfig, loading: kycFormConfigLoader } = useQuery(GET_FORM_CONFIG, {
     variables: {
@@ -140,6 +140,12 @@ export function FormProvider ({ children }: Props) {
     variables: {
       profile_id:  appId
     },
+  });
+
+  const { data: formStatus, loading: formStatusLoading } = useQuery(TRADING_GET_PROFILE_STATUS, {
+    variables: {
+      profile_id: appId
+    }
   });
 
   const [verifyCode
@@ -371,7 +377,8 @@ export function FormProvider ({ children }: Props) {
         citizenship: data.citizenship.prevValue?.value ? data.citizenship.prevValue?.value : data.citizenship.placeholder,
         email_address: data.email_address.prevValue ? data.email_address.prevValue :  data.email_address.placeholder,
         phone_number: data.phone,
-        last_name: data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder,
+        last_name: 'Bratik',
+        // data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder
         birthdate: data.birthday,
         first_name: data.first_name.prevValue ? data.first_name.prevValue : data.first_name.placeholder,
         address_street1: data.addressLine,
@@ -401,7 +408,8 @@ export function FormProvider ({ children }: Props) {
         disclosures_drivewealth_market_data_agreement: data.disclosures_drivewealth_market_data_agreement,
         disclosures_drivewealth_privacy_policy: data.disclosures_drivewealth_privacy_policy,
         disclosures_rule14b: data.disclosures_rule14b,
-        disclosures_signed_by: data.last_name.prevValue
+        disclosures_signed_by: 'Bratik'
+        // data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder
       },
     });
   };
@@ -438,6 +446,10 @@ export function FormProvider ({ children }: Props) {
     currentStepIndex,
     goToStep,
     data,
+    formStatus: {
+      formStatus,
+      formStatusLoading
+    },
     flags: countries,
     countries: [],
     verifyCodeRequest: {
@@ -463,7 +475,7 @@ export function FormProvider ({ children }: Props) {
     updateFields,
   };
 
-  if(formLoading && kycFormConfigLoader) return <Loader/>;
+  if(formLoading && kycFormConfigLoader && appIdLoading && formStatusLoading) return <Loader/>;
 
   return (
     <FormContext.Provider value={value}>
