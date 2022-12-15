@@ -1,39 +1,29 @@
 import styles from './success.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
 import { Button, Image, Input, Loader } from '../../components';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { config } from '../GetApp/config';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { formatNumber, parseGQLerror } from '../../utils/helpers';
-import { useMutation, useQuery } from '@apollo/client';
-import { SEND_APP_LINK, TRADING_GET_PROFILE_STATUS } from '../../services/gql/queries';
+import { useMutation } from '@apollo/client';
+import { SEND_APP_LINK } from '../../services/gql/queries';
 import { Background } from './Background';
-import { useAuth } from '../../contexts/AuthContext';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Success () {
   const { form,qrcode,subtitle,title,description,validate, downloadButton } = config;
-  const { appId , appIdLoading } = useAuth();
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
+  const navigate = useNavigate();
+  const status = localStorage.getItem('status');
 
-
-  const { data: formStatus, loading: formStatusLoading } = useQuery(TRADING_GET_PROFILE_STATUS, {
-    variables: {
-      profile_id: appId
+  useEffect(()=> {
+    if(status !== null) {
+      navigate(routes.home);
     }
-  });
-  // eslint-disable-next-line no-debugger
-  // debugger;
-  if(appIdLoading) return <Loader/>;
-
-  if(formStatusLoading) return <Loader/>;
-  // // eslint-disable-next-line no-debugger
-  // debugger;
-  const status = formStatus?.trading_profile_status[0].kyc_status;
-  console.log(status);
+  }, []);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,15 +36,6 @@ export default function Success () {
   const onPhoneChange = (values: NumberFormatValues) => {
     setPhoneState(values.value);
   };
-
-  // useEffect(() => {
-  //   logout();
-  // }, []);
-
-
-  if(status == null) {
-    return <Navigate to={routes.home}/>;
-  }
 
   return (
     <>

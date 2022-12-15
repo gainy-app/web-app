@@ -44,7 +44,6 @@ export const useMultistepForm = (steps: IuseMultistepForm[]) => {
     next,
     back,
     steps,
-    isFirstStep: currentStepIndex === 0,
     isLastPage: currentStepIndex === steps.length - 1,
   };
 };

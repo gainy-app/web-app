@@ -21,8 +21,13 @@
     line-height: 32px;
   }
 
-  ul {
+  .list {
     padding-left: 25px;
+    margin-top: 30px;
+
+    li {
+      margin-bottom: 16px;
+    }
   }
 
   .checkboxLabel {

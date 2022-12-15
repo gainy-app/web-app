@@ -12,14 +12,15 @@ interface Props {
   setOpenDropdown: (arg: boolean) => void
   withPlaceholder?: string
   value?: string
+  active?: boolean
 }
 
-export const Dropdown = ({ children, openDropdown, list, onClick, setOpenDropdown, withPlaceholder, value }:Props) => {
+export const Dropdown = ({ children, openDropdown, list, onClick, setOpenDropdown, withPlaceholder, value, active }:Props) => {
   const { ref } = useOutBoardingClick(() => setOpenDropdown(false));
 
   return (
     <label ref={ref} onClick={onClick}>
-      <Field>
+      <Field active={active}>
         {
           withPlaceholder && (
             <span className={`${styles.placeholder} ${value ? styles.active : ''}`}>{withPlaceholder}</span>

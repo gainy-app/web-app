@@ -103,6 +103,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
           <Dropdown
             list={statesList}
             openDropdown={statesOpen}
+            active={!!state?.prevValue}
             onClick={() => setStatesOpen(!statesOpen)}
             setOpenDropdown={setStatesOpen}>
             <div>

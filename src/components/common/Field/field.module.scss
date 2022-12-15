@@ -1,5 +1,5 @@
 .fieldWrapper {
-  padding: 20px 24px;
+  padding: 18px 22px;
   display: flex;
   background: #fff;
   justify-content: space-between;
@@ -7,4 +7,14 @@
   margin-bottom: 16px;
   align-items: center;
   position: relative;
+  border: 2px solid transparent;
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.active {
+  border: 2px solid #0062ff;
 }

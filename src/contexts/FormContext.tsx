@@ -3,7 +3,7 @@ import { useMultistepForm } from '../hooks';
 import {
   CitizenForm,
   CitizenshipForm, CompanyForm, CustomerAgreementForm,
-  EmailAddressForm, EmploymentForm, InvestmentProfileForm, LegalNameForm, LetUsKnowForm, Loader,
+  EmailAddressForm, EmploymentForm, InvestmentProfileForm, LegalNameForm, LetUsKnowForm,
   PhoneNumberForm,
   PrivacyPolicyForm, ResidentAddressForm, SocialSecurityForm,
   VerifyPhoneNumberForm
@@ -18,103 +18,7 @@ import {
 } from 'services/gql/queries';
 import { useAuth } from './AuthContext';
 import { refreshToken } from '../services/auth';
-
-interface formData {
-  address_country: string
-  country: {
-    placeholder: string
-    flag: string
-    prevValue?: string
-    choices?: any
-  }
-  citizenship: {
-    placeholder?: string
-    prevValue?: {
-      name?:string
-      value?:string
-    }
-    choices?: any
-  }
-  email_address: {
-    placeholder?: string
-    prevValue?: string
-  }
-  phone: string
-  verifyCode: string
-  first_name: {
-    placeholder?: string
-    prevValue?: string
-  }
-  last_name: {
-    placeholder?: string
-    prevValue?: string
-  }
-  birthday: string
-  addressLine: string
-  addressLine2: string
-  city: string
-  state: {
-    choices: any
-    prevValue: string
-  }
-  zipcode: string
-  socialSecurityNumber: string
-  tax_id_type: string
-  employment_status: {
-    choices?: any,
-    prevValue: string
-  },
-  companyName: string
-  employment_type: {
-    prevValue: string
-    choices?: any,
-    name: string,
-  }
-  employment_position: {
-    prevValue: string
-    choices?: any,
-    name: string,
-  }
-  source: string
-  employment_affiliated_with_a_broker: boolean
-  politically_exposed_names: string | null
-  employment_is_director_of_a_public_company: string | null
-  irs_backup_withholdings_notified: boolean
-  investor_profile_annual_income: {
-    value: number
-    name: string
-  }
-  investor_profile_net_worth_total: {
-    value: number
-    name: string
-  }
-  investor_profile_net_worth_liquid: {
-    value: number
-    name: string
-  }
-  investor_profile_experience: {
-    choices?: any
-    prevValue: string
-    name: string
-  }
-  investor_profile_objectives: {
-    choices?: any
-    prevValue: string
-    name: string
-  }
-  investor_profile_risk_tolerance: {
-    choices?: any
-    prevValue: string
-    name: string
-  }
-  disclosures_drivewealth_customer_agreement: null | boolean
-  disclosures_drivewealth_terms_of_use: null | boolean
-  disclosures_drivewealth_ira_agreement: null | boolean
-  disclosures_drivewealth_market_data_agreement: null | boolean
-  disclosures_drivewealth_privacy_policy: null | boolean
-  disclosures_rule14b: null | boolean
-  disclosures_signed_by: string
-}
+import { formData } from '../models';
 
 const FormContext = React.createContext<any>({});
 
@@ -156,7 +60,7 @@ export function FormProvider ({ children }: Props) {
     { loading: verificationCodeLoading,error: verificationCodeError,data: verificationCodeData }
   ] = useMutation(VERIFICATION_VERIFY_CODE);
 
-  const [sendKycForm, { loading: sendKycFormLoading,data: sendKycFormData,error: sendKycFormError }] = useMutation(SEND_KYC_FORM);
+  const [sendKycForm, { error: sendKycFormError }] = useMutation(SEND_KYC_FORM);
 
   const INITIAL_DATA = {
     address_country: '',
@@ -277,7 +181,7 @@ export function FormProvider ({ children }: Props) {
         placeholder: kycFormConfig?.kyc_get_form_config?.email_address?.placeholder,
         prevValue: form?.app_kyc_form_by_pk?.email_address
       },
-      phone: form?.app_kyc_form_by_pk?.phone_number,
+      phone: form?.app_kyc_form_by_pk?.phone_number ? form?.app_kyc_form_by_pk?.phone_number : data.phone,
       first_name: {
         placeholder:  kycFormConfig?.kyc_get_form_config?.first_name?.placeholder,
         prevValue: form?.app_kyc_form_by_pk?.first_name
@@ -377,8 +281,7 @@ export function FormProvider ({ children }: Props) {
         citizenship: data.citizenship.prevValue?.value ? data.citizenship.prevValue?.value : data.citizenship.placeholder,
         email_address: data.email_address.prevValue ? data.email_address.prevValue :  data.email_address.placeholder,
         phone_number: data.phone,
-        last_name: 'Bratik',
-        // data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder
+        last_name:  data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder,
         birthdate: data.birthday,
         first_name: data.first_name.prevValue ? data.first_name.prevValue : data.first_name.placeholder,
         address_street1: data.addressLine,
@@ -386,6 +289,7 @@ export function FormProvider ({ children }: Props) {
         address_province: data.state.prevValue,
         address_postal_code: data.zipcode,
         address_city: data.city,
+        address_country: data.country.prevValue ? data.country.prevValue : data.country.placeholder,
         tax_id_value: data.socialSecurityNumber,
         tax_id_type: data.tax_id_type,
         employment_status: data.employment_status.prevValue,
@@ -408,14 +312,13 @@ export function FormProvider ({ children }: Props) {
         disclosures_drivewealth_market_data_agreement: data.disclosures_drivewealth_market_data_agreement,
         disclosures_drivewealth_privacy_policy: data.disclosures_drivewealth_privacy_policy,
         disclosures_rule14b: data.disclosures_rule14b,
-        disclosures_signed_by: 'Bratik'
-        // data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder
+        disclosures_signed_by: data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder
       },
     });
   };
-  console.log(data);
+
   const {
-    step, isFirstStep, back,
+    step, back,
     next, isLastPage, currentStepIndex, goToStep
   } = useMultistepForm([
     null,
@@ -439,19 +342,13 @@ export function FormProvider ({ children }: Props) {
 
   const value = {
     step,
-    isFirstStep,
     back,
     next,
     isLastPage,
     currentStepIndex,
     goToStep,
     data,
-    formStatus: {
-      formStatus,
-      formStatusLoading
-    },
     flags: countries,
-    countries: [],
     verifyCodeRequest: {
       verifyCode,
       loading: verifyLoading,
@@ -464,18 +361,12 @@ export function FormProvider ({ children }: Props) {
       data: verificationCodeData,
       error: verificationCodeError
     },
-    sendKycFormRequest: {
-      sendKycForm,
-      loading: sendKycFormLoading,
-      data: sendKycFormData,
-      error: sendKycFormError
-    },
     onSendData,
     appId,
     updateFields,
+    formStatus,
+    loader: formLoading || kycFormConfigLoader || appIdLoading || formStatusLoading
   };
-
-  if(formLoading && kycFormConfigLoader && appIdLoading && formStatusLoading) return <Loader/>;
 
   return (
     <FormContext.Provider value={value}>

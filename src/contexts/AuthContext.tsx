@@ -40,7 +40,6 @@ export function AuthProvider({ children }: Props) {
     skip: !currentUser
   });
 
-
   const [applink, { data, loading: appLinkLoading }] = useMutation(CREATE_APP_LINK);
 
   const appLinkAppId =  data?.insert_app_profiles?.returning?.find((i: any) => i?.id)?.id;
@@ -92,6 +91,7 @@ export function AuthProvider({ children }: Props) {
     appId: appIdAppId ? appIdAppId : appLinkAppId,
     appIdLoading: addIdLoading || appLinkLoading,
   };
+
   return (
     <AuthContext.Provider value={value}>
       {children}
