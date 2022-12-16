@@ -165,7 +165,7 @@ export const InvestmentProfileForm = ({
         <h2>What is your liquid net worth?</h2>
         <p>{'the amount of money you\'ve got in cash  or cash equivalents after you deducted your liabilities from your liquid assets.'}</p>
         <Dropdown
-          withPlaceholder={'liquid net worth'}
+          withPlaceholder={'Liquid net worth'}
           openDropdown={openLiquid}
           value={investor_profile_net_worth_liquid.name}
           onClick={() => setOpenLiquid(!openLiquid)}
@@ -186,15 +186,34 @@ export const InvestmentProfileForm = ({
           <div>{investor_profile_net_worth_liquid.name}</div>
         </Dropdown>
         <h2>What is your investment experience?</h2>
-        <Dropdown list={expList} openDropdown={openExp} onClick={() => setOpenExp(!openExp)} setOpenDropdown={setOpenExp}>
+        <Dropdown
+          list={expList}
+          openDropdown={openExp}
+          onClick={() => setOpenExp(!openExp)}
+          setOpenDropdown={setOpenExp}
+          withPlaceholder={'Investment Experience'}
+          value={investor_profile_experience.name}
+        >
           <div>{investor_profile_experience.name}</div>
         </Dropdown>
         <h2>What are your investment objectives?</h2>
-        <Dropdown list={objList} openDropdown={openObj} onClick={() => setOpenObj(!openObj)} setOpenDropdown={setOpenObj}>
+        <Dropdown
+          list={objList}
+          openDropdown={openObj}
+          onClick={() => setOpenObj(!openObj)}
+          withPlaceholder={'Investment Objectives'}
+          value={investor_profile_objectives.name}
+          setOpenDropdown={setOpenObj}>
           <div>{investor_profile_objectives.name}</div>
         </Dropdown>
         <h2>What is your risk tolerance?</h2>
-        <Dropdown list={toleranceList} openDropdown={openTolerance} onClick={() => setOpenTolerance(!openTolerance)} setOpenDropdown={setOpenTolerance}>
+        <Dropdown
+          list={toleranceList}
+          openDropdown={openTolerance}
+          onClick={() => setOpenTolerance(!openTolerance)}
+          withPlaceholder={'Risk Tolerance'}
+          value={investor_profile_risk_tolerance.name}
+          setOpenDropdown={setOpenTolerance}>
           <div>{investor_profile_risk_tolerance.name}</div>
         </Dropdown>
       </div>

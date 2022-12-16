@@ -16,12 +16,14 @@ export const CustomerAgreementForm = () => {
           return (
             <li className={styles.mainItem} key={index.toString()}>
               <h2>{i.title}</h2>
-              <p>{parse(i.content)}</p>
+              {i.content && (
+                <p>{parse(i.content)}</p>
+              )}
               {i.subcontent && (
                 <p>{i.subcontent}</p>
               )}
               {i.lists && (
-                <ul>
+                <ul className={styles.innerList}>
                   {
                     i.lists.map((j, indexJ) => {
                       return (

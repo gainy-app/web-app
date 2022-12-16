@@ -1,7 +1,7 @@
 import styles from './success.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
 import { Button, Image, Input, Loader } from '../../components';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useLayoutEffect, useState } from 'react';
 import { config } from '../GetApp/config';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
@@ -19,11 +19,11 @@ export default function Success () {
   const navigate = useNavigate();
   const status = localStorage.getItem('status');
 
-  useEffect(()=> {
-    if(status !== null) {
+  useLayoutEffect(()=> {
+    if(status === null) {
       navigate(routes.home);
     }
-  }, []);
+  }, [status]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,14 +43,17 @@ export default function Success () {
       <main className={styles.main}>
         <section className={styles.section}>
           <Image type={imageTypes.logoWhite} className={styles.logo}/>
-          <h1 className={styles.title}>{title}</h1>
+          <h1>Congratulations!</h1>
+          <h2 className={styles.title}>{title}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
           <a href={downloadButton.link} className={styles.buttonLink}>
             <Button variant={'download'}>
               {downloadButton.text}
             </Button>
           </a>
-          <Image type={imageTypes.divider}/>
+          <div className={styles.line}>
+            <Image type={imageTypes.line}/>
+          </div>
           <div className={styles.qrWrapper}>
             <QRCodeSVG value={qrcode} className={styles.qrCode}/>
           </div>

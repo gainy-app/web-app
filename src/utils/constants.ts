@@ -16,7 +16,8 @@ export const imageTypes = {
   arrow: 'arrow',
   arrowDropdown: 'arrowDropdown',
   shield: 'shield',
-  checkbox: 'checkbox'
+  checkbox: 'checkbox',
+  line: 'line'
 };
 
 export const phoneMasks = {

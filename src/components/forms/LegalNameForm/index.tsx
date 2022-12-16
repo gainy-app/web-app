@@ -29,15 +29,19 @@ type Props = userData & {
 export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:Props) => {
   const { title,subtitle } = config;
   const { next ,back, onSendData } = useFormContext();
-  const [value, onChange] = useState((JSON.stringify(dayjs(birthday).toDate())) !== 'null' ? dayjs(birthday).toDate() : new Date());
+  const [value, onChange] = useState(birthday ? dayjs(birthday).toDate() : dayjs(new Date()).subtract(18, 'year').subtract(1, 'day').toDate());
   const [onShowCalender, setOnShowCalender] = useState(false);
   const onNextClick = () => {
+    if(!birthday) {
+      updateFields({
+        birthday: dayjs(value).format('YYYY.MM.DD')
+      });
+    }
     onSendData();
     next();
   };
-  const isYoungster = dayjs().diff(dayjs(value), 'hour') < 157680;
+  const isYoungster = dayjs().diff(value, 'hour') < 157680;
   const disable = !last_name.placeholder || !first_name.placeholder || isYoungster ;
-
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.inputFormWrapper}>

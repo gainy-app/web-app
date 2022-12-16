@@ -7,6 +7,7 @@ import { useFormContext } from '../../../contexts/FormContext';
 import { parseGQLerror } from '../../../utils/helpers';
 import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
+import styles from './phonenumber.module.scss';
 
 interface phoneData {
   phone: string
@@ -45,7 +46,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
           value={phone}
         />
       </Input>
-      <p style={{ color: 'red' }}>
+      <p className={styles.error}>
         {parseGQLerror(verifyCodeRequest?.error)}
       </p>
       <ButtonsGroup onBack={back}>

@@ -7,6 +7,8 @@ import React from 'react';
 import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import parse from 'html-react-parser';
+import { parseGQLerror } from '../../../utils/helpers';
+import styles from './verifyphonenumber.module.scss';
 
 interface verifyData {
   verifyCode: string
@@ -17,7 +19,7 @@ type Props = verifyData & {
 }
 
 export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
-  const { data , verificationCodeRequest, verifyCodeRequest, back } = useFormContext();
+  const { data , verificationCodeRequest, verifyCodeRequest, back, appId } = useFormContext();
   const { title,subtitle } = config(data.phone);
   const disabled  = verifyCode?.length !== 6;
 
@@ -26,6 +28,16 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
       variables: {
         verification_code_id: verifyCodeRequest?.data?.verification_send_code?.verification_code_id,
         user_input: verifyCode,
+      }
+    });
+  };
+
+  const onSendVerifyCodeAgain = () => {
+    verifyCodeRequest.verifyCode({
+      variables: {
+        profile_id:  appId,
+        channel: 'SMS',
+        address: `+1${String(data.phone)}`
       }
     });
     updateFields({
@@ -48,8 +60,14 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
           value={verifyCode}
         />
       </Input>
+      <div
+        onClick={onSendVerifyCodeAgain}
+        className={styles.sendAgain}>Send Again</div>
+      <p className={styles.error}>
+        {parseGQLerror(verifyCodeRequest?.error)}
+      </p>
       <ButtonsGroup onBack={back}>
-        <Button disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
+        <Button disabled={disabled} type={'button'} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>
   );

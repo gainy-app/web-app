@@ -20,10 +20,10 @@ export const StepControl = ({ stepNumber,withEdit, stepTitle, activeStep, onEdit
             {stepNumber}
           </div>
         )}
-        <span className={styles.stepTitle}>{stepTitle}</span>
+        <span className={`${styles.stepTitle} ${activeStep ?  '' : styles.resetMargin}`}>{stepTitle}</span>
       </div>
       {withEdit && (
-        <div className={styles.edit} onClick={() => onEdit(step)}>edit</div>
+        <div className={styles.edit} onClick={() => onEdit(step)}>Edit</div>
       )}
     </div>
   );

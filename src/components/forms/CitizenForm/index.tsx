@@ -30,12 +30,12 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
     setOpenDropdown(!openDropdown);
   };
-  const witheList = country?.prevValue === 'USA' || country.placeholder === 'USA';
+  const whiteList = country?.prevValue === 'USA' && country.placeholder === 'USA';
 
   const { title,subtitle, description, notAvailable } = config(selectedCountry);
 
   const onNextClick = () => {
-    if(witheList) {
+    if(whiteList) {
       logFirebaseEvent('dw_kyc_ios_none_usa', {
         country
       });
@@ -78,7 +78,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
         </div>
       </Dropdown>
       <div className={styles.content}>
-        {witheList
+        {whiteList
           ? <p>{parse(description)}</p>
           : (
             <div>
@@ -86,7 +86,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
               <p>{notAvailable.subtitle}</p>
             </div>
           )}
-        <Button type={'button'} onClick={onNextClick}>{witheList ? 'Continue' : 'Notify me'}</Button>
+        <Button type={'button'} onClick={onNextClick}>{whiteList ? 'Continue' : 'Notify me'}</Button>
       </div>
     </FormWrapper>
   );

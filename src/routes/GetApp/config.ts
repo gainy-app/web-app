@@ -1,6 +1,6 @@
 export const config = {
-  title: 'Get the mobile App',
-  subtitle: 'Our brand new web platform is so new it’s not even there yet. For now, please continue in our mobile app by signing in with the account you’ve just created.',
+  title: 'You’ve successfully completed onboarding ',
+  subtitle: 'To check your KYC status and continue, please get our mobile app by signing in with the account you’ve just created.',
   downloadButton: {
     text: 'Download App',
     link: 'https://go.gainy.app/ZOFw/Webp'

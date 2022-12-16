@@ -26,6 +26,9 @@ input::-webkit-inner-spin-button {
     padding: 20px 16px;
     width: 100%;
     background: transparent;
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-style: normal;
+    font-weight: 500;
 
     &::placeholder {
       color: $gray-light;

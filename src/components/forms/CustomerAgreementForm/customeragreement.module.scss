@@ -43,7 +43,7 @@
   }
 
   .mainList {
-    padding-left: 17px;
+    padding-left: 0;
 
     .mainItem {
       font-family: "SF Pro Display Medium", sans-serif;
@@ -54,7 +54,7 @@
 
     .innerList {
       padding-left: 0;
-      list-style: inside numeric;
+      list-style: inside lower-roman;
 
       li {
         font-family: "SF Pro Display Medium", sans-serif;

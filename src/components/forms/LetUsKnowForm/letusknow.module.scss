@@ -2,6 +2,12 @@
 
 .letUsKnow {
   label {
+    &:first-child {
+      > div {
+        height: 80px;
+      }
+    }
+
     .activeField {
       border-bottom: 2px solid rgba(231, 234, 238, .24);
       border-bottom-left-radius: 0;

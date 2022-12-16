@@ -31,7 +31,7 @@ export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <Input
-        placeholder={email_address?.placeholder}
+        placeholder={'Email'}
         value={email_address.prevValue ? email_address.prevValue : email_address.placeholder}
         onChange={
           (e) => updateFields({ email_address: {

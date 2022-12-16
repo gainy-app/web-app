@@ -17,9 +17,8 @@ interface Props {
 export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   const { isLastPage, next, onSendData, data, updateFields, appId } = useFormContext();
   const [checked, setChecked] = useState(false);
-  const [sendFormFinale] = useMutation(KYC_SEND_FORM);
+  const [sendFormFinale, { error }] = useMutation(KYC_SEND_FORM);
   const navigate = useNavigate();
-  const status = localStorage.getItem('status');
   const { titleWithLink, subtitleWithLink } = config;
 
   const steps = [
@@ -32,14 +31,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
     switch (true) {
       case currentStepIndex === 0:
         return (
-          <Button onClick={() => {
-            console.log(status, 'navifator');
-            if(status) {
-              localStorage.removeItem('status');
-              navigate(routes.success);
-            }
-            next();
-          }}>{'Start'}</Button>
+          <Button onClick={next}>{'Start'}</Button>
         );
       case currentStepIndex === 7:
         return (
@@ -63,7 +55,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                 }).then((res) => {
                   if(res.data.kyc_send_form.status) {
                     localStorage.setItem('status', res.data.kyc_send_form.status);
-                    // eslint-disable-next-line @typescript-eslint/no-shadow
                     const status = localStorage.getItem('status');
                     if(status === res.data.kyc_send_form.status) {
                       navigate(routes.success);
@@ -130,6 +121,9 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       )}
       <div className={styles.button}>
         {buttonRender()}
+        {error?.message && (
+          <p style={{ color: 'red' }}>Something wrong</p>
+        )}
       </div>
     </FormWrapper>
   );

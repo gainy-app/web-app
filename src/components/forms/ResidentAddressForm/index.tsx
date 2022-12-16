@@ -30,7 +30,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
   const { title,subtitle } = config;
   const { next, back ,onSendData, data } = useFormContext();
   const [statesOpen, setStatesOpen] = useState(false);
-  const [getValidation, {  error: validationError , called }] = useLazyQuery(VALIDATE_ADDRESS);
+  const [getValidation, {  error: validationError }] = useLazyQuery(VALIDATE_ADDRESS);
 
   const onNextClick = () => {
     getValidation({
@@ -42,11 +42,12 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
         postal_code: zipcode,
         country: data.country.prevValue ? data.country.prevValue : data.country.placeholder,
       }
+    }).then(res => {
+      if(res) {
+        onSendData();
+        next();
+      }
     });
-    if(!validationError  && called) {
-      onSendData();
-      next();
-    }
   };
 
   const statesList = state.choices.map((choice: {value: string, name: string}) => {

@@ -4,9 +4,6 @@
   position: relative;
   border-radius: 16px;
   padding: 20px 16px 12px;
-  font-family: "SF Pro Display Medium", sans-serif;
-  font-weight: 500;
-  font-size: 16px;
   background-color: #fff;
   border: 2px solid transparent;
 
@@ -15,20 +12,29 @@
     background-color: unset;
     outline: none;
     width: 100%;
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
   }
 
   label {
     position: absolute;
     left: 18px;
-    top: 16px;
+    top: 20px;
     color: #b1bdc8;
     transform-origin: 0 0;
-    transition: transform .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    font-family: "SF Compact Rounded", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 12px;
   }
 
   input:focus + label,
   input:not(:placeholder-shown) + label {
     transform: translateY(-12px) scale(.8);
+    font-size: 10px;
   }
 
   input::placeholder {
