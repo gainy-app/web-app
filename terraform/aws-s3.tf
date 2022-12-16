@@ -20,6 +20,7 @@ locals {
     "js"    = "application/javascript"
     "json"  = "application/json"
     "map"   = "application/json"
+    "gif"   = "image/gif"
     "png"   = "image/png"
     "svg"   = "image/svg+xml"
     "txt"   = "text/plain"
