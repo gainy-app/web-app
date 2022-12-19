@@ -49,7 +49,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
       <p className={styles.error}>
         {parseGQLerror(verifyCodeRequest?.error)}
       </p>
-      <ButtonsGroup onBack={back}>
+      <ButtonsGroup onBack={back} onNext={onNextClick} disableNext={phone?.length <= 9}>
         <Button
           type={'button'}
           disabled={phone?.length <= 9}

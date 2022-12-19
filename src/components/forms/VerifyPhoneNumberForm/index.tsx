@@ -44,7 +44,6 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
       ...data, verifyCode: ''
     });
   };
-
   return (
     <FormWrapper title={title} subtitle={parse(subtitle)}>
       <Input>
@@ -63,10 +62,22 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
       <div
         onClick={onSendVerifyCodeAgain}
         className={styles.sendAgain}>Send Again</div>
-      <p className={styles.error}>
-        {parseGQLerror(verifyCodeRequest?.error)}
-      </p>
-      <ButtonsGroup onBack={back}>
+      {
+        parseGQLerror(verifyCodeRequest?.error) && (
+          <p className={styles.error}>
+            {parseGQLerror(verifyCodeRequest?.error)}
+          </p>
+        )
+      }
+      {
+        parseGQLerror(verificationCodeRequest?.error) && (
+          <p  className={styles.error}>
+            {parseGQLerror(verificationCodeRequest?.error)}
+          </p>
+        )
+      }
+
+      <ButtonsGroup onBack={back} disableNext={disabled} onNext={onNextClick}>
         <Button disabled={disabled} type={'button'} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>

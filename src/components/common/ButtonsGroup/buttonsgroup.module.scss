@@ -1,20 +1,50 @@
 @import "../../../styles/mixins";
 
 .buttons {
-  @include flex(row,space-between,center);
+  @include flex(row, space-between, center);
   margin-top: 40px;
-
-  .arrow {
-    padding: 16px;
-    background: $white;
-    border-radius: 16px;
-  }
 
   button {
     padding: 16px 83px;
 
     @include phone {
       padding: 16px 65px;
+    }
+  }
+
+  .arrowWrapper {
+    display: flex;
+    column-gap: 24px;
+
+    .arrow {
+      padding: 16px;
+      background: $white;
+      border-radius: 16px;
+    }
+
+    .arrowNext {
+      padding: 16px;
+      background: $white;
+      border-radius: 16px;
+      outline: none;
+      border: none;
+
+      &:disabled {
+        svg {
+          * {
+            stroke: #b1bdc8;
+          }
+        }
+      }
+
+      &:focus {
+        outline: none;
+        border: none;
+      }
+
+      svg {
+        transform: rotateZ(-180deg);
+      }
     }
   }
 }

@@ -42,6 +42,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
   };
   const isYoungster = dayjs().diff(value, 'hour') < 157680;
   const disable = !last_name.placeholder || !first_name.placeholder || isYoungster ;
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.inputFormWrapper}>
@@ -82,7 +83,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
             label={'Birthday'}
             readOnly
             onClick={() => setOnShowCalender(!onShowCalender)}
-            value={dayjs(value).format('YYYY.MM.DD')}
+            value={value >= dayjs(new Date()).subtract(18, 'year').subtract(2, 'day').toDate() ? '' :dayjs(value).format('YYYY.MM.DD')}
           >
 
           </FloatingInput>
@@ -104,7 +105,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
         </div>
       </div>
       {isYoungster && (
-        <p>You are under 18</p>
+        <p className={styles.error}>You are under 18</p>
       )}
       <ButtonsGroup onBack={back}>
         <Button disabled={disable} type={'button'} onClick={onNextClick}>{'Next'}</Button>

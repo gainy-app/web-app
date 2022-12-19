@@ -72,6 +72,8 @@ export const InvestmentProfileForm = ({
     || !investor_profile_risk_tolerance.prevValue
   ;
 
+  console.log(investor_profile_annual_income);
+
   const expList = investor_profile_experience?.choices?.map((choice: {value: string, name: string}) => {
     return <div onClick={() => {
       updateFields({
@@ -113,6 +115,8 @@ export const InvestmentProfileForm = ({
     key={choice.value}
     >{choice.name}</div>;
   });
+  console.log(income?.find(i => i?.value === investor_profile_annual_income.value)?.name);
+  console.log(investor_profile_annual_income.value);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.investmentProfile}>
@@ -120,7 +124,7 @@ export const InvestmentProfileForm = ({
         <Dropdown
           withPlaceholder={'Annual Income'}
           openDropdown={openIncome}
-          value={investor_profile_annual_income.name}
+          value={investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}
           onClick={() => setOpenIncome(!openIncome)}
           setOpenDropdown={setOpenIncome}
           list={income.map(i => {
@@ -136,14 +140,14 @@ export const InvestmentProfileForm = ({
               }
               }>{i.name}</div>;
           })} >
-          <div>{investor_profile_annual_income.name}</div>
+          <div>{investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}</div>
         </Dropdown>
         <h2>What is your total net worth?</h2>
         <p>Your assets minus your liabilities. Assets includes figures from checking, savings, liquid securities etc.</p>
         <Dropdown
           withPlaceholder={'Total net worth'}
           openDropdown={openNetWorth}
-          value={investor_profile_net_worth_total.name}
+          value={investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name :  networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}
           onClick={() => setOpenNetWorth(!openNetWorth)}
           setOpenDropdown={setOpenNetWorth}
           list={networth.map(i => {
@@ -159,7 +163,7 @@ export const InvestmentProfileForm = ({
               }
               }>{i.name}</div>;
           })} >
-          <div>{investor_profile_net_worth_total.name}</div>
+          <div>{investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name : networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}</div>
         </Dropdown>
 
         <h2>What is your liquid net worth?</h2>
@@ -167,7 +171,7 @@ export const InvestmentProfileForm = ({
         <Dropdown
           withPlaceholder={'Liquid net worth'}
           openDropdown={openLiquid}
-          value={investor_profile_net_worth_liquid.name}
+          value={investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name :  liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}
           onClick={() => setOpenLiquid(!openLiquid)}
           setOpenDropdown={setOpenLiquid}
           list={liquid.map(i => {
@@ -183,7 +187,7 @@ export const InvestmentProfileForm = ({
               }
               }>{i.name}</div>;
           })} >
-          <div>{investor_profile_net_worth_liquid.name}</div>
+          <div>{investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name : liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}</div>
         </Dropdown>
         <h2>What is your investment experience?</h2>
         <Dropdown

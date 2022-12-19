@@ -38,6 +38,10 @@
   line-height: 24px;
   opacity: 0;
   transition: all .4s ease-in-out;
+
+  @media (max-height: 820px) {
+    max-height: 200px;
+  }
 }
 
 .rotate {

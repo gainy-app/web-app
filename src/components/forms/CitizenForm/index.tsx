@@ -33,7 +33,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
   const whiteList = country?.prevValue === 'USA' || country.placeholder === 'USA';
 
   const { title,subtitle, description, notAvailable } = config(selectedCountry);
-
+  const findCountryName = (countryValue: string) => country?.choices?.find((choicedCountry: any) => choicedCountry.value === countryValue).name;
   const onNextClick = () => {
     if(whiteList) {
       logFirebaseEvent('dw_kyc_ios_none_usa', {
@@ -59,7 +59,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
      `}
     key={i.toString()}
     >
-      <img src={selectedFlag} className={styles.flag} alt=""/>
+      <img src={selectedFlag} alt=""/>
       <span>{item?.name}</span>
     </li>;
   });
@@ -75,7 +75,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
       >
         <div className={styles.countryWrapper}>
           <img src={ country?.flag} alt={country?.prevValue}/>
-          <div>{country?.prevValue ? country?.prevValue : country.placeholder}</div>
+          <div className={styles.selectedFlag}>{country?.prevValue ? findCountryName(country?.prevValue) : findCountryName(country.placeholder)}</div>
         </div>
       </Dropdown>
       <div className={styles.content}>

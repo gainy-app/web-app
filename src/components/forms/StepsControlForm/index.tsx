@@ -62,10 +62,12 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                   }
                 });
               }
-            }}>{'Done ! Open my account'}</Button>
+            }}>{'Done! Open my account'}</Button>
         );
     }
   };
+
+  console.log(data);
 
   return (
     <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>
@@ -122,7 +124,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       <div className={styles.button}>
         {buttonRender()}
         {error?.message && (
-          <p style={{ color: 'red' }}>Something wrong</p>
+          <p className={styles.error}>Something wrong</p>
         )}
       </div>
     </FormWrapper>

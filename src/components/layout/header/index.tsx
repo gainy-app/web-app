@@ -22,7 +22,7 @@ export const Header = () => {
     <header className={styles.header}>
       <nav className={styles.navigation}>
         <Image type={imageTypes.logo} onClick={onLogoClick}/>
-        <Button onClick={onLogout}>Logout</Button>
+        <Button onClick={onLogout}>Log Out</Button>
       </nav>
     </header>
   );

@@ -117,7 +117,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
           </div>
         )}
       </div>
-      <ButtonsGroup onBack={back}>
+      <ButtonsGroup onBack={back} disableNext={!disable} onNext={onNextClick}>
         <Button disabled={!disable} type={'button'} onClick={onNextClick}>{'Continue'}</Button>
       </ButtonsGroup>
     </FormWrapper>
