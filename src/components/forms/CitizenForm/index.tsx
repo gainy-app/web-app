@@ -48,7 +48,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
     const selectedFlag = flags?.countries.find((flag: any) => flag.name === item.name)?.flag_w40_url;
     return <li onClick={() => {
       setSelectedCountry(item.name);
-      updateFields({ country : { ...country,   placeholder: item.name,
+      updateFields({ country : { ...country,   placeholder: item.value,
         flag: selectedFlag,
         prevValue: item.value,
       }

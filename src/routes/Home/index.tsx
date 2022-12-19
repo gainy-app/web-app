@@ -15,7 +15,7 @@ export default function Home () {
   } = useFormContext();
   const [start, setStart] = useState<boolean>(false);
   const investSumFromStorage = localStorage.getItem('invest');
-  const [searchParams, _] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
 
