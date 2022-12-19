@@ -20,6 +20,10 @@ export const imageTypes = {
   line: 'line'
 };
 
+export const accessConst = {
+  'trading_access': 'arie3IBiep6phai7ieg4Eej0ShahJaaB'
+};
+
 export const phoneMasks = {
   us: 'us'
 };

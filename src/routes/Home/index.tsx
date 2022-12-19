@@ -3,7 +3,7 @@ import { config } from './config';
 import React, { useState } from 'react';
 import { Invest, Kyc, Layout, Loader } from 'components';
 import { Navigate, useSearchParams } from 'react-router-dom';
-import { routes } from 'utils/constants';
+import { accessConst, routes } from 'utils/constants';
 import { useFormContext } from 'contexts/FormContext';
 
 export default function Home () {
@@ -17,7 +17,7 @@ export default function Home () {
   const investSumFromStorage = localStorage.getItem('invest');
   const [searchParams, _] = useSearchParams();
 
-  const accessWithLink = searchParams.get('trading_access') === 'arie3IBiep6phai7ieg4Eej0ShahJaaB';
+  const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
 
   if(loader) return <Loader/>;
   const status = formStatus?.trading_profile_status[0]?.kyc_status;
