@@ -31,7 +31,7 @@ interface Props {
 }
 
 export function FormProvider ({ children }: Props) {
-  const { appId, currentUser, appIdLoading } = useAuth();
+  const { appId, currentUser, appIdLoading, isTreadingEnabled } = useAuth();
 
   const { data: kycFormConfig, loading: kycFormConfigLoader } = useQuery(GET_FORM_CONFIG, {
     variables: {
@@ -366,6 +366,7 @@ export function FormProvider ({ children }: Props) {
     appId,
     updateFields,
     formStatus,
+    isTreadingEnabled,
     loader: formLoading || kycFormConfigLoader || appIdLoading || formStatusLoading
   };
 

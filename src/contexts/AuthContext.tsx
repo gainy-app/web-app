@@ -13,6 +13,7 @@ interface IAuthContext {
   loading: boolean,
   appId: any
   appIdLoading: boolean
+  isTreadingEnabled: any
 }
 
 const AuthContext = React.createContext<IAuthContext>({
@@ -23,6 +24,7 @@ const AuthContext = React.createContext<IAuthContext>({
   loading: true,
   appId: {},
   appIdLoading: false,
+  isTreadingEnabled: {}
 });
 
 export function useAuth() {
@@ -45,12 +47,14 @@ export function AuthProvider({ children }: Props) {
   const appLinkAppId =  data?.insert_app_profiles?.returning?.find((i: any) => i?.id)?.id;
   const appIdAppId = appId?.app_profiles?.find((i: any) => i?.id).id;
 
+  const isTreadingEnabled =  appId ? appId : appLinkAppId;
+
 
   async function logout() {
     await auth.signOut();
   }
-
-  const appIdCondition = appIdAppId;
+  //
+  // const appIdCondition = appIdAppId;
 
   async function signInWithGoogle ()  {
     try {
@@ -74,7 +78,7 @@ export function AuthProvider({ children }: Props) {
         user,
         setCurrentUser,
         setUserLoading,
-        appIdCondition,
+        appIdAppId,
         applink
       )
     );
@@ -90,6 +94,7 @@ export function AuthProvider({ children }: Props) {
     signInWithApple,
     appId: appIdAppId ? appIdAppId : appLinkAppId,
     appIdLoading: addIdLoading || appLinkLoading,
+    isTreadingEnabled
   };
 
   return (

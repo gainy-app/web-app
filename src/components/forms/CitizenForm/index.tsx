@@ -30,7 +30,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
     setOpenDropdown(!openDropdown);
   };
-  const whiteList = country?.prevValue === 'USA' && country.placeholder === 'USA';
+  const whiteList = country?.prevValue === 'USA' || country.placeholder === 'USA';
 
   const { title,subtitle, description, notAvailable } = config(selectedCountry);
 
@@ -48,9 +48,9 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
     const selectedFlag = flags?.countries.find((flag: any) => flag.name === item.name)?.flag_w40_url;
     return <li onClick={() => {
       setSelectedCountry(item.name);
-      updateFields({ country : { ...country,   placeholder: country.placeholder,
+      updateFields({ country : { ...country,   placeholder: item.name,
         flag: selectedFlag,
-        prevValue: item.value
+        prevValue: item.value,
       }
       });
     }}
@@ -63,6 +63,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
       <span>{item?.name}</span>
     </li>;
   });
+
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>
