@@ -5,7 +5,7 @@ interface Props {
   stepNumber?: number
   stepTitle: string
   activeStep?: boolean
-  withEdit: boolean
+  withEdit?: boolean
   onEdit: (step: number) => void
   step: number
 }

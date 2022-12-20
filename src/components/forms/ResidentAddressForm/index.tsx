@@ -43,7 +43,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
         country: data.country.prevValue ? data.country.prevValue : data.country.placeholder,
       }
     }).then(res => {
-      if(res) {
+      if(!res.error) {
         onSendData();
         next();
       }
@@ -108,7 +108,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
             onClick={() => setStatesOpen(!statesOpen)}
             setOpenDropdown={setStatesOpen}>
             <div>
-              {state?.prevValue || 'State'}
+              {state?.prevValue ? state?.prevValue : <span style={{ color: '#b1bdc8' }}>State</span> }
             </div>
           </Dropdown>
         </div>
@@ -122,8 +122,13 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
           value={zipcode}
         />
       </div>
-      <p style={{ color: 'red' }}>{parseGQLerror(validationError)}</p>
-      <ButtonsGroup onBack={back}>
+      {
+        parseGQLerror(validationError) && (
+          <p className={styles.error}>{parseGQLerror(validationError)}</p>
+        )
+      }
+
+      <ButtonsGroup onBack={back} onNext={onNextClick} disableNext={disabled}>
         <Button type={'button'} disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>

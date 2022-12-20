@@ -122,7 +122,7 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
           <span onClick={() => setOpen(!open)} className={styles.pinInputShow}>{open ? 'Show': 'Hide'}</span>
         </div>
       </label>
-      <ButtonsGroup onBack={back}>
+      <ButtonsGroup onBack={back} onNext={onNextClick} disableNext={pin.filter(Boolean).length < 9}>
         <Button onClick={onNextClick} disabled={pin.filter(Boolean).length < 9}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>

@@ -145,7 +145,7 @@ export const LetUsKnowForm = ({
           </Field>
         </label>
       </div>
-      <ButtonsGroup onBack={back}>
+      <ButtonsGroup onBack={back} disableNext={disabled} onNext={onNextClick}>
         <Button type={'button'} onClick={onNextClick}
           disabled={disabled}
         >{'Next'}</Button>

@@ -47,7 +47,7 @@ export const EmploymentForm = ({ updateFields, employment_status }:Props) => {
         })}
       </div>
 
-      <ButtonsGroup onBack={back}>
+      <ButtonsGroup onBack={back} disableNext={disabled} onNext={onNextClick}>
         <Button disabled={disabled} type={'button'} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>

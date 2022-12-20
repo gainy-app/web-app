@@ -1,3 +1,5 @@
+@import "../../../styles/mixins";
+
 .investmentProfile {
   font-family: "SF Pro Display Medium", sans-serif;
   font-weight: 500;
@@ -9,6 +11,7 @@
     font-weight: 700;
     font-size: 24px;
     line-height: 32px;
+    margin: 0;
   }
 
   p {
@@ -16,6 +19,119 @@
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
-    margin-bottom: 32px;
+    margin: 0;
+  }
+
+  label {
+    & > div {
+      padding-left: 16px;
+      height: auto;
+      padding-top: 28px;
+      padding-bottom: 12px;
+
+      span {
+        left: 16px;
+      }
+
+      div {
+        min-height: 24px;
+      }
+    }
+  }
+
+  .income {
+    margin-top: 32px;
+
+    h2 {
+      margin-bottom: 32px;
+    }
+
+    label {
+      & > div {
+        margin-bottom: 64px;
+      }
+    }
+  }
+
+  .networth {
+    h2 {
+      margin-bottom: 32px;
+    }
+
+    p {
+      margin-bottom: 32px;
+    }
+
+    label {
+      & > div {
+        margin-bottom: 64px;
+      }
+    }
+  }
+
+  .liquid {
+    h2 {
+      margin-bottom: 32px;
+    }
+
+    p {
+      margin-bottom: 32px;
+    }
+
+    label {
+      & > div {
+        margin-bottom: 40px;
+      }
+    }
+
+    .line {
+      svg {
+        margin-bottom: 40px;
+
+        * {
+          stroke: #e7eaee;
+        }
+
+        @include iPhone {
+          width: 300px;
+        }
+      }
+    }
+  }
+
+  .exp {
+    h2 {
+      margin-bottom: 32px;
+    }
+
+    label {
+      & > div {
+        margin-bottom: 40px;
+      }
+    }
+  }
+
+  .obj {
+    h2 {
+      margin-bottom: 32px;
+    }
+
+    label {
+      & > div {
+        margin-bottom: 40px;
+      }
+    }
+  }
+
+  .risk {
+    h2 {
+      margin-bottom: 32px;
+    }
+
+    label {
+      & > div {
+        margin-bottom: 0;
+      }
+    }
   }
 }

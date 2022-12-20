@@ -1,7 +1,6 @@
 @import "../../../styles/mixins";
 
 .privacyWrapper {
-  overflow-y: scroll;
   max-height: 600px;
   margin-left: -95px;
   margin-right: -145px;
@@ -85,7 +84,6 @@
     position: sticky;
     bottom: -2px;
     left: 0;
-    width: 100%;
     background: #f7f8f9;
     display: flex;
     align-items: center;
@@ -93,6 +91,24 @@
     padding-top: 24px;
     padding-bottom: 24px;
     border-top: 1px solid rgba(0, 0, 0, .24);
+    margin-left: -380px;
+    margin-right: -342px;
+    padding-left: 384px;
+    padding-right: 316px;
+
+    @include macbookThirteen {
+      margin-left: -156px;
+      margin-right: -102px;
+      padding-left: 150px;
+      padding-right: 150px;
+    }
+
+    @media (max-width: $large-tablet) {
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
 
     @include phone {
       flex-direction: column;

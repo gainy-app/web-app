@@ -1,9 +1,9 @@
 import styles from './home.module.scss';
 import { config } from './config';
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { Invest, Kyc, Layout, Loader } from 'components';
-import { Navigate, useSearchParams } from 'react-router-dom';
-import { accessConst, routes } from 'utils/constants';
+import { Navigate } from 'react-router-dom';
+import { routes } from 'utils/constants';
 import { useFormContext } from 'contexts/FormContext';
 
 export default function Home () {
@@ -15,19 +15,17 @@ export default function Home () {
   } = useFormContext();
   const [start, setStart] = useState<boolean>(false);
   const investSumFromStorage = localStorage.getItem('invest');
-  const [searchParams] = useSearchParams();
 
-  const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
 
   if(loader) return <Loader/>;
   const status = formStatus?.trading_profile_status[0]?.kyc_status;
+  const withLinkFromStorage = localStorage.getItem('withLink') === 'true' ? true : false;
   const withTrading = isTreadingEnabled?.app_profiles?.find((profile: any) => !!profile.flags);
+
+  if(!(withTrading?.flags?.is_trading_enabled || withLinkFromStorage)) return <Navigate to={routes.getApp}/>;
   if(status !== null) {
     return <Navigate to={routes.success}/>;
   }
-
-  if(!(accessWithLink || withTrading?.flags?.is_trading_enabled)) return <Navigate to={routes.getApp}/>;
-
   return (
     <Layout footerClassName={styles.footer}>
       {

@@ -16,15 +16,30 @@ interface Props {
 }
 export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   const { isLastPage, next, onSendData, data, updateFields, appId } = useFormContext();
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [sendFormFinale, { error }] = useMutation(KYC_SEND_FORM);
   const navigate = useNavigate();
   const { titleWithLink, subtitleWithLink } = config;
 
+  const createAccountEdit = !!data.country?.prevValue || !!data.phone;
+
+  const verifyIdentityEdit = !!data.addressLine;
+
+  const investProfileEdit = !!data.investor_profile_annual_income.value;
+
   const steps = [
-    { title: 'Create your account', step: 0, redirect: 1 },
-    { title: 'Verify your identity', step: 7, redirect: 8 },
-    { title: 'Your investor profile', step: 11, redirect: 12 },
+    { title: 'Create your account',
+      step: 0, redirect: 1,
+      edit:  createAccountEdit
+    },
+    { title: 'Verify your identity',
+      step: 7, redirect: 8,
+      edit: verifyIdentityEdit
+    },
+    { title: 'Your investor profile',
+      step: 11, redirect: 12,
+      edit: investProfileEdit
+    },
   ];
 
   const buttonRender = () => {
@@ -67,8 +82,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
     }
   };
 
-  console.log(data);
-
   return (
     <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>
       {steps.map((step, i) => {
@@ -76,11 +89,12 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
           <StepControl
             stepTitle={step.title}
             key={i.toString()}
-            activeStep={currentStepIndex >= step.step}
+            activeStep={currentStepIndex >= step.step || step.edit}
+            // activeStep={step.edit}
             stepNumber={i + 1}
             onEdit={goToStep}
             step={step.redirect}
-            withEdit={currentStepIndex > 0 && currentStepIndex > step.step || isLastPage}
+            withEdit={step.edit}
           />
         );
       })}

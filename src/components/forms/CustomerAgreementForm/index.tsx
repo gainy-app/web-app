@@ -1,11 +1,12 @@
 import styles from './customeragreement.module.scss';
-import { Button } from 'components';
+import { Button, ButtonsGroup } from 'components';
 import { useFormContext } from 'contexts/FormContext';
 import parse from 'html-react-parser';
 import { config } from './config';
+import React from 'react';
 
 export const CustomerAgreementForm = () => {
-  const { next } = useFormContext();
+  const { next, back } = useFormContext();
   const { title, list, buttonText } = config;
   return (
     <div className={styles.privacyWrapper}>
@@ -38,8 +39,11 @@ export const CustomerAgreementForm = () => {
         })}
       </ol>
       <div className={styles.acceptBlock}>
-        <Button onClick={next}>{buttonText}</Button>
+        <ButtonsGroup onBack={back} onNext={next}>
+          <Button onClick={next}>{buttonText}</Button>
+        </ButtonsGroup>
       </div>
     </div>
+
   );
 };

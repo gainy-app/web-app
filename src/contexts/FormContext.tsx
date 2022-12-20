@@ -316,7 +316,6 @@ export function FormProvider ({ children }: Props) {
       },
     });
   };
-  console.log(data);
 
   const {
     step, back,

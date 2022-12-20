@@ -3,7 +3,7 @@
 .inputWrapper {
   position: relative;
   border-radius: 16px;
-  padding: 20px 16px 12px;
+  padding: 27px 16px 12px;
   background-color: #fff;
   border: 2px solid transparent;
 
@@ -21,7 +21,7 @@
   label {
     position: absolute;
     left: 18px;
-    top: 20px;
+    top: 25px;
     color: #b1bdc8;
     transform-origin: 0 0;
     transition: all .2s ease-in-out;
@@ -35,6 +35,7 @@
   input:not(:placeholder-shown) + label {
     transform: translateY(-12px) scale(.8);
     font-size: 10px;
+    text-transform: uppercase;
   }
 
   input::placeholder {

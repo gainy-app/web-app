@@ -1,9 +1,9 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Routes, useSearchParams } from 'react-router-dom';
 import { useAuth } from 'contexts/AuthContext';
 import { PrivateRoute, Loader } from 'components';
 import { Home, NotFound, SignIn, GetApp, Success } from 'routes';
-import { routes } from 'utils/constants';
+import { accessConst, routes } from 'utils/constants';
 import styles from './components/layout/layout.module.scss';
 import { usePage } from 'hooks';
 import { FormProvider } from './contexts/FormContext';
@@ -11,7 +11,13 @@ import { FormProvider } from './contexts/FormContext';
 function App() {
   const { loading } = useAuth();
   const { withHeader, isSuccess } = usePage();
-
+  const [searchParams] = useSearchParams();
+  const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
+  useEffect(() => {
+    if(searchParams.get('trading_access') === accessConst.trading_access) {
+      localStorage.setItem('withLink', accessWithLink.toString());
+    }
+  }, []);
   if(loading) {
     return <Loader/>;
   }

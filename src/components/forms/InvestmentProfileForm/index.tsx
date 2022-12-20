@@ -6,6 +6,8 @@ import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
 import styles from './investmentProfile.module.scss';
+import { Image } from '../../common/Image';
+import { imageTypes } from '../../../utils/constants';
 
 interface profileData {
   investor_profile_annual_income: {
@@ -64,15 +66,13 @@ export const InvestmentProfileForm = ({
     next();
   };
 
-  const disabled = !investor_profile_annual_income
+  const disabled = !investor_profile_annual_income.value
     || !investor_profile_net_worth_total?.value
     || !investor_profile_net_worth_liquid?.value
     || !investor_profile_experience.prevValue
     || !investor_profile_objectives.prevValue
     || !investor_profile_risk_tolerance.prevValue
   ;
-
-  console.log(investor_profile_annual_income);
 
   const expList = investor_profile_experience?.choices?.map((choice: {value: string, name: string}) => {
     return <div onClick={() => {
@@ -115,113 +115,126 @@ export const InvestmentProfileForm = ({
     key={choice.value}
     >{choice.name}</div>;
   });
-  console.log(income?.find(i => i?.value === investor_profile_annual_income.value)?.name);
-  console.log(investor_profile_annual_income.value);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.investmentProfile}>
-        <h2>What is your approximate annual income?</h2>
-        <Dropdown
-          withPlaceholder={'Annual Income'}
-          openDropdown={openIncome}
-          value={investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}
-          onClick={() => setOpenIncome(!openIncome)}
-          setOpenDropdown={setOpenIncome}
-          list={income.map(i => {
-            return <div
-              key={i.value}
-              onClick={() => {
-                updateFields({
-                  investor_profile_annual_income: {
-                    name: i.name,
-                    value: i.value
-                  }
-                });
-              }
-              }>{i.name}</div>;
-          })} >
-          <div>{investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}</div>
-        </Dropdown>
-        <h2>What is your total net worth?</h2>
-        <p>Your assets minus your liabilities. Assets includes figures from checking, savings, liquid securities etc.</p>
-        <Dropdown
-          withPlaceholder={'Total net worth'}
-          openDropdown={openNetWorth}
-          value={investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name :  networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}
-          onClick={() => setOpenNetWorth(!openNetWorth)}
-          setOpenDropdown={setOpenNetWorth}
-          list={networth.map(i => {
-            return <div
-              key={i.value}
-              onClick={() => {
-                updateFields({
-                  investor_profile_net_worth_total: {
-                    name: i.name,
-                    value: i.value
-                  }
-                });
-              }
-              }>{i.name}</div>;
-          })} >
-          <div>{investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name : networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}</div>
-        </Dropdown>
+        <div className={styles.income}>
+          <h2>What is your approximate annual income?</h2>
+          <Dropdown
+            withPlaceholder={'Annual Income'}
+            openDropdown={openIncome}
+            value={investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}
+            onClick={() => setOpenIncome(!openIncome)}
+            setOpenDropdown={setOpenIncome}
+            list={income.map(i => {
+              return <div
+                key={i.value}
+                onClick={() => {
+                  updateFields({
+                    investor_profile_annual_income: {
+                      name: i.name,
+                      value: i.value
+                    }
+                  });
+                }
+                }>{i.name}</div>;
+            })} >
+            <div>{investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}</div>
+          </Dropdown>
+        </div>
+        <div className={styles.networth}>
+          <h2>What is your total net worth?</h2>
+          <p>Your assets minus your liabilities. Assets includes figures from checking, savings, liquid securities etc.</p>
+          <Dropdown
+            withPlaceholder={'Total net worth'}
+            openDropdown={openNetWorth}
+            value={investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name :  networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}
+            onClick={() => setOpenNetWorth(!openNetWorth)}
+            setOpenDropdown={setOpenNetWorth}
+            list={networth.map(i => {
+              return <div
+                key={i.value}
+                onClick={() => {
+                  updateFields({
+                    investor_profile_net_worth_total: {
+                      name: i.name,
+                      value: i.value
+                    }
+                  });
+                }
+                }>{i.name}</div>;
+            })} >
+            <div>{investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name : networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}</div>
+          </Dropdown>
+        </div>
+        <div className={styles.liquid}>
+          <h2>What is your liquid net worth?</h2>
+          <p>{'the amount of money you\'ve got in cash  or cash equivalents after you deducted your liabilities from your liquid assets.'}</p>
+          <Dropdown
+            withPlaceholder={'Liquid net worth'}
+            openDropdown={openLiquid}
+            value={investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name :  liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}
+            onClick={() => setOpenLiquid(!openLiquid)}
+            setOpenDropdown={setOpenLiquid}
+            list={liquid.map(i => {
+              return <div
+                key={i.value}
+                onClick={() => {
+                  updateFields({
+                    investor_profile_net_worth_liquid: {
+                      name: i.name,
+                      value: i.value
+                    }
+                  });
+                }
+                }>{i.name}</div>;
+            })} >
+            <div>{investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name : liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}</div>
+          </Dropdown>
+          <div className={styles.line}>
+            <Image type={imageTypes.line}/>
+          </div>
 
-        <h2>What is your liquid net worth?</h2>
-        <p>{'the amount of money you\'ve got in cash  or cash equivalents after you deducted your liabilities from your liquid assets.'}</p>
-        <Dropdown
-          withPlaceholder={'Liquid net worth'}
-          openDropdown={openLiquid}
-          value={investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name :  liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}
-          onClick={() => setOpenLiquid(!openLiquid)}
-          setOpenDropdown={setOpenLiquid}
-          list={liquid.map(i => {
-            return <div
-              key={i.value}
-              onClick={() => {
-                updateFields({
-                  investor_profile_net_worth_liquid: {
-                    name: i.name,
-                    value: i.value
-                  }
-                });
-              }
-              }>{i.name}</div>;
-          })} >
-          <div>{investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name : liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}</div>
-        </Dropdown>
-        <h2>What is your investment experience?</h2>
-        <Dropdown
-          list={expList}
-          openDropdown={openExp}
-          onClick={() => setOpenExp(!openExp)}
-          setOpenDropdown={setOpenExp}
-          withPlaceholder={'Investment Experience'}
-          value={investor_profile_experience.name}
-        >
-          <div>{investor_profile_experience.name}</div>
-        </Dropdown>
-        <h2>What are your investment objectives?</h2>
-        <Dropdown
-          list={objList}
-          openDropdown={openObj}
-          onClick={() => setOpenObj(!openObj)}
-          withPlaceholder={'Investment Objectives'}
-          value={investor_profile_objectives.name}
-          setOpenDropdown={setOpenObj}>
-          <div>{investor_profile_objectives.name}</div>
-        </Dropdown>
-        <h2>What is your risk tolerance?</h2>
-        <Dropdown
-          list={toleranceList}
-          openDropdown={openTolerance}
-          onClick={() => setOpenTolerance(!openTolerance)}
-          withPlaceholder={'Risk Tolerance'}
-          value={investor_profile_risk_tolerance.name}
-          setOpenDropdown={setOpenTolerance}>
-          <div>{investor_profile_risk_tolerance.name}</div>
-        </Dropdown>
+        </div>
+        <div className={styles.exp}>
+          <h2>What is your investment experience?</h2>
+          <Dropdown
+            list={expList}
+            openDropdown={openExp}
+            onClick={() => setOpenExp(!openExp)}
+            setOpenDropdown={setOpenExp}
+            withPlaceholder={'Investment Experience'}
+            value={investor_profile_experience.name}
+          >
+            <div>{investor_profile_experience.name}</div>
+          </Dropdown>
+        </div>
+        <div className={styles.obj}>
+          <h2>What are your investment objectives?</h2>
+          <Dropdown
+            list={objList}
+            openDropdown={openObj}
+            onClick={() => setOpenObj(!openObj)}
+            withPlaceholder={'Investment Objectives'}
+            value={investor_profile_objectives.name}
+            setOpenDropdown={setOpenObj}>
+            <div>{investor_profile_objectives.name}</div>
+          </Dropdown>
+        </div>
+        <div className={styles.risk}>
+          <h2>What is your risk tolerance?</h2>
+          <Dropdown
+            list={toleranceList}
+            openDropdown={openTolerance}
+            onClick={() => setOpenTolerance(!openTolerance)}
+            withPlaceholder={'Risk Tolerance'}
+            value={investor_profile_risk_tolerance.name}
+            setOpenDropdown={setOpenTolerance}>
+            <div>{investor_profile_risk_tolerance.name}</div>
+          </Dropdown>
+        </div>
       </div>
-      <ButtonsGroup onBack={back}>
+      <ButtonsGroup onBack={back} onNext={onNextClick} disableNext={disabled}>
         <Button disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>

@@ -24,6 +24,9 @@
   .stepIndicatorWithTitle {
     display: flex;
     align-items: center;
+    font-family: "SF Pro Display Heavy", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
 
     .stepIndicator {
       width: 24px;
@@ -41,9 +44,6 @@
       line-height: 24px;
       display: inline-block;
       margin-left: 16px;
-      font-family: "SF Pro Display Heavy", sans-serif;
-      font-weight: 700;
-      font-size: 16px;
     }
 
     .resetMargin {

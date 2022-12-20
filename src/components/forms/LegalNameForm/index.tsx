@@ -9,6 +9,7 @@ import { ButtonsGroup } from '../../common/ButtonsGroup';
 import dayjs from 'dayjs';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { useOutBoardingClick } from '../../../hooks';
 
 interface userData {
   first_name: {
@@ -29,7 +30,7 @@ type Props = userData & {
 export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:Props) => {
   const { title,subtitle } = config;
   const { next ,back, onSendData } = useFormContext();
-  const [value, onChange] = useState(birthday ? dayjs(birthday).toDate() : dayjs(new Date()).subtract(18, 'year').subtract(1, 'day').toDate());
+  const [value, onChange] = useState(birthday ? dayjs(birthday).toDate() : dayjs(new Date()).subtract(18, 'year').toDate());
   const [onShowCalender, setOnShowCalender] = useState(false);
   const onNextClick = () => {
     if(!birthday) {
@@ -40,8 +41,9 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
     onSendData();
     next();
   };
-  const isYoungster = dayjs().diff(value, 'hour') < 157680;
+  const isYoungster = dayjs().diff(value, 'hour') < 157776;
   const disable = !last_name.placeholder || !first_name.placeholder || isYoungster ;
+  const { ref } = useOutBoardingClick(() => setOnShowCalender(false));
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>
@@ -77,18 +79,17 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
           value={last_name?.prevValue ? last_name.prevValue : last_name.placeholder}
         />
 
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative' }} ref={ref} onClick={() => setOnShowCalender(true)}>
           <FloatingInput
             id={'birthday'}
             label={'Birthday'}
             readOnly
-            onClick={() => setOnShowCalender(!onShowCalender)}
-            value={value >= dayjs(new Date()).subtract(18, 'year').subtract(2, 'day').toDate() ? '' :dayjs(value).format('YYYY.MM.DD')}
+            value={dayjs(value).format('YYYY.MM.DD')}
           >
 
           </FloatingInput>
           {onShowCalender && (
-            <div style={{ position: 'absolute', top: '58px' }}>
+            <div style={{ position: 'absolute', top: '58px' }} >
               <Calendar onChange={
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 (value: any) => {
@@ -96,6 +97,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
                   updateFields({
                     birthday: dayjs(value).format('YYYY.MM.DD')
                   });
+                  setOnShowCalender(false);
                 }}
               value={value}
               maxDate={dayjs(new Date()).toDate()}
@@ -107,7 +109,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
       {isYoungster && (
         <p className={styles.error}>You are under 18</p>
       )}
-      <ButtonsGroup onBack={back}>
+      <ButtonsGroup onBack={back} onNext={onNextClick} disableNext={disable}>
         <Button disabled={disable} type={'button'} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>

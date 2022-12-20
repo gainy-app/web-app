@@ -46,7 +46,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   };
   return (
     <FormWrapper title={title} subtitle={parse(subtitle)}>
-      <Input>
+      <Input centeredPlaceholder={!verifyCode}>
         <PatternFormat
           placeholder={'* * *  * * *'}
           valueIsNumericString

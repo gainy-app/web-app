@@ -13,6 +13,14 @@
     }
   }
 
+  ul {
+    max-height: 300px;
+
+    @media (max-height: 800px) {
+      max-height: 200px;
+    }
+  }
+
   .label {
     position: absolute;
     color: #b1bdc8;

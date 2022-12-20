@@ -10,11 +10,22 @@
     color: #000;
   }
 
+  label[for="test"] {
+    & > div {
+      height: auto;
+      padding: 6px 24px;
+    }
+  }
+
   label[for="test1"] {
+    & > div {
+      height: auto;
+      padding: 0 24px;
+    }
+
     p {
-      @include iPhone {
-        max-width: 150px;
-      }
+      max-width: 180px;
+      line-height: 18px;
     }
   }
 

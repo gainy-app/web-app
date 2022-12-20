@@ -29,9 +29,11 @@ input::-webkit-inner-spin-button {
     font-family: "SF Pro Display Medium", sans-serif;
     font-style: normal;
     font-weight: 500;
+    transition: all .1s ease-in-out;
 
     &::placeholder {
       color: $gray-light;
+      margin-top: 2px;
     }
 
     &:focus,
@@ -39,5 +41,13 @@ input::-webkit-inner-spin-button {
       border: none;
       outline: none;
     }
+  }
+}
+
+.centered {
+  input {
+    line-height: 0;
+    padding: 17px 16px;
+    margin-top: 7px;
   }
 }

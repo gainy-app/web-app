@@ -100,7 +100,7 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
         </Dropdown>
       </div>
 
-      <ButtonsGroup onBack={back}>
+      <ButtonsGroup onBack={back} onNext={onNextClick} disableNext={disabled}>
         <Button type={'button'}  disabled={disabled} onClick={onNextClick}>{'Next'}</Button>
       </ButtonsGroup>
     </FormWrapper>

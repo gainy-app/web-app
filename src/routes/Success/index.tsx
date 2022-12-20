@@ -85,7 +85,6 @@ export default function Success () {
               )}
             </div>
           </form>
-
         </section>
       </main>
       <footer className={styles.footer}>
