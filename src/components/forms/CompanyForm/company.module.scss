@@ -1,10 +1,14 @@
 .companyInnerForm {
-  font-family: "SF Pro Display Medium", sans-serif;
   font-weight: 500;
   font-size: 16px;
 
   & > div {
     margin-bottom: 16px;
+
+    & > label {
+      font-weight: 500;
+      font-size: 16px;
+    }
   }
 
   & label {
@@ -26,9 +30,9 @@
     color: #b1bdc8;
     transform-origin: 0 0;
     transition: all .2s ease-in-out;
-    font-family: "SF Compact Rounded", sans-serif;
-    font-weight: 600;
-    font-size: 14px;
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
     line-height: 12px;
   }
 
@@ -38,6 +42,7 @@
     transition: transform .2s ease-in-out;
     transform: translateY(-20px);
     font-family: "SF Compact Rounded", sans-serif;
+    text-transform: uppercase;
     font-weight: 600;
     font-size: 10px;
     line-height: 12px;

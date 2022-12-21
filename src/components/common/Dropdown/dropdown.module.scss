@@ -12,11 +12,12 @@
 }
 
 .active {
-  transform: translateY(-21px);
+  transform: translateY(-21px) scale(.8);
   left: 23px;
   font-family: "SF Compact Rounded", sans-serif;
   font-weight: 600;
   font-size: 10px;
+  text-transform: uppercase;
 }
 
 .dropdownInner {

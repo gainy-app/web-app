@@ -33,7 +33,7 @@
 
   input:focus + label,
   input:not(:placeholder-shown) + label {
-    transform: translateY(-12px) scale(.8);
+    transform: translateY(-16px);
     font-size: 10px;
     text-transform: uppercase;
   }
@@ -45,4 +45,11 @@
 
 .active {
   border: 2px solid $blue;
+}
+
+.inputWrapper.active.nested {
+  label {
+    font-size: 10px !important;
+    font-family: "SF Compact Rounded", sans-serif !important;
+  }
 }

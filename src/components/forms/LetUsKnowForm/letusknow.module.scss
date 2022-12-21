@@ -49,12 +49,16 @@
       font-size: 13px;
       line-height: 16px;
 
+      label[for="politically_exposed_names"],
+      label[for="employment_is_director_of_a_public_company"] {
+        font-family: "SF Pro Display Medium", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+      }
+
       & > div:last-child {
         background-color: #f7f8f9;
-
-        label {
-          font-size: 12px;
-        }
       }
     }
 

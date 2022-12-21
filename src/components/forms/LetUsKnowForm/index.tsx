@@ -84,6 +84,7 @@ export const LetUsKnowForm = ({
               <p>{member.innerContent.first}</p>
               <p style={{ marginTop: '16px' , marginBottom: '20px' }}>{member.innerContent.last}</p>
               <FloatingInput
+                isNested
                 id={'politically_exposed_names'}
                 placeholder={' '}
                 label={'List Names'}
@@ -117,6 +118,7 @@ export const LetUsKnowForm = ({
                 Please, provide the names of that companies.
               </p>
               <FloatingInput
+                isNested
                 id={'employment_is_director_of_a_public_company'}
                 placeholder={' '}
                 label={'List Names'}
