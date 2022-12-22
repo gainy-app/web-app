@@ -68,8 +68,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
       </li>
     );
   });
-
-  const disabled = !addressLine || !city || !state || zipcode?.length !== 5;
+  const disabled = !addressLine || !city || !state?.prevValue || zipcode?.length !== 5;
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.residentFormWrapper}>
@@ -118,7 +117,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
           label={'Zip Code'}
           onChange={(e) => {
             const limit = 5;
-            const val = e.target.value.split('').filter(Number).join('');
+            const val = e.target.value.split('')?.map(Number)?.filter((i:number) => !isNaN(i))?.join('');
 
             updateFields({ zipcode: val?.toString().slice(0, limit) });
           }}

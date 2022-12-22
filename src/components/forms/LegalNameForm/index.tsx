@@ -42,7 +42,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
     next();
   };
   const isYoungster = dayjs().diff(value, 'hour') < 157776;
-  const disable = !last_name.placeholder || !first_name.placeholder || isYoungster ;
+  const disable = !last_name.placeholder || !first_name.placeholder || isYoungster || !value;
   const { ref } = useOutBoardingClick(() => setOnShowCalender(false));
 
   return (

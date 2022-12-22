@@ -22,6 +22,7 @@ export const useMultistepForm = (steps: IuseMultistepForm[]) => {
   const next = () => {
     setCurrentStepIndex(prev => {
       if(prev >= steps.length - 1) return prev;
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       return prev + 1;
     });
   };
@@ -29,6 +30,7 @@ export const useMultistepForm = (steps: IuseMultistepForm[]) => {
   const back = () => {
     setCurrentStepIndex(prev => {
       if(prev <= 0) return prev;
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       return prev - 1;
     });
   };
