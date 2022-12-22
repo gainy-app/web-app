@@ -10,15 +10,16 @@ interface Props {
   readOnly?: boolean
   onClick?: () => void
   isNested?: boolean
+  type?: string
 }
 
 export const FloatingInput = ({
-  placeholder,label,id, onChange, value, children, readOnly, onClick, isNested
+  placeholder,label,id, onChange, value, children, readOnly, onClick, isNested, type
 }: Props) => {
   return (
     <div className={`${styles.inputWrapper} ${value ? styles.active : ''} ${isNested ? styles.nested : ''}`} onClick={onClick ? onClick : () => {}}>
       {children ? children :  <input
-        type="text"
+        type={type || 'text'}
         value={value}
         id={id}
         placeholder={placeholder}

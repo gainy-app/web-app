@@ -69,7 +69,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
     );
   });
 
-  const disabled = !addressLine || !city || !state || !zipcode;
+  const disabled = !addressLine || !city || !state || zipcode?.length !== 5;
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.residentFormWrapper}>
@@ -117,8 +117,10 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
           placeholder={' '}
           label={'Zip Code'}
           onChange={(e) => {
-            updateFields({ zipcode: e.target.value });
+            const limit = 5;
+            updateFields({ zipcode: e.target.value.slice(0, limit) });
           }}
+          type={'number'}
           value={zipcode}
         />
       </div>

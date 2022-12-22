@@ -181,7 +181,7 @@ export function FormProvider ({ children }: Props) {
         placeholder: kycFormConfig?.kyc_get_form_config?.email_address?.placeholder,
         prevValue: form?.app_kyc_form_by_pk?.email_address
       },
-      phone: form?.app_kyc_form_by_pk?.phone_number ? form?.app_kyc_form_by_pk?.phone_number : data.phone,
+      phone: form?.app_kyc_form_by_pk?.phone_number.slice(2) ? form?.app_kyc_form_by_pk?.phone_number.slice(2) : data.phone,
       first_name: {
         placeholder:  kycFormConfig?.kyc_get_form_config?.first_name?.placeholder,
         prevValue: form?.app_kyc_form_by_pk?.first_name
@@ -280,7 +280,7 @@ export function FormProvider ({ children }: Props) {
         country: data.country.prevValue ? data.country.prevValue : data.country.placeholder,
         citizenship: data.citizenship.prevValue?.value ? data.citizenship.prevValue?.value : data.citizenship.placeholder,
         email_address: data.email_address.prevValue ? data.email_address.prevValue :  data.email_address.placeholder,
-        phone_number: data.phone,
+        phone_number: `+1${String(data.phone)}`,
         last_name:  data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder,
         birthdate: data.birthday,
         first_name: data.first_name.prevValue ? data.first_name.prevValue : data.first_name.placeholder,

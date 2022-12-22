@@ -62,6 +62,15 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
             disabled={!checked}
             onClick={() => {
               if(checked) {
+                updateFields({
+                  disclosures_drivewealth_customer_agreement: true,
+                  disclosures_drivewealth_terms_of_use: true,
+                  disclosures_drivewealth_ira_agreement: true,
+                  disclosures_drivewealth_market_data_agreement: true,
+                  disclosures_drivewealth_privacy_policy: true,
+                  disclosures_rule14b: true,
+                  disclosures_signed_by: data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder
+                });
                 onSendData();
                 sendFormFinale({
                   variables: {
@@ -90,7 +99,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
             stepTitle={step.title}
             key={i.toString()}
             activeStep={currentStepIndex >= step.step || step.edit}
-            // activeStep={step.edit}
             stepNumber={i + 1}
             onEdit={goToStep}
             step={step.redirect}

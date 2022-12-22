@@ -30,7 +30,7 @@ type Props = userData & {
 export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:Props) => {
   const { title,subtitle } = config;
   const { next ,back, onSendData } = useFormContext();
-  const [value, onChange] = useState(birthday ? dayjs(birthday).toDate() : dayjs(new Date()).subtract(18, 'year').toDate());
+  const [value, onChange] = useState(birthday ? dayjs(birthday).toDate() : null);
   const [onShowCalender, setOnShowCalender] = useState(false);
   const onNextClick = () => {
     if(!birthday) {
@@ -84,7 +84,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
             id={'birthday'}
             label={'Birthday'}
             readOnly
-            value={dayjs(value).format('YYYY.MM.DD')}
+            value={value ? dayjs(value).format('YYYY.MM.DD') : ''}
           >
 
           </FloatingInput>
@@ -100,6 +100,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
                   setOnShowCalender(false);
                 }}
               value={value}
+              defaultValue={dayjs().subtract(18, 'year').subtract(1, 'day').toDate()}
               maxDate={dayjs(new Date()).toDate()}
               minDate={dayjs(new Date()).subtract(100, 'year').toDate()}/>
             </div>
