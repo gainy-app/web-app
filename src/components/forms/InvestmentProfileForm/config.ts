@@ -20,7 +20,7 @@ export const config = {
     },
     {
       name:  'Over $1,000,000',
-      value: 1000001
+      value: 5000000
     }
   ],
   networth: [
@@ -46,7 +46,7 @@ export const config = {
     },
     {
       name:  'Over $5,000,000',
-      value: 5000001
+      value: 10000000
     }
   ],
   liquid: [
@@ -72,7 +72,7 @@ export const config = {
     },
     {
       name:  'Over $5,000,000',
-      value: 5000001
+      value: 10000000
     }
   ]
 };
