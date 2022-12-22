@@ -120,10 +120,10 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
             const limit = 5;
             const val = e.target.value.split('').filter(Number).join('');
 
-            updateFields({ zipcode: val.toString().slice(0, limit) });
+            updateFields({ zipcode: val?.toString().slice(0, limit) });
           }}
           type={'number'}
-          value={zipcode.toString()}
+          value={zipcode?.toString()}
         />
       </div>
       {

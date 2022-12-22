@@ -24,6 +24,10 @@
 .content {
   flex: 1 0 auto;
   overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @media (min-height: 720px) and (min-width: 1400px) {
     display: flex;
