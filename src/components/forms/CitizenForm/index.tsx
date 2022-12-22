@@ -6,7 +6,7 @@ import { Button } from 'components';
 import parse from 'html-react-parser';
 import { useFormContext } from '../../../contexts/FormContext';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent } from '../../../utils/helpers';
+import { logFirebaseEvent } from '../../../utils/logEvent';
 
 interface citizenData {
   country: {
