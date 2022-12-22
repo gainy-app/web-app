@@ -1,7 +1,5 @@
 import { ApolloError } from '@apollo/client';
 import { phoneMasks } from './constants';
-import { logEvent } from 'firebase/analytics';
-import { analytics } from '../firebase';
 
 export const formatNumber = (phone: string, mask: string) => {
   switch (mask) {
@@ -23,8 +21,4 @@ export const parseGQLerror = (error?: ApolloError) => {
 
 export const parseFormResponse = (data: any, field: string) => {
   return data?.insert_app_kyc_form?.returning[0][field];
-};
-
-export const logFirebaseEvent = (content:string, params: any) => {
-  logEvent(analytics, content, params);
 };
