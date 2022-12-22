@@ -15,7 +15,7 @@ interface Props {
   goToStep: (step: number) => void
 }
 export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
-  const { isLastPage, next, onSendData, data, updateFields, appId } = useFormContext();
+  const { isLastPage, next, onSendData, data, appId } = useFormContext();
   const [checked, setChecked] = useState(true);
   const [sendFormFinale, { error }] = useMutation(KYC_SEND_FORM);
   const navigate = useNavigate();
