@@ -4,9 +4,16 @@
   @include flex(column);
   margin: 0 auto;
   min-height: 100%;
+  background: $gray-light-1;
 
   @include tablet {
     padding: 0 20px;
+  }
+}
+
+.reset {
+  @include tablet {
+    padding: 0;
   }
 }
 
@@ -16,6 +23,7 @@
 
 .content {
   flex: 1 0 auto;
+  overflow-y: scroll;
 
   @media (min-height: 720px) and (min-width: 1400px) {
     display: flex;

@@ -3,5 +3,7 @@
 *.js
 *.md
 *.svg
+*.gif
+*.png
 /node_modules
 src/styles/fonts

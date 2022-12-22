@@ -32,6 +32,7 @@
     font-size: 24px;
     line-height: 32px;
     max-width: 440px;
+    text-align: center;
 
     @include phone {
       font-size: 21px;
@@ -91,6 +92,7 @@
 
     label {
       max-width: 100% !important;
+      background: #fff;
 
       input {
         text-align: center;

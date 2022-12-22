@@ -1,0 +1,40 @@
+@import "../../../styles/mixins";
+
+.formWrapper {
+  label {
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000;
+  }
+
+  label[for="test"] {
+    & > div {
+      height: auto;
+      padding: 6px 24px;
+    }
+  }
+
+  label[for="test1"] {
+    & > div {
+      height: auto;
+      padding: 0 24px;
+    }
+
+    p {
+      max-width: 180px;
+      line-height: 18px;
+    }
+  }
+
+  p {
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000;
+  }
+}

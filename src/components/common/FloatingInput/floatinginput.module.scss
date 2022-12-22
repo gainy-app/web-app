@@ -1,0 +1,55 @@
+@import "../../../styles/mixins";
+
+.inputWrapper {
+  position: relative;
+  border-radius: 16px;
+  padding: 27px 16px 12px;
+  background-color: #fff;
+  border: 2px solid transparent;
+
+  input {
+    border: none;
+    background-color: unset;
+    outline: none;
+    width: 100%;
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  label {
+    position: absolute;
+    left: 18px;
+    top: 25px;
+    color: #b1bdc8;
+    transform-origin: 0 0;
+    transition: all .2s ease-in-out;
+    font-family: "SF Compact Rounded", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 12px;
+  }
+
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    transform: translateY(-16px);
+    font-size: 10px;
+    text-transform: uppercase;
+  }
+
+  input::placeholder {
+    color: transparent;
+  }
+}
+
+.active {
+  border: 2px solid $blue;
+}
+
+.inputWrapper.active.nested {
+  label {
+    font-size: 10px !important;
+    font-family: "SF Compact Rounded", sans-serif !important;
+  }
+}

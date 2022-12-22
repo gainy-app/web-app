@@ -19,6 +19,18 @@
   }
 }
 
+@mixin largeTablet {
+  @media (max-width: $large-tablet) {
+    @content;
+  }
+}
+
+@mixin mediumTablet {
+  @media (max-width: $medium-tablet) {
+    @content;
+  }
+}
+
 @mixin tablet {
   @media (max-width: $small-tablet) {
     @content;
@@ -33,6 +45,12 @@
 
 @mixin phone {
   @media (max-width: $small-mobile-size) {
+    @content;
+  }
+}
+
+@mixin post-phone {
+  @media (max-width: $post-small-mobile-size) {
     @content;
   }
 }

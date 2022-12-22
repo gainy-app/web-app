@@ -21,3 +21,11 @@
   font-style: normal;
   src: url("./fonts/Inter-Regular.woff2");
 }
+
+@font-face {
+  font-display: fallback;
+  font-family: "SF Compact Rounded";
+  font-weight: 600;
+  font-style: normal;
+  src: url("./fonts/SF-Compact-Display-Regular.ttf");
+}

@@ -8,9 +8,22 @@
   @include flex(column,center,initial);
   max-width: 1250px;
   margin: 0 auto;
-  padding-top: 120px;
+  padding-top: 60px;
+  width: 440px;
 
-  @include macbookThirteen {
-    max-width: 440px;
+  @include iPhone {
+    width: 350px;
+  }
+
+  @include phone {
+    width: 300px;
+  }
+
+  @include post-phone {
+    width: 280px;
+  }
+
+  @media (min-height: 720px) and (min-width: 1400px) {
+    padding-top: 0;
   }
 }

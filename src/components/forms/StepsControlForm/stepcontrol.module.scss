@@ -1,0 +1,78 @@
+@import "../../../styles/mixins";
+
+.acceptTerms {
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+
+  a {
+    all: unset;
+    color: #0062ff;
+    cursor: pointer;
+  }
+
+  h2 {
+    font-family: "SF Pro Display Heavy", sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .list {
+    padding-left: 25px;
+    margin-top: 30px;
+
+    li {
+      margin-bottom: 16px;
+    }
+  }
+
+  .checkboxLabel {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+
+    input {
+      display: none;
+    }
+
+    .checkbox {
+      width: 24px;
+      height: 24px;
+      background-color: #d9d9d9;
+      border-radius: 50%;
+      margin-right: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .activeCheckbox {
+      background-color: #0062ff;
+    }
+  }
+}
+
+.button {
+  margin-top: 40px;
+
+  button {
+    padding: 16px 83px;
+
+    @include phone {
+      padding: 16px 65px;
+    }
+  }
+
+  .error {
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ff0202;
+  }
+}

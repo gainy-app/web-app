@@ -4,14 +4,13 @@
   * {
     box-sizing: border-box;
   }
-  padding-top: 2.857vw;
+  padding-top: 40px;
   max-width: 1400px;
   margin: 0 auto;
   width: 100vw;
 
   @include macbookThirteen {
     width: 940px;
-    padding-top: 40px;
   }
 
   @media (max-width: $large-tablet) {
@@ -29,18 +28,18 @@
     }
 
     .logo {
-      height: 2.857vw;
-      width: 8.571vw;
-
-      @include macbookThirteen {
-        height: 40px;
-        width: 120px;
-      }
+      height: 40px;
+      width: 120px;
     }
 
     button {
       padding: 10px 68px;
-      background: $black;
+      background: #fff;
+      color: $black;
+      font-family: "Inter Regular", sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
 
       @include phone {
         padding: 10px 30px;

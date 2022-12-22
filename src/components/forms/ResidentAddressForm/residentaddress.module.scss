@@ -1,0 +1,38 @@
+.residentFormWrapper {
+  & > div {
+    margin-bottom: 16px;
+  }
+
+  .cityWithState {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 20px;
+
+    & > div {
+      width: 50%;
+
+      label {
+        top: 22px;
+      }
+    }
+
+    & > label {
+      width: 50%;
+      margin-bottom: 0;
+
+      & > div {
+        margin-bottom: 0;
+        padding: 16px 20px;
+      }
+    }
+  }
+}
+
+.error {
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ff0202;
+  margin: 0;
+}

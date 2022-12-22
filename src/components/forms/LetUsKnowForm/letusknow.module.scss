@@ -1,0 +1,71 @@
+@import "../../../styles/mixins";
+
+.letUsKnow {
+  label {
+    &:first-child {
+      > div {
+        height: 80px;
+      }
+    }
+
+    .activeField {
+      border-bottom: 2px solid rgba(231, 234, 238, .24);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    & > div {
+      p {
+        width: 320px;
+        font-family: "SF Pro Display Medium", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 16px;
+
+        @include iPhone {
+          width: 240px;
+        }
+
+        @include phone {
+          width: 200px;
+        }
+
+        @include post-phone {
+          width: 180px;
+        }
+      }
+    }
+
+    .activeContent {
+      padding: 20px 34px 24px 24px;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      background-color: #fff;
+      margin-top: -27px;
+      margin-bottom: 16px;
+      font-family: "SF Pro Display Medium", sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      line-height: 16px;
+
+      label[for="politically_exposed_names"],
+      label[for="employment_is_director_of_a_public_company"] {
+        font-family: "SF Pro Display Medium", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+      }
+
+      & > div:last-child {
+        background-color: #f7f8f9;
+      }
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}

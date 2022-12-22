@@ -1,14 +1,20 @@
 import { getAuth, User as FirebaseUser } from 'firebase/auth';
 
-type IonAuthChange = (user: FirebaseUser | null, setUser: (user:FirebaseUser | null) => void, setLoading: (erg: boolean) => void) => void
+type IonAuthChange = (user: FirebaseUser | null,
+  setUser: (user:FirebaseUser | null) => void,
+  setLoading: (erg: boolean) => void,
+  appIdCondition: boolean,
+  appLink: any
+  ) => void
 
-export const onAuthChange: IonAuthChange = (user, setUser, setLoading) => {
+export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appIdCondition, appLink) => {
   const auth = getAuth();
   setLoading(true);
 
   if(user) {
     setUser(user);
     setLoading(false);
+
     user.getIdToken()
       .then(token => auth.currentUser?.getIdTokenResult()
         .then(result => {
@@ -18,8 +24,18 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading) => {
           return refreshToken(user);
         }))
       .then(res => {
-        res &&
-        localStorage.setItem('token', res);
+        if(res) {
+          const [tempUser, ...rest] = user.displayName?.split(' ') || [];
+          if(!appIdCondition) {
+            appLink({ variables: {
+              email: user.email,
+              firstName: tempUser,
+              lastName: String(rest),
+              userID: user.uid
+            } });
+            localStorage.setItem('token', res);
+          }
+        }
       })
       .catch(rej => console.log(rej));
   } else {
@@ -28,7 +44,7 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading) => {
   setLoading(false);
 };
 
-export const refreshToken = (user: FirebaseUser) => {
+export const refreshToken = (user: any) => {
   const endpoint = `https://us-central1-${process.env.REACT_APP_FIREBASE_PROJECT_ID}.cloudfunctions.net/refresh_token`;
 
   return fetch(`${endpoint}?uid=${user.uid}`)

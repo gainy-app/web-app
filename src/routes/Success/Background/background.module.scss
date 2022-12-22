@@ -1,0 +1,59 @@
+@import "../../../styles/mixins";
+
+.sticky {
+  position: sticky;
+  top: 0;
+
+  .wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: inherit;
+    background-color: $black;
+
+    .stars {
+      height: 900px;
+      width: 900px;
+      background: center / contain no-repeat url("../../../assets/stars.gif");
+      position: relative;
+      background-size: contain;
+      background-color: inherit;
+
+      @include largeTablet {
+        height: 600px;
+        width: 600px;
+      }
+
+      .rounds {
+        background-size: contain;
+        background-image: url("../../../assets/rounds.png");
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        right: 0;
+        background-repeat: no-repeat, repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .austanavt {
+        position: absolute;
+        top: 5%;
+        left: 34%;
+        width: 530px;
+        height: 452px;
+
+        @include largeTablet {
+          width: 353px;
+          height: 301px;
+        }
+
+        @include phone {
+          left: 41%;
+        }
+      }
+    }
+  }
+}

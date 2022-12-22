@@ -2,16 +2,20 @@
 
 .wrapper {
   padding: 24px;
-  font-family: "SF Pro Display", sans-serif;
-  font-weight: 700;
   font-size: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid $blue;
   border-radius: 16px;
   max-width: 440px;
   margin-bottom: 16px;
+  background: $white;
+
+  @include phone {
+    font-size: 14px;
+    padding: 16px;
+    width: 280px;
+  }
 
   &:last-child {
     margin-bottom: 0;
@@ -20,6 +24,9 @@
   .stepIndicatorWithTitle {
     display: flex;
     align-items: center;
+    font-family: "SF Pro Display Heavy", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
 
     .stepIndicator {
       width: 24px;
@@ -38,9 +45,21 @@
       display: inline-block;
       margin-left: 16px;
     }
+
+    .resetMargin {
+      margin-left: 42px;
+    }
   }
 
   .edit {
     color: $blue;
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
   }
+}
+
+.active {
+  border: 2px solid $blue;
 }

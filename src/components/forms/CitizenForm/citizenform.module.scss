@@ -1,0 +1,59 @@
+@import "../../../styles/mixins";
+
+.listItem {
+  display: flex;
+  padding: 16px 0;
+
+  img {
+    margin-right: 16px;
+  }
+}
+
+.activeCountry {
+  border-bottom: 1px solid #0062ff;
+}
+
+.content {
+  margin-top: 40px;
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+
+  a {
+    all: unset;
+    color: $blue;
+  }
+
+  button {
+    padding: 16px 83px;
+    margin-top: 40px;
+
+    @include phone {
+      padding: 16px 65px;
+    }
+  }
+
+  p {
+    margin: 0;
+    line-height: 20px;
+  }
+}
+
+.countryWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "SF Pro Display Medium", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+
+  img {
+    margin-right: 16px;
+  }
+}
+
+.rotate {
+  transform: rotateZ(180deg);
+}

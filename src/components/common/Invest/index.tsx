@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input, Button } from 'components';
 import { NumberFormatValues, NumericFormat } from 'react-number-format';
 import styles from './invest.module.scss';
@@ -10,13 +10,18 @@ interface Props {
     subtitle: string
     buttonText: string
   }
-  sum: string | null
-  onSumChange: (values: NumberFormatValues) => void
+  setStart: (arg: boolean) => void
 }
 
 export const Invest = React.memo(({
-  invest: { title,buttonText,subtitle },sum,onSumChange
+  invest: { title,buttonText,subtitle }, setStart
 }: Props) => {
+
+  const [sum, setSum] = useState<string | null>(null);
+
+  const onSumChange = (values: NumberFormatValues) => {
+    setSum(values.formattedValue);
+  };
 
   return (
     <KycLayout>
@@ -32,9 +37,14 @@ export const Invest = React.memo(({
           onValueChange={onSumChange}
         />
       </Input>
-      <div className={sum ? styles.hidden : ''}>
-        <Button className={styles.button}>{buttonText}</Button>
-      </div>
+      <Button
+        onClick={() => {
+          setStart(true);
+          localStorage.setItem('invest', String(sum));
+        }}
+        className={styles.button}
+        disabled={!sum}
+      >{buttonText}</Button>
     </KycLayout>
   );
 });
