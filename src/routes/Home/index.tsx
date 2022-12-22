@@ -23,7 +23,7 @@ export default function Home () {
   const withTrading = isTreadingEnabled?.app_profiles?.find((profile: any) => !!profile.flags);
 
   if(!(withTrading?.flags?.is_trading_enabled || withLinkFromStorage)) return <Navigate to={routes.getApp}/>;
-  if(status !== null) {
+  if(status) {
     return <Navigate to={routes.success}/>;
   }
   return (

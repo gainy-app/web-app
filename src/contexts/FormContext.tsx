@@ -306,12 +306,12 @@ export function FormProvider ({ children }: Props) {
         investor_profile_experience: data.investor_profile_experience.prevValue,
         investor_profile_objectives: data.investor_profile_objectives.prevValue,
         investor_profile_risk_tolerance: data.investor_profile_risk_tolerance.prevValue,
-        disclosures_drivewealth_customer_agreement: data.disclosures_drivewealth_customer_agreement,
-        disclosures_drivewealth_terms_of_use: data.disclosures_drivewealth_terms_of_use,
-        disclosures_drivewealth_ira_agreement: data.disclosures_drivewealth_ira_agreement,
-        disclosures_drivewealth_market_data_agreement: data.disclosures_drivewealth_market_data_agreement,
-        disclosures_drivewealth_privacy_policy: data.disclosures_drivewealth_privacy_policy,
-        disclosures_rule14b: data.disclosures_rule14b,
+        disclosures_drivewealth_customer_agreement: true,
+        disclosures_drivewealth_terms_of_use: true,
+        disclosures_drivewealth_ira_agreement: true,
+        disclosures_drivewealth_market_data_agreement: true,
+        disclosures_drivewealth_privacy_policy: true,
+        disclosures_rule14b: true,
         disclosures_signed_by: data.last_name.prevValue ? data.last_name.prevValue : data.last_name.placeholder
       },
     });
