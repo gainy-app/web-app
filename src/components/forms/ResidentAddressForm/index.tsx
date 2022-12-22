@@ -118,7 +118,10 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
           label={'Zip Code'}
           onChange={(e) => {
             const limit = 5;
-            updateFields({ zipcode: e.target.value.slice(0, limit) });
+            if(e.target.value.at(-1) === '.') return;
+            if(e.target.value.match(/^\d+$/g)) {
+              updateFields({ zipcode: e.target.value.slice(0, limit) });
+            }
           }}
           type={'number'}
           value={zipcode}
