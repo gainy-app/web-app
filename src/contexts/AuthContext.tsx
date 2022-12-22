@@ -45,7 +45,7 @@ export function AuthProvider({ children }: Props) {
   const [applink, { data, loading: appLinkLoading }] = useMutation(CREATE_APP_LINK);
 
   const appLinkAppId =  data?.insert_app_profiles?.returning?.find((i: any) => i?.id)?.id;
-  const appIdAppId = appId?.app_profiles?.find((i: any) => i?.id).id;
+  const appIdAppId = appId?.app_profiles?.find((i: any) => i?.id)?.id;
 
   const isTreadingEnabled =  appId ? appId : appLinkAppId;
 
@@ -53,8 +53,6 @@ export function AuthProvider({ children }: Props) {
   async function logout() {
     await auth.signOut();
   }
-  //
-  // const appIdCondition = appIdAppId;
 
   async function signInWithGoogle ()  {
     try {
