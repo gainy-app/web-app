@@ -3,10 +3,19 @@ import { Button } from 'components';
 import { useFormContext } from 'contexts/FormContext';
 import { config } from './config';
 import parse from 'html-react-parser';
+import { useEffect } from 'react';
+import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export const PrivacyPolicyForm = () => {
-  const { next } = useFormContext();
+  const { next, appId } = useFormContext();
+  const { currentUser } = useAuth();
   const { title, lists, cookie, buttonText } = config;
+
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_policy_s', currentUser, appId);
+  }, []);
+
   return (
     <div className={styles.privacyWrapper}>
       <h1>Gainy Inc. Privacy Policy</h1>
@@ -37,7 +46,10 @@ export const PrivacyPolicyForm = () => {
         })}
       </ol>
       <div className={styles.acceptBlock}>
-        <Button onClick={next}>{buttonText}</Button>
+        <Button onClick={() => {
+          logFirebaseEvent('dw_kyc_policy_e', currentUser, appId);
+          next();
+        }}>{buttonText}</Button>
         <p className={styles.paragraph}>{parse(cookie)}</p>
       </div>
     </div>

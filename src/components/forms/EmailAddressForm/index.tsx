@@ -2,10 +2,12 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 import { Button } from '../../common/Button';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { regExps } from '../../../utils/constants';
+import { useAuth } from '../../../contexts/AuthContext';
+import { logFirebaseEvent } from '../../../utils/logEvent';
 
 interface emailData {
   email_address: {
@@ -20,10 +22,16 @@ type Props = emailData & {
 
 export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
   const { title,subtitle } = config;
-  const {  next, back, data, onSendData } = useFormContext();
+  const {  next, back, data, onSendData, appId } = useFormContext();
+  const { currentUser } = useAuth();
   const disabled = !regExps.email.test(data.email_address?.placeholder);
 
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_email_s', currentUser, appId);
+  },[]);
+
   const onNextClick = () => {
+    logFirebaseEvent('dw_kyc_email_e', currentUser, appId, { email: email_address.prevValue ? email_address.prevValue : email_address.placeholder });
     onSendData();
     next();
   };

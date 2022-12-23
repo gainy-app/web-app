@@ -1,13 +1,15 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Button } from '../../common/Button';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
 import styles from './investmentProfile.module.scss';
 import { Image } from '../../common/Image';
 import { imageTypes } from '../../../utils/constants';
+import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface profileData {
   investor_profile_annual_income: {
@@ -53,15 +55,24 @@ export const InvestmentProfileForm = ({
   investor_profile_risk_tolerance
 }:Props) => {
   const { title,subtitle,income , networth, liquid } = config;
-  const {  next, back , onSendData } = useFormContext();
+  const {  next, back , onSendData, appId } = useFormContext();
   const [openExp,setOpenExp] = useState(false);
   const [openObj,setOpenObj] = useState(false);
   const [openTolerance,setOpenTolerance] = useState(false);
   const [openIncome,setOpenIncome] = useState(false);
   const [openNetWorth, setOpenNetWorth] = useState(false);
   const [openLiquid, setOpenLiquid] = useState(false);
+  const { currentUser } = useAuth();
 
   const onNextClick = () => {
+    logFirebaseEvent('dw_kyc_ip_s', currentUser, appId, {
+      income:investor_profile_annual_income?.value,
+      networth:investor_profile_net_worth_total?.value,
+      liquid:investor_profile_net_worth_liquid?.value,
+      envestExperience:investor_profile_experience?.prevValue,
+      objectives:investor_profile_objectives?.prevValue,
+      riskTollerance:investor_profile_risk_tolerance?.prevValue
+    });
     onSendData();
     next();
   };
@@ -115,6 +126,9 @@ export const InvestmentProfileForm = ({
     key={choice.value}
     >{choice.name}</div>;
   });
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_ip_s', currentUser, appId);
+  }, []);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.investmentProfile}>

@@ -3,11 +3,17 @@ import { Button, ButtonsGroup } from 'components';
 import { useFormContext } from 'contexts/FormContext';
 import parse from 'html-react-parser';
 import { config } from './config';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export const CustomerAgreementForm = () => {
-  const { next, back } = useFormContext();
+  const { next, back , appId } = useFormContext();
+  const { currentUser } = useAuth();
   const { title, list, buttonText } = config;
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_cust_agrm_s', currentUser, appId);
+  }, []);
   return (
     <div className={styles.privacyWrapper}>
       <h1>Gainy Customer Agreement</h1>
@@ -40,7 +46,10 @@ export const CustomerAgreementForm = () => {
       </ol>
       <div className={styles.acceptBlock}>
         <ButtonsGroup onBack={back} onNext={next}>
-          <Button onClick={next}>{buttonText}</Button>
+          <Button onClick={() => {
+            logFirebaseEvent('dw_kyc_cust_agrm_e', currentUser, appId);
+            next();
+          }}>{buttonText}</Button>
         </ButtonsGroup>
       </div>
     </div>

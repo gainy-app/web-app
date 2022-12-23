@@ -9,6 +9,8 @@ import { useMutation } from '@apollo/client';
 import { KYC_SEND_FORM } from '../../../services/gql/queries';
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
+import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface Props {
   currentStepIndex: number
@@ -16,6 +18,7 @@ interface Props {
 }
 export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   const { isLastPage, next, onSendData, data, appId } = useFormContext();
+  const { currentUser } = useAuth();
   const [checked, setChecked] = useState(true);
   const [sendFormFinale, { error }] = useMutation(KYC_SEND_FORM);
   const navigate = useNavigate();
@@ -45,21 +48,31 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
     switch (true) {
       case currentStepIndex === 0:
         return (
-          <Button onClick={next}>{'Start'}</Button>
+          <Button onClick={() => {
+            logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 0 });
+            next();
+          }}>{'Start'}</Button>
         );
       case currentStepIndex === 7:
         return (
-          <Button onClick={next}>{'Continue'}</Button>
+          <Button onClick={() => {
+            logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 1 });
+            next();
+          }}>{'Continue'}</Button>
         );
       case currentStepIndex === 11:
         return (
-          <Button onClick={next}>{'Continue'}</Button>
+          <Button onClick={() => {
+            logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 2 });
+            next();
+          }}>{'Continue'}</Button>
         );
       case isLastPage:
         return (
           <Button type={'button'}
             disabled={!checked}
             onClick={() => {
+              logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 3 });
               if(checked) {
                 onSendData();
                 sendFormFinale({
@@ -71,6 +84,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                     localStorage.setItem('status', res.data.kyc_send_form.status);
                     const status = localStorage.getItem('status');
                     if(status === res.data.kyc_send_form.status) {
+                      logFirebaseEvent('dw_kyc_main_sumbitted', currentUser, appId);
                       navigate(routes.success);
                     }
                   }
