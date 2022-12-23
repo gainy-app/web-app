@@ -1,12 +1,13 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import styles from './citizenform.module.scss';
-import React, {  useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'components';
 import parse from 'html-react-parser';
 import { useFormContext } from '../../../contexts/FormContext';
 import { Dropdown } from '../../common/Dropdown';
 import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface citizenData {
   country: {
@@ -22,7 +23,8 @@ type Props = citizenData & {
 }
 
 export const CitizenForm = ({ updateFields, country }: Props) => {
-  const { flags, next, onSendData } = useFormContext();
+  const { flags, next, onSendData, appId } = useFormContext();
+  const { currentUser } = useAuth();
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -36,11 +38,11 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
   const findCountryName = (countryValue: string) => country?.choices?.find((choicedCountry: any) => choicedCountry.value === countryValue).name;
   const onNextClick = () => {
     if(whiteList) {
-      logFirebaseEvent('dw_kyc_ios_none_usa', {
-        country
-      });
+      logFirebaseEvent('dw_kyc_ios_usa', currentUser, appId);
       onSendData();
       next();
+    } else {
+      logFirebaseEvent('dw_kyc_ios_none_usa', currentUser, appId, country?.prevValue ? findCountryName(country?.prevValue) : findCountryName(country.placeholder));
     }
   };
 
@@ -63,6 +65,10 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
       <span>{item?.name}</span>
     </li>;
   });
+
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_ios_s', currentUser, appId);
+  }, []);
 
 
   return (

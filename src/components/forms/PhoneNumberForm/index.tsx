@@ -2,13 +2,15 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { parseGQLerror } from '../../../utils/helpers';
 import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import styles from './phonenumber.module.scss';
 import flag from '../../../assets/flag.svg';
+import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface phoneData {
   phone: string
@@ -21,6 +23,7 @@ type Props = phoneData & {
 export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
   const { title,subtitle } = config;
   const { verifyCodeRequest, appId, back } = useFormContext();
+  const { currentUser } = useAuth();
 
   const onNextClick = () => {
     verifyCodeRequest.verifyCode({
@@ -30,7 +33,12 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
         address: `+1${String(phone)}`
       }
     });
+    logFirebaseEvent('dw_kyc_phone_entered', currentUser, appId, { phone });
   };
+
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_phone_s', currentUser, appId);
+  }, []);
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>

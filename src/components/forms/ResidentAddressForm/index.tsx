@@ -2,7 +2,7 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { FloatingInput } from '../../common/FloatingInput';
 import styles from './residentaddress.module.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../common/Button';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
@@ -10,6 +10,8 @@ import { Dropdown } from '../../common/Dropdown';
 import { useLazyQuery } from '@apollo/client';
 import { VALIDATE_ADDRESS } from '../../../services/gql/queries';
 import { parseGQLerror } from '../../../utils/helpers';
+import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface residentData {
   addressLine: string
@@ -28,7 +30,8 @@ type Props = residentData & {
 
 export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, city, state, zipcode }:Props) => {
   const { title,subtitle } = config;
-  const { next, back ,onSendData, data } = useFormContext();
+  const { next, back ,onSendData, data, appId } = useFormContext();
+  const { currentUser } = useAuth();
   const [statesOpen, setStatesOpen] = useState(false);
   const [getValidation, {  error: validationError }] = useLazyQuery(VALIDATE_ADDRESS);
 
@@ -44,6 +47,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
       }
     }).then(res => {
       if(!res.error) {
+        logFirebaseEvent('dw_kyc_res_addr_e', currentUser, appId);
         onSendData();
         next();
       }
@@ -69,6 +73,9 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
     );
   });
   const disabled = !addressLine || !city || !state?.prevValue || zipcode?.length !== 5;
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_res_addr_s', currentUser, appId);
+  }, []);
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.residentFormWrapper}>

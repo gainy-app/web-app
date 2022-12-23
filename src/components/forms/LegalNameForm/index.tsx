@@ -2,7 +2,7 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import styles from './legalname.module.scss';
 import { FloatingInput } from '../../common/FloatingInput';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../common/Button';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
@@ -10,6 +10,8 @@ import dayjs from 'dayjs';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useOutBoardingClick } from '../../../hooks';
+import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface userData {
   first_name: {
@@ -29,7 +31,8 @@ type Props = userData & {
 
 export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:Props) => {
   const { title,subtitle } = config;
-  const { next ,back, onSendData } = useFormContext();
+  const { next ,back, onSendData, appId } = useFormContext();
+  const { currentUser } = useAuth();
   const [value, onChange] = useState(birthday ? dayjs(birthday).toDate() : null);
   const [onShowCalender, setOnShowCalender] = useState(false);
   const onNextClick = () => {
@@ -38,12 +41,17 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
         birthday: dayjs(value).format('YYYY.MM.DD')
       });
     }
+    logFirebaseEvent('dw_kyc_legal_e', currentUser, appId);
     onSendData();
     next();
   };
   const isYoungster = dayjs().diff(value, 'hour') < 157776;
   const disable = !last_name.placeholder || !first_name.placeholder || isYoungster || !value;
   const { ref } = useOutBoardingClick(() => setOnShowCalender(false));
+
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_legal_s', currentUser, appId);
+  }, []);
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>

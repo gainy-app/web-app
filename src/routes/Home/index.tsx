@@ -16,7 +16,6 @@ export default function Home () {
   const [start, setStart] = useState<boolean>(false);
   const investSumFromStorage = localStorage.getItem('invest');
 
-
   if(loader) return <Loader/>;
   const status = formStatus?.trading_profile_status[0]?.kyc_status;
   const withLinkFromStorage = localStorage.getItem('withLink') === 'true' ? true : false;
