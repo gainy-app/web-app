@@ -65,7 +65,7 @@ export const InvestmentProfileForm = ({
   const { currentUser } = useAuth();
 
   const onNextClick = () => {
-    logFirebaseEvent('dw_kyc_ip_s', currentUser, appId, {
+    logFirebaseEvent('dw_kyc_ip_e', currentUser, appId, {
       income:investor_profile_annual_income?.value,
       networth:investor_profile_net_worth_total?.value,
       liquid:investor_profile_net_worth_liquid?.value,

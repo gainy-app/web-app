@@ -104,7 +104,16 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
             key={i.toString()}
             activeStep={currentStepIndex >= step.step || step.edit}
             stepNumber={i + 1}
-            onEdit={goToStep}
+            onEdit={() => {
+              if(i === 0) {
+                logFirebaseEvent('dw_kyc_main_create', currentUser, appId);
+              } else if (i === 1) {
+                logFirebaseEvent('dw_kyc_main_verify', currentUser, appId);
+              } else if (i === 2) {
+                logFirebaseEvent('dw_kyc_main_investor', currentUser, appId);
+              }
+            }}
+            goToStep={goToStep}
             step={step.redirect}
             withEdit={step.edit}
           />
