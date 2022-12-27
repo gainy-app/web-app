@@ -2,13 +2,15 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Button, Image } from 'components';
 import styles from './letusknow.module.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Checkbox } from '../../common/Checkbox';
 import { Field } from '../../common/Field';
 import { FloatingInput } from '../../common/FloatingInput';
 import { imageTypes } from '../../../utils/constants';
+import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface letUsKnowData {
   employment_affiliated_with_a_broker: boolean
@@ -29,15 +31,20 @@ export const LetUsKnowForm = ({
   irs_backup_withholdings_notified
 }:Props) => {
   const { title,subtitle, broker, member } = config;
-  const {  next, back, onSendData } = useFormContext();
+  const {  next, back, onSendData, appId } = useFormContext();
+  const { currentUser } = useAuth();
   const [politicallyOpen, setPoliticallyOpen] = useState(politically_exposed_names ? politically_exposed_names : false);
   const [directorOpen, setDirectorOpen] = useState(employment_is_director_of_a_public_company ? employment_is_director_of_a_public_company : false);
 
   const disabled = (!employment_is_director_of_a_public_company && !!directorOpen) || (!politically_exposed_names && !!politicallyOpen);
   const onNextClick = () => {
+    logFirebaseEvent('dw_kyc_eqa_e', currentUser, appId);
     onSendData();
     next();
   };
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_eqa_s', currentUser, appId);
+  }, []);
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>

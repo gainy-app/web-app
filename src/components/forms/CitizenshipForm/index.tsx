@@ -4,10 +4,12 @@ import styles from './citizenshipform.module.scss';
 import { Checkbox } from '../../common/Checkbox';
 import { Field } from '../../common/Field';
 import { Button } from '../../common/Button';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
+import { logFirebaseEvent } from '../../../utils/logEvent';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface citizenData {
   citizenship: {
@@ -26,7 +28,8 @@ type Props = citizenData & {
 
 export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   const { title,subtitle } = config;
-  const {  next, back , onSendData } = useFormContext();
+  const {  next, back , onSendData, appId } = useFormContext();
+  const { currentUser } = useAuth();
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const disable = citizenship.placeholder === 'USA' || !!citizenship.prevValue?.value;
@@ -36,9 +39,18 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   };
 
   const onNextClick = () => {
+    if(citizenship.placeholder === 'USA') {
+      logFirebaseEvent('dw_kyc_citz_usa', currentUser, appId);
+    } else {
+      logFirebaseEvent('dw_kyc_citz_non_usa', currentUser, appId);
+    }
+
     onSendData();
     next();
   };
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_citz_s', currentUser, appId);
+  }, []);
   const listRender = citizenship?.choices?.map((item: { name: string, value: string }, i: number) => {
     return <li
       onClick={() => {

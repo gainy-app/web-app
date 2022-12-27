@@ -36,13 +36,14 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
   const { title,subtitle, description, notAvailable } = config(selectedCountry);
   const findCountryName = (countryValue: string) => country?.choices?.find((choicedCountry: any) => choicedCountry.value === countryValue).name;
+
   const onNextClick = () => {
     if(whiteList) {
       logFirebaseEvent('dw_kyc_ios_usa', currentUser, appId);
       onSendData();
       next();
     } else {
-      logFirebaseEvent('dw_kyc_ios_none_usa', currentUser, appId, country?.prevValue ? findCountryName(country?.prevValue) : findCountryName(country.placeholder));
+      logFirebaseEvent('dw_kyc_ios_none_usa', currentUser, appId, { code: country?.prevValue ? country?.prevValue : country?.placeholder });
     }
   };
 
