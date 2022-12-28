@@ -3,13 +3,18 @@
 .sticky {
   position: sticky;
   top: 0;
+  right: 0;
+  display: flex;
+  max-width: 100%;
+
+  @include tablet {
+    right: 0;
+  }
 
   .wrapper {
-    position: absolute;
-    top: 0;
-    right: 0;
     background: inherit;
     background-color: $black;
+    max-width: 100%;
 
     .stars {
       height: 900px;
@@ -18,11 +23,7 @@
       position: relative;
       background-size: contain;
       background-color: inherit;
-
-      @include largeTablet {
-        height: 600px;
-        width: 600px;
-      }
+      max-width: 100%;
 
       .rounds {
         background-size: contain;
@@ -36,22 +37,30 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        scale: 1.3;
+
+        @include tablet {
+          background-size: unset;
+          background-position-x: 33%;
+          background-position-y: 133%;
+          scale: 1;
+        }
       }
 
       .austanavt {
         position: absolute;
-        top: 5%;
-        left: 34%;
+        top: 12%;
+        left: auto;
+        right: 25%;
         width: 530px;
-        height: 452px;
 
-        @include largeTablet {
+        @include tablet {
           width: 353px;
-          height: 301px;
+          right: 0;
         }
 
-        @include phone {
-          left: 41%;
+        @media (max-width: 420px) {
+          top: 5%;
         }
       }
     }

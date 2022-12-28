@@ -42,11 +42,11 @@
       padding-top: 150px;
     }
 
-    @media (max-width: 770px) {
-      padding-top: 80px;
+    @media (max-width: 772px) {
+      padding-top: 100px;
     }
 
-    @media (max-width: 414px) {
+    @media (max-width: 420px) {
       padding-top: 130px;
     }
 
@@ -73,7 +73,7 @@
       line-height: 32px;
     }
 
-    .title {
+    .mainTitle {
       max-width: 455px;
       font-family: "SF Pro Display Medium", sans-serif;
       font-style: normal;
@@ -81,17 +81,13 @@
       font-size: 32px;
       line-height: 32px;
       margin-top: 40px;
-      margin-bottom: 24px;
+      margin-bottom: 0;
 
-      @media (max-width: 1616px) {
-        margin-top: 60px;
+      @media (max-width: 1478px) {
+        margin-top: 100px;
       }
 
-      @media (max-width: 1416px) {
-        margin-top: 120px;
-      }
-
-      @media (max-width: 414px) {
+      @media (max-width: 624px) {
         margin-top: 40px;
       }
 
@@ -100,20 +96,22 @@
       }
     }
 
-    .subtitle {
+    .title {
+      max-width: 455px;
       font-family: "SF Pro Display Medium", sans-serif;
+      font-style: normal;
       font-weight: 500;
-      font-size: 16px;
-      line-height: 24px;
-      letter-spacing: .1px;
+      font-size: 32px;
+      line-height: 32px;
+      margin-bottom: 24px;
+      margin-top: 0;
 
       @include phone {
-        font-size: 14px;
-        margin-bottom: 16px;
+        font-size: 21px;
       }
     }
 
-    .paragraph {
+    .subtitle {
       font-family: "SF Pro Display Medium", sans-serif;
       font-weight: 500;
       font-size: 16px;

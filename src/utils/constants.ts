@@ -3,7 +3,8 @@ export const routes = {
   notFound: '*',
   home: '/',
   getApp: '/get-the-app',
-  success: '/success'
+  success: '/success',
+  notify: '/notify'
 };
 
 export const imageTypes = {

@@ -18,7 +18,7 @@ export const PrivacyPolicyForm = () => {
 
   return (
     <div className={styles.privacyWrapper}>
-      <h1>Gainy Inc. Privacy Policy</h1>
+      <h1 className={styles.privacyMainTitle}>Gainy Inc. Privacy Policy</h1>
       <h2 className={styles.mainTitle}>{title}</h2>
       <ol className={styles.mainList}>
         {lists.map((i, index) => {

@@ -33,7 +33,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
         address: `+1${String(phone)}`
       }
     });
-    logFirebaseEvent('dw_kyc_phone_entered', currentUser, appId, { phone, iso: 'US' });
+    logFirebaseEvent('dw_kyc_phone_entered', currentUser, appId);
   };
 
   useEffect(() => {

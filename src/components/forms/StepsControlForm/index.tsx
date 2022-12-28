@@ -2,7 +2,7 @@ import { Button, Image, StepControl } from 'components';
 import { FormWrapper } from '../FormWrapper';
 import { useFormContext } from '../../../contexts/FormContext';
 import styles from './stepcontrol.module.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { config } from './config';
 import { imageTypes, routes } from '../../../utils/constants';
 import { useMutation } from '@apollo/client';
@@ -94,6 +94,23 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
         );
     }
   };
+
+  useEffect(() => {
+    if(!createAccountEdit && !verifyIdentityEdit && !investProfileEdit) {
+      logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 0 });
+    }
+    if(createAccountEdit && !verifyIdentityEdit && !investProfileEdit) {
+      logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 1 });
+    }
+    if (createAccountEdit && verifyIdentityEdit && !investProfileEdit) {
+      logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 2 });
+    }
+    if (createAccountEdit && verifyIdentityEdit && investProfileEdit) {
+      logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 3 });
+    }
+
+  }, [createAccountEdit,verifyIdentityEdit,investProfileEdit, data]);
+
 
   return (
     <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>

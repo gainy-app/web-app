@@ -34,20 +34,20 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: $blue;
+      background: #e9e9e9;
       color: $white;
       line-height: 20px;
       border-radius: 50%;
+    }
+
+    .activeStepIndicator {
+      background: $blue;
     }
 
     .stepTitle {
       line-height: 24px;
       display: inline-block;
       margin-left: 16px;
-    }
-
-    .resetMargin {
-      margin-left: 42px;
     }
   }
 

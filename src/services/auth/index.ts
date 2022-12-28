@@ -33,8 +33,8 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appIdCond
               lastName: String(rest),
               userID: user.uid
             } });
-            localStorage.setItem('token', res);
           }
+          localStorage.setItem('token', res);
         }
       })
       .catch(rej => console.log(rej));

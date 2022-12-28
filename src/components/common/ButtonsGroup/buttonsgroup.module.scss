@@ -3,12 +3,13 @@
 .buttons {
   @include flex(row, space-between, center);
   margin-top: 40px;
+  column-gap: 12px;
 
   button {
     padding: 16px 83px;
 
-    @include phone {
-      padding: 16px 65px;
+    @media (max-width: 480px) {
+      padding: 16px 56px;
     }
   }
 
@@ -16,10 +17,18 @@
     display: flex;
     column-gap: 24px;
 
+    @media (max-width: 480px) {
+      column-gap: 12px;
+    }
+
     .arrow {
       padding: 16px;
       background: $white;
       border-radius: 16px;
+
+      @media (max-width: 480px) {
+        padding: 8px;
+      }
     }
 
     .arrowNext {
@@ -28,6 +37,10 @@
       border-radius: 16px;
       outline: none;
       border: none;
+
+      @media (max-width: 480px) {
+        padding: 8px;
+      }
 
       &:disabled {
         svg {

@@ -4,9 +4,9 @@ import { ReactElement, useEffect, useRef, useState } from 'react';
 
 export const usePage = () => {
   const { pathname } = useLocation();
-  const withHeader = (!pathname.includes(routes.signIn) && !pathname.includes(routes.getApp));
+  const withHeader = (!pathname.includes(routes.signIn));
   const withFooter = (!pathname.includes(routes.signIn) && !pathname.includes(routes.getApp));
-  const isSuccess = pathname.includes(routes.success);
+  const isSuccess = (pathname.includes(routes.success) && pathname.includes(routes.getApp));
 
   return {
     withHeader,

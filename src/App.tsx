@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Route, Routes, useSearchParams } from 'react-router-dom';
 import { useAuth } from 'contexts/AuthContext';
 import { PrivateRoute, Loader } from 'components';
-import { Home, NotFound, SignIn, GetApp, Success } from 'routes';
+import { Home, SignIn, GetApp, Success, Notify } from 'routes';
 import { accessConst, routes } from 'utils/constants';
 import styles from './components/layout/layout.module.scss';
 import { usePage } from 'hooks';
@@ -48,10 +48,10 @@ function App() {
           </PrivateRoute>
         </React.Suspense>}>
         </Route>
-        <Route path={routes.notFound}
+        <Route path={routes.notify}
           element={
             <React.Suspense>
-              <NotFound/>
+              <Notify/>
             </React.Suspense>
           }/>
       </Routes>

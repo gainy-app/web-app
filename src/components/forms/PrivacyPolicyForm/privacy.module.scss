@@ -34,6 +34,10 @@
     margin-bottom: 48px;
   }
 
+  .privacyMainTitle {
+    margin-top: 0;
+  }
+
   .mainTitle {
     font-family: "SF Pro Display Medium", sans-serif;
     font-weight: 400;
@@ -135,6 +139,7 @@
       font-weight: 500;
       font-size: 14px;
       line-height: 24px;
+      text-align: right;
 
       @include largeTablet {
         max-width: 320px;

@@ -5,10 +5,6 @@
   margin: 0 auto;
   min-height: 100%;
   background: $gray-light-1;
-
-  @include tablet {
-    padding: 0 20px;
-  }
 }
 
 .reset {
@@ -33,6 +29,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+.content.kycReset {
+  @media (min-height: 720px) and (min-width: 1400px) {
+    display: block;
+    align-items: initial;
+    justify-content: initial;
   }
 }
 

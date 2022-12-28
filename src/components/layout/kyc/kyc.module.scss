@@ -22,8 +22,4 @@
   @include post-phone {
     width: 280px;
   }
-
-  @media (min-height: 720px) and (min-width: 1400px) {
-    padding-top: 0;
-  }
 }

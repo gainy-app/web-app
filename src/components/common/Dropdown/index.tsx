@@ -13,9 +13,10 @@ interface Props {
   withPlaceholder?: string
   value?: string
   active?: boolean
+  isInvest?: boolean
 }
 
-export const Dropdown = ({ children, openDropdown, list, onClick, setOpenDropdown, withPlaceholder, value, active }:Props) => {
+export const Dropdown = ({ children, openDropdown, list, onClick, setOpenDropdown, withPlaceholder, value, active, isInvest }:Props) => {
   const { ref } = useOutBoardingClick(() => setOpenDropdown(false));
 
   return (
@@ -27,7 +28,7 @@ export const Dropdown = ({ children, openDropdown, list, onClick, setOpenDropdow
           )
         }
         {children}
-        <Image type={imageTypes.arrowDropdown} className={openDropdown ? styles.rotate : ''}/>
+        <Image type={imageTypes.arrowDropdown} className={`${openDropdown ? styles.rotate : ''} ${isInvest ? styles.default : ''}`}/>
         <ul className={`${styles.dropdownInner} ${openDropdown ? styles.openDropdown : ''}`}>
           {list}
         </ul>

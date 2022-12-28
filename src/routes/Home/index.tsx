@@ -26,7 +26,7 @@ export default function Home () {
     return <Navigate to={routes.success}/>;
   }
   return (
-    <Layout footerClassName={styles.footer}>
+    <Layout footerClassName={styles.footer} kyc>
       {
         start || investSumFromStorage ?  <Kyc/> : <Invest invest={invest} setStart={setStart}/>
       }

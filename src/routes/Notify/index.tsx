@@ -1,29 +1,20 @@
-import styles from './getApp.module.scss';
-import { imageTypes, routes } from '../../utils/constants';
+import styles from './notify.module.scss';
+import { imageTypes } from '../../utils/constants';
 import { Button, Image, Input, Loader } from '../../components';
-import React, { FormEvent, useLayoutEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { formatNumber, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
-import { useNavigate } from 'react-router-dom';
 import { config } from './config';
 import { Background } from '../Success/Background';
 
-export default function GetApp () {
-  const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton } = config;
+export default function Notify () {
+  const { form,qrcode,subtitle,description,validate, downloadButton } = config;
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
-  const navigate = useNavigate();
-  const status = localStorage.getItem('status');
-
-  useLayoutEffect(()=> {
-    if(status === null) {
-      navigate(routes.home);
-    }
-  }, [status]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,15 +27,16 @@ export default function GetApp () {
   const onPhoneChange = (values: NumberFormatValues) => {
     setPhoneState(values.value);
   };
+  const notifyCountry = localStorage.getItem('notify') || 'Germany';
 
   return (
     <>
       <main className={styles.main}>
         <section className={styles.section}>
           <Image type={imageTypes.logoWhite} className={styles.logo}/>
-          <h2 className={styles.title}>{title}</h2>
+          <h2 className={styles.mainTitle}>You’ll be notified when</h2>
+          <h2 className={styles.title}>{`Trading feature will be available in ${notifyCountry}`}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
-          <p className={styles.paragraph}>{paragraph}</p>
           <a href={downloadButton.link} className={styles.buttonLink}>
             <Button variant={'download'}>
               {downloadButton.text}
@@ -91,6 +83,5 @@ export default function GetApp () {
         <span>© 2021 Gainy, Inc. </span>
       </footer>
     </>
-
   );
 }

@@ -15,6 +15,10 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
+
+  @media (max-width: 414px) {
+    height: 72px;
+  }
 }
 
 .active {

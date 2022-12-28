@@ -2,6 +2,26 @@
   div {
     margin-bottom: 16px;
   }
+
+  .calendar {
+    position: absolute;
+    top: 58px;
+    z-index: 999;
+
+    @media (max-height: 960px) {
+      top: -550%;
+    }
+
+    @media (max-width: 414px) {
+      left: -3%;
+    }
+
+    & > div {
+      @media (max-width: 414px) {
+        width: 300px;
+      }
+    }
+  }
 }
 
 .error {

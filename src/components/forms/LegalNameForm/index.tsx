@@ -97,7 +97,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
 
           </FloatingInput>
           {onShowCalender && (
-            <div style={{ position: 'absolute', top: '58px' }} >
+            <div className={styles.calendar}>
               <Calendar onChange={
                 // eslint-disable-next-line @typescript-eslint/no-shadow
                 (value: any) => {
