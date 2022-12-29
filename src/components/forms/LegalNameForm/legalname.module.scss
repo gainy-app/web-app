@@ -7,9 +7,10 @@
     position: absolute;
     top: 58px;
     z-index: 999;
+    margin-bottom: 0;
 
     @media (max-height: 960px) {
-      top: -550%;
+      top: -450%;
     }
 
     @media (max-width: 414px) {
@@ -17,6 +18,8 @@
     }
 
     & > div {
+      margin-bottom: 0;
+
       @media (max-width: 414px) {
         width: 300px;
       }
