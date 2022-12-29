@@ -1,7 +1,5 @@
 export const config = {
-  title: 'Get the mobile App',
-  subtitle: 'Our brand new web platform is so new it’s not even there yet. ',
-  paragraph: 'For now, please continue in our mobile app by signing in with the account you’ve just created.',
+  subtitle: 'For now, you can use Gainy without trading, but with beautiful analytics and match score!',
   downloadButton: {
     text: 'Download App',
     link: 'https://go.gainy.app/ZOFw/Webp'

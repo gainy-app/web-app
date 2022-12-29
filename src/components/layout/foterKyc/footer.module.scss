@@ -29,8 +29,8 @@
     @include flex(row,space-between,center);
 
     @media (max-width: $small-tablet) {
-      padding-right: 0;
-      padding-left: 0;
+      padding-right: 30px;
+      padding-left: 30px;
     }
 
     a {
@@ -38,4 +38,8 @@
       color: #0062ff;
     }
   }
+}
+
+.footer.reset {
+  margin-top: 0;
 }

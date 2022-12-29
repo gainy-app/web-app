@@ -16,12 +16,12 @@ export const StepControl = ({ stepNumber,withEdit, stepTitle, activeStep, onEdit
       [styles.active]: activeStep
     })}>
       <div className={styles.stepIndicatorWithTitle}>
-        {activeStep && (
-          <div className={styles.stepIndicator}>
-            {stepNumber}
-          </div>
-        )}
-        <span className={`${styles.stepTitle} ${activeStep ?  '' : styles.resetMargin}`}>{stepTitle}</span>
+        <div className={classNames(styles.stepIndicator, {
+          [styles.activeStepIndicator] : activeStep
+        })}>
+          {stepNumber}
+        </div>
+        <span className={styles.stepTitle}>{stepTitle}</span>
       </div>
       {withEdit && (
         <div className={styles.edit} onClick={() => {

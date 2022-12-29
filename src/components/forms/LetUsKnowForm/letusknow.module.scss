@@ -4,7 +4,11 @@
   label {
     &:first-child {
       > div {
-        height: 80px;
+        height: 100px;
+
+        @media (max-width: 414px) {
+          height: 120px;
+        }
       }
     }
 

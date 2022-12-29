@@ -46,9 +46,9 @@ export function AuthProvider({ children }: Props) {
 
   const appLinkAppId =  data?.insert_app_profiles?.returning?.find((i: any) => i?.id)?.id;
   const appIdAppId = appId?.app_profiles?.find((i: any) => i?.id)?.id;
+  const appIdCondition = appIdAppId ? appIdAppId : appLinkAppId;
 
   const isTreadingEnabled =  appId ? appId : appLinkAppId;
-
 
   async function logout() {
     await auth.signOut();
@@ -76,7 +76,7 @@ export function AuthProvider({ children }: Props) {
         user,
         setCurrentUser,
         setUserLoading,
-        appIdAppId,
+        appIdCondition,
         applink
       )
     );

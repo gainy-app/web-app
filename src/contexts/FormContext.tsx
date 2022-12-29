@@ -272,7 +272,6 @@ export function FormProvider ({ children }: Props) {
       refreshToken(currentUser).then(res => {
         localStorage.setItem('token',res);
       });
-      return;
     }
     sendKycForm({
       variables: {

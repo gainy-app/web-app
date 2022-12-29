@@ -67,11 +67,11 @@ export const InvestmentProfileForm = ({
   const onNextClick = () => {
     logFirebaseEvent('dw_kyc_ip_e', currentUser, appId, {
       income:investor_profile_annual_income?.value,
-      networth:investor_profile_net_worth_total?.value,
-      liquid:investor_profile_net_worth_liquid?.value,
-      envestExperience:investor_profile_experience?.prevValue,
+      netWorth:investor_profile_net_worth_total?.value,
+      liquidNetWorth:investor_profile_net_worth_liquid?.value,
+      investmentExperience:investor_profile_experience?.prevValue,
       objectives:investor_profile_objectives?.prevValue,
-      riskTollerance:investor_profile_risk_tolerance?.prevValue
+      riskTolerance:investor_profile_risk_tolerance?.prevValue
     });
     onSendData();
     next();
@@ -137,6 +137,7 @@ export const InvestmentProfileForm = ({
           <Dropdown
             withPlaceholder={'Annual Income'}
             openDropdown={openIncome}
+            isInvest
             value={investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}
             onClick={() => setOpenIncome(!openIncome)}
             setOpenDropdown={setOpenIncome}
@@ -162,6 +163,7 @@ export const InvestmentProfileForm = ({
           <Dropdown
             withPlaceholder={'Total net worth'}
             openDropdown={openNetWorth}
+            isInvest
             value={investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name :  networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}
             onClick={() => setOpenNetWorth(!openNetWorth)}
             setOpenDropdown={setOpenNetWorth}
@@ -187,6 +189,7 @@ export const InvestmentProfileForm = ({
           <Dropdown
             withPlaceholder={'Liquid net worth'}
             openDropdown={openLiquid}
+            isInvest
             value={investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name :  liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}
             onClick={() => setOpenLiquid(!openLiquid)}
             setOpenDropdown={setOpenLiquid}
@@ -215,6 +218,7 @@ export const InvestmentProfileForm = ({
           <Dropdown
             list={expList}
             openDropdown={openExp}
+            isInvest
             onClick={() => setOpenExp(!openExp)}
             setOpenDropdown={setOpenExp}
             withPlaceholder={'Investment Experience'}
@@ -228,6 +232,7 @@ export const InvestmentProfileForm = ({
           <Dropdown
             list={objList}
             openDropdown={openObj}
+            isInvest
             onClick={() => setOpenObj(!openObj)}
             withPlaceholder={'Investment Objectives'}
             value={investor_profile_objectives.name}
@@ -240,6 +245,7 @@ export const InvestmentProfileForm = ({
           <Dropdown
             list={toleranceList}
             openDropdown={openTolerance}
+            isInvest
             onClick={() => setOpenTolerance(!openTolerance)}
             withPlaceholder={'Risk Tolerance'}
             value={investor_profile_risk_tolerance.name}

@@ -48,6 +48,15 @@
 
 .rotate {
   transform: rotateZ(180deg);
+  align-self: initial;
+}
+
+.default {
+  align-self: flex-start;
+}
+
+.center {
+  align-self: center;
 }
 
 .openDropdown {

@@ -2,7 +2,7 @@ import styles from './success.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
 import { Button, Image, Input, Loader } from '../../components';
 import React, { FormEvent, useLayoutEffect, useState } from 'react';
-import { config } from '../GetApp/config';
+import { config } from './config';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { formatNumber, parseGQLerror } from '../../utils/helpers';
@@ -39,7 +39,6 @@ export default function Success () {
 
   return (
     <>
-      <Background />
       <main className={styles.main}>
         <section className={styles.section}>
           <Image type={imageTypes.logoWhite} className={styles.logo}/>
@@ -86,6 +85,7 @@ export default function Success () {
             </div>
           </form>
         </section>
+        <Background />
       </main>
       <footer className={styles.footer}>
         <span>© 2021 Gainy, Inc. </span>

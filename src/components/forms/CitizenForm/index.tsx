@@ -8,6 +8,8 @@ import { useFormContext } from '../../../contexts/FormContext';
 import { Dropdown } from '../../common/Dropdown';
 import { logFirebaseEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '../../../utils/constants';
 
 interface citizenData {
   country: {
@@ -26,6 +28,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
   const { flags, next, onSendData, appId } = useFormContext();
   const { currentUser } = useAuth();
   const [openDropdown, setOpenDropdown] = useState(false);
+  const navigate = useNavigate();
 
   const [selectedCountry, setSelectedCountry] = useState('');
   const toggleVisiblePopUp = () => {
@@ -44,6 +47,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
       next();
     } else {
       logFirebaseEvent('dw_kyc_ios_none_usa', currentUser, appId, { code: country?.prevValue ? country?.prevValue : country?.placeholder });
+      navigate(routes.notify);
     }
   };
 
@@ -56,6 +60,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
         prevValue: item.value,
       }
       });
+      localStorage.setItem('notify', item.name);
     }}
     className={`${styles.listItem}
       ${item?.name === country?.prevValue ? styles.activeCountry : ''}
@@ -79,6 +84,8 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
         setOpenDropdown={setOpenDropdown}
         onClick={toggleVisiblePopUp}
         list={listRender}
+        withPlaceholder={'country'}
+        value={'1'}
       >
         <div className={styles.countryWrapper}>
           <img src={ country?.flag} alt={country?.prevValue}/>
