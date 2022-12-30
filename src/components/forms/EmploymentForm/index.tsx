@@ -3,7 +3,7 @@ import { Button, Tag, ButtonsGroup, FormWrapper } from 'components';
 import React, { useEffect } from 'react';
 import styles from './emloymentform.module.scss';
 import { useFormContext } from 'contexts/FormContext';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface tagsData {
@@ -25,10 +25,12 @@ export const EmploymentForm = ({ updateFields, employment_status }:Props) => {
   const onNextClick = () => {
     if(employment_status?.prevValue === 'EMPLOYED' || employment_status?.prevValue === 'SELF_EMPLOYED') {
       logFirebaseEvent('dw_kyc_your_empl_empl', currentUser, appId);
+      trackEvent('KYC_profile_employment_choose', currentUser?.uid);
       next();
       return;
     }
     logFirebaseEvent('dw_kyc_your_empl_non_empl', currentUser, appId);
+    trackEvent('KYC_profile_employment_choose', currentUser?.uid);
     onSendData();
     next();
   };

@@ -1,16 +1,15 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
-import { Input } from '../../common/Input';
 import { useFormContext } from 'contexts/FormContext';
-import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import React, { useEffect } from 'react';
 import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import parse from 'html-react-parser';
 import { parseGQLerror } from '../../../utils/helpers';
 import styles from './verifyphonenumber.module.scss';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
+import { usePin } from '../../../hooks';
 
 interface verifyData {
   verifyCode: string
@@ -24,6 +23,8 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   const { data , verificationCodeRequest, verifyCodeRequest, back, appId } = useFormContext();
   const { currentUser } = useAuth();
   const { title,subtitle } = config(data.phone);
+
+  const { PIN_LENGTH,pin,onChange,onKeyDown,inputRefs, resetValues } = usePin(6,0, 6, data, updateFields, 'verifyCode');
   const disabled  = verifyCode?.length !== 6;
 
   const onNextClick = () => {
@@ -34,6 +35,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
       }
     });
     logFirebaseEvent('dw_kyc_phonev_e', currentUser, appId);
+    trackEvent('KYC_acc_verify_phone_done', currentUser?.uid);
   };
 
   const onSendVerifyCodeAgain = () => {
@@ -47,6 +49,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
     updateFields({
       ...data, verifyCode: ''
     });
+    resetValues();
   };
 
   useEffect(() => {
@@ -54,19 +57,28 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   }, []);
   return (
     <FormWrapper title={title} subtitle={parse(subtitle)}>
-      <Input centeredPlaceholder={!verifyCode}>
-        <PatternFormat
-          placeholder={'* * *  * * *'}
-          valueIsNumericString
-          format="# # #  # # #"
-          mask="*"
-          name={'verifyCode'}
-          onValueChange={(values: NumberFormatValues) => {
-            updateFields({ verifyCode: values.value });
-          }}
-          value={verifyCode}
-        />
-      </Input>
+      <label className={styles.pinInputLabel} htmlFor={'first'}>
+        <div className={styles.pinInputWrapper}>
+          <div className={styles.pinInput}>
+            {Array.from({ length: PIN_LENGTH }, (_, index) => (
+              <input
+                id={index === 0 ? 'first' : ''}
+                placeholder={'*'}
+                onKeyDown={(event) => onKeyDown(event, index)}
+                key={index}
+                ref={(el) => {
+                  if (el) {
+                    inputRefs.current[index] = el;
+                  }
+                }}
+                onChange={(event) => onChange(event, index)}
+                value={pin[index] || ''}
+              />
+            ))}
+          </div>
+        </div>
+      </label>
+
       <div
         onClick={onSendVerifyCodeAgain}
         className={styles.sendAgain}>Send Again</div>

@@ -4,7 +4,7 @@ import { useFormContext } from 'contexts/FormContext';
 import parse from 'html-react-parser';
 import { config } from './config';
 import React, { useEffect } from 'react';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 export const CustomerAgreementForm = () => {
@@ -48,6 +48,7 @@ export const CustomerAgreementForm = () => {
         <ButtonsGroup onBack={back} onNext={next}>
           <Button onClick={() => {
             logFirebaseEvent('dw_kyc_cust_agrm_e', currentUser, appId);
+            trackEvent('KYC_profile_accept_customer_agreement', currentUser?.uid);
             next();
           }}>{buttonText}</Button>
         </ButtonsGroup>

@@ -7,7 +7,7 @@ import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { regExps } from '../../../utils/constants';
 import { useAuth } from '../../../contexts/AuthContext';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 
 interface emailData {
   email_address: {
@@ -32,6 +32,7 @@ export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
 
   const onNextClick = () => {
     logFirebaseEvent('dw_kyc_email_e', currentUser, appId, { email: email_address.prevValue ? email_address.prevValue : email_address.placeholder });
+    trackEvent('KYC_acc_email_input', currentUser?.uid);
     onSendData();
     next();
   };

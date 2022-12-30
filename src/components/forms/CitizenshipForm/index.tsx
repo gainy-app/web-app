@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface citizenData {
@@ -44,7 +44,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
     } else {
       logFirebaseEvent('dw_kyc_citz_non_usa', currentUser, appId);
     }
-
+    trackEvent('KYC_acc_citizenship_choose', currentUser?.uid);
     onSendData();
     next();
   };

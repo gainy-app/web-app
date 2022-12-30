@@ -8,7 +8,7 @@ import { Dropdown } from '../../common/Dropdown';
 import styles from './investmentProfile.module.scss';
 import { Image } from '../../common/Image';
 import { imageTypes } from '../../../utils/constants';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface profileData {
@@ -73,6 +73,7 @@ export const InvestmentProfileForm = ({
       objectives:investor_profile_objectives?.prevValue,
       riskTolerance:investor_profile_risk_tolerance?.prevValue
     });
+    trackEvent('KYC_profile_income_info', currentUser?.uid);
     onSendData();
     next();
   };
