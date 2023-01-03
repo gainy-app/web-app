@@ -13,11 +13,13 @@ function App() {
   const { withHeader, isSuccess } = usePage();
   const [searchParams] = useSearchParams();
   const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
+
   useEffect(() => {
     if(searchParams.get('trading_access') === accessConst.trading_access) {
       localStorage.setItem('withLink', accessWithLink.toString());
     }
   }, []);
+
   if(loading) {
     return <Loader/>;
   }

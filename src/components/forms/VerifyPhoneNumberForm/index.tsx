@@ -7,9 +7,9 @@ import { ButtonsGroup } from '../../common/ButtonsGroup';
 import parse from 'html-react-parser';
 import { parseGQLerror } from '../../../utils/helpers';
 import styles from './verifyphonenumber.module.scss';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
-import { usePin } from '../../../hooks';
+import { Input } from '../../common/Input';
 
 interface verifyData {
   verifyCode: string
@@ -24,7 +24,6 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   const { currentUser } = useAuth();
   const { title,subtitle } = config(data.phone);
 
-  const { PIN_LENGTH,pin,onChange,onKeyDown,inputRefs, resetValues } = usePin(6,0, 6, data, updateFields, 'verifyCode');
   const disabled  = verifyCode?.length !== 6;
 
   const onNextClick = () => {
@@ -35,7 +34,6 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
       }
     });
     logFirebaseEvent('dw_kyc_phonev_e', currentUser, appId);
-    trackEvent('KYC_acc_verify_phone_done', currentUser?.uid);
   };
 
   const onSendVerifyCodeAgain = () => {
@@ -49,36 +47,21 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
     updateFields({
       ...data, verifyCode: ''
     });
-    resetValues();
   };
 
   useEffect(() => {
     logFirebaseEvent('dw_kyc_phonev_s', currentUser, appId);
   }, []);
+
   return (
     <FormWrapper title={title} subtitle={parse(subtitle)}>
-      <label className={styles.pinInputLabel} htmlFor={'first'}>
-        <div className={styles.pinInputWrapper}>
-          <div className={styles.pinInput}>
-            {Array.from({ length: PIN_LENGTH }, (_, index) => (
-              <input
-                id={index === 0 ? 'first' : ''}
-                placeholder={'*'}
-                onKeyDown={(event) => onKeyDown(event, index)}
-                key={index}
-                ref={(el) => {
-                  if (el) {
-                    inputRefs.current[index] = el;
-                  }
-                }}
-                onChange={(event) => onChange(event, index)}
-                value={pin[index] || ''}
-              />
-            ))}
-          </div>
-        </div>
-      </label>
-
+      <Input centeredPlaceholder={!verifyCode}
+        maxLength={6}
+        onChange={(e) => {
+          updateFields({ verifyCode: e.target.value });
+        }}
+        value={verifyCode}
+        placeholder={'* * *    * * *'}/>
       <div
         onClick={onSendVerifyCodeAgain}
         className={styles.sendAgain}>Send Again</div>

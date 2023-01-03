@@ -21,6 +21,7 @@ export default function GetApp () {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const status = localStorage.getItem('status');
+  const authMethod =  localStorage.getItem('login');
 
   useLayoutEffect(()=> {
     if(status === null) {
@@ -29,10 +30,12 @@ export default function GetApp () {
   }, [status]);
 
   useLayoutEffect(() => {
-    if(currentUser) {
-      trackEvent('web_login', currentUser.uid, { 'method_web_login': currentUser.providerData?.find((i: any) => i?.prviderId)?.providerId || 'Apple' });
+    if(authMethod) {
+      trackEvent('web_login', currentUser?.uid, authMethod);
     }
-
+    return () => {
+      localStorage.removeItem('login');
+    };
   }, []);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {

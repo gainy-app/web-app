@@ -15,8 +15,10 @@ export default function SignIn () {
     return <Navigate to={routes.home} replace state={{ path: pathname }}/>;
   }
 
-  const onSignIn = (cb:() => Promise<void>) => {
-    cb()
+  const onSignIn = (cb:() => Promise<void>, method: string) => {
+    cb().then(() => {
+      localStorage.setItem('login', method);
+    })
       .finally(() => {
         navigate(routes.home);
       });
@@ -34,13 +36,13 @@ export default function SignIn () {
           <Button
             variant={'apple'}
             id={'webapp_signin_apple'}
-            onClick={() => onSignIn(signInWithApple)}>
+            onClick={() => onSignIn(signInWithApple, 'Apple')}>
             <Image type={imageTypes.apple} className={styles.signIcon}/>
             <span> {form.apple}</span>
           </Button>
           <Button
             variant={'google'}
-            onClick={() => onSignIn(signInWithGoogle)}
+            onClick={() => onSignIn(signInWithGoogle, 'Google')}
             id={'webapp_signin_google'}
           >
             <Image type={imageTypes.google} className={styles.signIcon}/>

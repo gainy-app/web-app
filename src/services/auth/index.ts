@@ -18,6 +18,7 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appIdCond
     user.getIdToken()
       .then(token => auth.currentUser?.getIdTokenResult()
         .then(result => {
+          sessionStorage.setItem('uid', user?.uid);
           if(result.claims['https://hasura.io/jwt/claims']) {
             return token;
           }

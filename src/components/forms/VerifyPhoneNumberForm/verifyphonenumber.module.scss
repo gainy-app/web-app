@@ -28,37 +28,27 @@
   font-weight: 500;
   font-size: 16px;
 
-  .pinInputWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .pinInput {
+    input {
+      margin-left: 2px;
+      border: none;
+      outline: none;
+      width: 40px;
+      font-family: "SF Pro Display Medium", sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
 
-    .pinInput {
-      input {
-        margin-left: 2px;
+      &:focus {
         border: none;
         outline: none;
-        width: 12px;
-        font-family: "SF Pro Display Medium", sans-serif;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 24px;
-
-        &:focus {
-          border: none;
-          outline: none;
-        }
-      }
-
-      input:nth-child(4) {
-        margin-left: 20px;
       }
     }
+  }
 
-    .pinInputShow {
-      color: #0062ff;
-      line-height: 0;
-    }
+  .pinInputShow {
+    color: #0062ff;
+    line-height: 0;
   }
 }

@@ -51,7 +51,7 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
                   }
                 }}
                 onChange={(event) => onChange(event, index)}
-                value={pin[index] || ''}
+                value={pin[index]}
               />
             ))}
           </div>
