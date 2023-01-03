@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { KYC_SEND_FORM } from '../../../services/gql/queries';
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface Props {
@@ -48,15 +48,24 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
     switch (true) {
       case currentStepIndex === 0:
         return (
-          <Button onClick={next}>{'Start'}</Button>
+          <Button onClick={() => {
+            trackEvent('KYC_what_now_create_acc_start', currentUser?.uid);
+            next();
+          }}>{'Start'}</Button>
         );
       case currentStepIndex === 7:
         return (
-          <Button onClick={next}>{'Continue'}</Button>
+          <Button onClick={() => {
+            trackEvent('KYC_what_now_verify_continue', currentUser?.uid);
+            next();
+          }}>{'Continue'}</Button>
         );
       case currentStepIndex === 11:
         return (
-          <Button onClick={next}>{'Continue'}</Button>
+          <Button onClick={() => {
+            trackEvent('KYC_what_now_profile_continue', currentUser?.uid);
+            next();
+          }}>{'Continue'}</Button>
         );
       case isLastPage:
         return (
@@ -75,6 +84,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                     const status = localStorage.getItem('status');
                     if(status === res.data.kyc_send_form.status) {
                       logFirebaseEvent('dw_kyc_main_sumbitted', currentUser, appId);
+                      trackEvent('KYC_done_open_account', currentUser?.uid);
                       navigate(routes.success);
                     }
                   }

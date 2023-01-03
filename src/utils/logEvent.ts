@@ -2,6 +2,7 @@ import { logEvent } from 'firebase/analytics';
 import { analytics } from '../firebase';
 import { v4 } from 'uuid';
 import { getUserLocale } from 'get-user-locale';
+import TagManager from 'react-gtm-module';
 
 export const logFirebaseEvent = (content:string, currentUser?: any, appId?: number, params?: any) => {
   logEvent(analytics, content, {
@@ -18,4 +19,12 @@ export const logFirebaseEvent = (content:string, currentUser?: any, appId?: numb
     profileId: appId,
     date: Date.now()
   });
+};
+
+export const trackEvent = (eventName: string, userId: any, dataLayer = {}) => {
+  TagManager.dataLayer({ dataLayer: {
+    ...dataLayer,
+    event: eventName,
+    user_id: userId
+  } });
 };

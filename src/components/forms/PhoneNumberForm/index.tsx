@@ -9,7 +9,7 @@ import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import styles from './phonenumber.module.scss';
 import flag from '../../../assets/flag.svg';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface phoneData {
@@ -34,6 +34,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
       }
     });
     logFirebaseEvent('dw_kyc_phone_entered', currentUser, appId);
+    trackEvent('KYC_acc_phone_input', currentUser?.uid);
   };
 
   useEffect(() => {

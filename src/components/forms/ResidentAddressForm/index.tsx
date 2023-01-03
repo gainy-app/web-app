@@ -10,7 +10,7 @@ import { Dropdown } from '../../common/Dropdown';
 import { useLazyQuery } from '@apollo/client';
 import { VALIDATE_ADDRESS } from '../../../services/gql/queries';
 import { parseGQLerror } from '../../../utils/helpers';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface residentData {
@@ -48,6 +48,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
     }).then(res => {
       if(!res.error) {
         logFirebaseEvent('dw_kyc_res_addr_e', currentUser, appId);
+        trackEvent('KYC_identify_address_input', currentUser?.uid);
         onSendData();
         next();
       }

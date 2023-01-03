@@ -1,8 +1,6 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
-import { Input } from '../../common/Input';
 import { useFormContext } from 'contexts/FormContext';
-import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import React, { useEffect } from 'react';
 import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
@@ -11,6 +9,7 @@ import { parseGQLerror } from '../../../utils/helpers';
 import styles from './verifyphonenumber.module.scss';
 import { logFirebaseEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
+import { Input } from '../../common/Input';
 
 interface verifyData {
   verifyCode: string
@@ -24,6 +23,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   const { data , verificationCodeRequest, verifyCodeRequest, back, appId } = useFormContext();
   const { currentUser } = useAuth();
   const { title,subtitle } = config(data.phone);
+
   const disabled  = verifyCode?.length !== 6;
 
   const onNextClick = () => {
@@ -52,21 +52,16 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   useEffect(() => {
     logFirebaseEvent('dw_kyc_phonev_s', currentUser, appId);
   }, []);
+
   return (
     <FormWrapper title={title} subtitle={parse(subtitle)}>
-      <Input centeredPlaceholder={!verifyCode}>
-        <PatternFormat
-          placeholder={'* * *  * * *'}
-          valueIsNumericString
-          format="# # #  # # #"
-          mask="*"
-          name={'verifyCode'}
-          onValueChange={(values: NumberFormatValues) => {
-            updateFields({ verifyCode: values.value });
-          }}
-          value={verifyCode}
-        />
-      </Input>
+      <Input centeredPlaceholder={!verifyCode}
+        maxLength={6}
+        onChange={(e) => {
+          updateFields({ verifyCode: e.target.value });
+        }}
+        value={verifyCode}
+        placeholder={'* * *    * * *'}/>
       <div
         onClick={onSendVerifyCodeAgain}
         className={styles.sendAgain}>Send Again</div>

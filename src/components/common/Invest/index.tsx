@@ -5,7 +5,7 @@ import styles from './invest.module.scss';
 import { KycLayout } from '../../layout/kyc';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useFormContext } from '../../../contexts/FormContext';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 
 interface Props {
   invest : {
@@ -51,6 +51,7 @@ export const Invest = React.memo(({
           setStart(true);
           localStorage.setItem('invest', String(sum));
           logFirebaseEvent('dw_kyc_deposit_e', currentUser, appId, { amount: sum });
+          trackEvent('KYC_input_amount_invest', currentUser?.uid);
         }}
         className={styles.button}
         disabled={!sum}

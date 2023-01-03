@@ -4,7 +4,7 @@ import { useFormContext } from 'contexts/FormContext';
 import { config } from './config';
 import parse from 'html-react-parser';
 import { useEffect } from 'react';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 export const PrivacyPolicyForm = () => {
@@ -48,6 +48,7 @@ export const PrivacyPolicyForm = () => {
       <div className={styles.acceptBlock}>
         <Button onClick={() => {
           logFirebaseEvent('dw_kyc_policy_e', currentUser, appId);
+          trackEvent('KYC_acc_accept_privacy_policy', currentUser?.uid);
           next();
         }}>{buttonText}</Button>
         <p className={styles.paragraph}>{parse(cookie)}</p>

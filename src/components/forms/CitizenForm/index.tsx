@@ -6,7 +6,7 @@ import { Button } from 'components';
 import parse from 'html-react-parser';
 import { useFormContext } from '../../../contexts/FormContext';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../../utils/constants';
@@ -47,6 +47,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
       next();
     } else {
       logFirebaseEvent('dw_kyc_ios_none_usa', currentUser, appId, { code: country?.prevValue ? country?.prevValue : country?.placeholder });
+      trackEvent('KYC_acc_choose_country_based', currentUser?.uid);
       navigate(routes.notify);
     }
   };

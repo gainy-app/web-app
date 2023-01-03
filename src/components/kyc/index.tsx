@@ -5,7 +5,7 @@ import {
 import React, { useEffect } from 'react';
 import { useFormContext } from 'contexts/FormContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { logFirebaseEvent } from '../../utils/logEvent';
+import { logFirebaseEvent, trackEvent } from '../../utils/logEvent';
 
 export const Kyc = () => {
   const {
@@ -22,8 +22,9 @@ export const Kyc = () => {
   }, [verifyCodeRequest.data]);
 
   useEffect(() => {
-    if(data.verifyCode?.length === 6 && verificationCodeRequest.data) {
+    if(verificationCodeRequest.data) {
       next();
+      trackEvent('KYC_acc_verify_phone_done', currentUser?.uid);
       updateFields({
         ...data, verifyCode: ''
       });

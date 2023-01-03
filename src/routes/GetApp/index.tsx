@@ -10,6 +10,8 @@ import { SEND_APP_LINK } from '../../services/gql/queries';
 import { useNavigate } from 'react-router-dom';
 import { config } from './config';
 import { Background } from '../Success/Background';
+import { useAuth } from '../../contexts/AuthContext';
+import { trackEvent } from '../../utils/logEvent';
 
 export default function GetApp () {
   const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton } = config;
@@ -17,7 +19,9 @@ export default function GetApp () {
   const [errors, setErrors] = useState<string>('');
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
   const status = localStorage.getItem('status');
+  const authMethod =  localStorage.getItem('login');
 
   useLayoutEffect(()=> {
     if(status === null) {
@@ -25,12 +29,24 @@ export default function GetApp () {
     }
   }, [status]);
 
+  useLayoutEffect(() => {
+    if(authMethod) {
+      trackEvent('web_login', currentUser?.uid, authMethod);
+    }
+    return () => {
+      localStorage.removeItem('login');
+    };
+  }, []);
+
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
       sendLink({ variables: { phone_number } });
+    }
+    if(!error) {
+      trackEvent('click_button_after_input_phone', currentUser?.uid || 'not authorized');
     }
   };
   const onPhoneChange = (values: NumberFormatValues) => {
