@@ -46,7 +46,9 @@ export default function GetApp () {
       sendLink({ variables: { phone_number } });
     }
     if(!error) {
-      trackEvent('click_button_after_input_phone', currentUser?.uid || 'not authorized');
+      trackEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized');
+    } else {
+      trackEvent('click_button_after_input_not_target_phone', currentUser?.uid);
     }
   };
   const onPhoneChange = (values: NumberFormatValues) => {

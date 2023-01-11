@@ -43,11 +43,12 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
   const onNextClick = () => {
     if(whiteList) {
       logFirebaseEvent('dw_kyc_ios_usa', currentUser, appId);
+      trackEvent('KYC_acc_choose_country_based', currentUser?.uid, { 'text_button' : 'Continue' });
       onSendData();
       next();
     } else {
       logFirebaseEvent('dw_kyc_ios_none_usa', currentUser, appId, { code: country?.prevValue ? country?.prevValue : country?.placeholder });
-      trackEvent('KYC_acc_choose_country_based', currentUser?.uid);
+      trackEvent('KYC_acc_choose_country_based', currentUser?.uid, { 'text_button' : 'Notify me' });
       navigate(routes.notify);
     }
   };
