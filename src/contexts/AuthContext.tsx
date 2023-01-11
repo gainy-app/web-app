@@ -4,7 +4,6 @@ import { appleProvider, auth, googleProvider } from '../firebase';
 import { onAuthChange } from 'services/auth';
 import {  useMutation, useQuery } from '@apollo/client';
 import { CREATE_APP_LINK, GET_APP_PROFILE } from '../services/gql/queries';
-import { trackEvent } from '../utils/logEvent';
 
 interface IAuthContext {
   currentUser: FirebaseUser | null,
@@ -42,7 +41,6 @@ export function AuthProvider({ children }: Props) {
   const { data: appId, loading: addIdLoading } = useQuery(GET_APP_PROFILE, {
     skip: !currentUser
   });
-  const uid = sessionStorage.getItem('uid');
 
   const [applink, { data, loading: appLinkLoading }] = useMutation(CREATE_APP_LINK);
 
@@ -84,16 +82,6 @@ export function AuthProvider({ children }: Props) {
     );
 
     return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    if(uid) {
-      trackEvent('user_id', uid);
-    }
-    return () => {
-      sessionStorage.removeItem('uid');
-    };
-
   }, []);
 
   const value = {
