@@ -1,3 +1,5 @@
+import { ICitizenship } from './citizenship';
+
 export interface formData {
   address_country: string
   country: {
@@ -6,14 +8,7 @@ export interface formData {
     prevValue?: string
     choices?: any
   }
-  citizenship: {
-    placeholder?: string
-    prevValue?: {
-      name?:string
-      value?:string
-    }
-    choices?: any
-  }
+  citizenship: ICitizenship
   email_address: {
     placeholder?: string
     prevValue?: string
@@ -94,3 +89,10 @@ export interface formData {
   disclosures_rule14b: null | boolean
   disclosures_signed_by: string
 }
+
+export interface IChoice {
+  name: string,
+  value: string
+}
+
+export type IChoices = Array<IChoice>;

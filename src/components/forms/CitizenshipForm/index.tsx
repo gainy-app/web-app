@@ -10,20 +10,14 @@ import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
 import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
+import { Input } from 'components/common/Dropdown/Input';
+import { ICitizenship } from 'models/citizenship';
+import { IChoices } from 'models';
+import { getFilteredList } from 'utils/helpers';
 
-interface citizenData {
-  citizenship: {
-    placeholder?: string
-    prevValue?: {
-      name?:string
-      value?:string
-    }
-    choices?: any
-  }
-}
-
-type Props = citizenData & {
-  updateFields: (fields: Partial<citizenData>) => void
+type Props = {
+  updateFields: (fields: { citizenship: ICitizenship }) => void
+  citizenship: ICitizenship
 }
 
 export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
@@ -32,9 +26,14 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   const { currentUser } = useAuth();
 
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [list, setList] = useState<IChoices>([]);
+  const [searchInput, setSearchInput] = useState(citizenship.prevValue?.name);
+
   const disable = citizenship.placeholder === 'USA' || !!citizenship.prevValue?.value;
 
-  const toggleVisiblePopUp = () => {
+  const toggleVisiblePopUp = (e: MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
     setOpenDropdown(!openDropdown);
   };
 
@@ -48,10 +47,8 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
     onSendData();
     next();
   };
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_citz_s', currentUser, appId);
-  }, []);
-  const listRender = citizenship?.choices?.map((item: { name: string, value: string }, i: number) => {
+
+  const listRender = list.map((item: { name: string, value: string }, i: number) => {
     return <li
       onClick={() => {
         updateFields({
@@ -63,6 +60,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
             },
           }
         });
+        setSearchInput(item.name);
       }
       }
       key={i.toString()}
@@ -70,6 +68,14 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
       <span>{item?.name}</span>
     </li>;
   });
+
+  useEffect(() => {
+    logFirebaseEvent('dw_kyc_citz_s', currentUser, appId);
+  }, []);
+
+  useEffect(() => {
+    citizenship?.choices && setList(citizenship?.choices);
+  }, [citizenship?.choices]);
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>
@@ -123,8 +129,18 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
               list={listRender}
               openDropdown={openDropdown}
               onClick={toggleVisiblePopUp}
-              setOpenDropdown={setOpenDropdown}>
-              <div>{citizenship.prevValue?.name}</div>
+              setOpenDropdown={setOpenDropdown}
+              value={citizenship.prevValue?.name}>
+              <Input
+                value={searchInput}
+                handleChangeInput={(value: string) => {
+                  setOpenDropdown(true);
+                  citizenship?.choices && setList(
+                    getFilteredList({ data: citizenship?.choices, value })
+                  );
+                  setSearchInput(value);
+                }}
+              />
             </Dropdown>
           </div>
         )}
