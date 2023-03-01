@@ -17,12 +17,12 @@ export default function Home () {
   const investSumFromStorage = localStorage.getItem('invest');
 
   if(loader) return <Loader/>;
-  const status = formStatus?.trading_profile_status[0]?.kyc_status;
+  const isKycFormDone = formStatus?.trading_profile_status[0]?.kyc_done;
   const withLinkFromStorage = localStorage.getItem('withLink') === 'true' ? true : false;
   const withTrading = isTreadingEnabled?.app_profiles?.find((profile: any) => !!profile.flags);
 
   if(!(withTrading?.flags?.is_trading_enabled || withLinkFromStorage)) return <Navigate to={routes.getApp}/>;
-  if(status) {
+  if(isKycFormDone) {
     return <Navigate to={routes.success}/>;
   }
   return (
