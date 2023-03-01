@@ -49,8 +49,9 @@ jobs:
       - name: Start
         run: |
           npm install -g wait-on pm2
-          pm2 start npm -- start
-#          wait-on http://localhost:3000
+          pm2 start npm --name "webapp" -- start
+          wait-on -t 60000 -v http://127.0.0.1:3000
+
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
