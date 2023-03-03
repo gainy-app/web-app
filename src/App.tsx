@@ -19,10 +19,13 @@ function App() {
     if(searchParams.get('trading_access') === accessConst.trading_access) {
       localStorage.setItem('withLink', accessWithLink.toString());
     }
+  }, []);
+
+  useEffect(() => {
     if(currentUser) {
       trackEvent('user_id', currentUser?.uid);
     }
-  }, []);
+  }, [currentUser?.uid]);
 
   if(loading) {
     return <Loader/>;

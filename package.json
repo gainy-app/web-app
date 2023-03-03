@@ -16,7 +16,7 @@
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
     "react-dom": "^18.2.0",
-    "react-gtm-module": "^2.0.11",
+    "react-gtm-module-defer": "^2.0.11",
     "react-number-format": "^5.1.2",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
