@@ -2,7 +2,7 @@ import { logEvent } from 'firebase/analytics';
 import { analytics } from '../firebase';
 import { v4 } from 'uuid';
 import { getUserLocale } from 'get-user-locale';
-import TagManager from 'react-gtm-module';
+import TagManager from 'react-gtm-module-defer';
 
 export const logFirebaseEvent = (content:string, currentUser?: any, appId?: number, params?: any) => {
   logEvent(analytics, content, {

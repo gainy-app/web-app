@@ -7,9 +7,10 @@ import { accessConst, routes } from 'utils/constants';
 import styles from './components/layout/layout.module.scss';
 import { usePage } from 'hooks';
 import { FormProvider } from './contexts/FormContext';
+import { trackEvent } from './utils/logEvent';
 
 function App() {
-  const { loading } = useAuth();
+  const { loading, currentUser } = useAuth();
   const { withHeader, isSuccess } = usePage();
   const [searchParams] = useSearchParams();
   const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
@@ -19,6 +20,12 @@ function App() {
       localStorage.setItem('withLink', accessWithLink.toString());
     }
   }, []);
+
+  useEffect(() => {
+    if(currentUser) {
+      trackEvent('user_id', currentUser?.uid);
+    }
+  }, [currentUser?.uid]);
 
   if(loading) {
     return <Loader/>;

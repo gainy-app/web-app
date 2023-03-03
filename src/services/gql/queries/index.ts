@@ -94,6 +94,7 @@ query TradingGetProfileStatus($profile_id: Int!) {
     kyc_status # NOT_READY, READY, PROCESSING, APPROVED, INFO_REQUIRED, DOC_REQUIRED, MANUAL_REVIEW, DENIED
     kyc_message
     kyc_error_messages
+    kyc_done
   }
 }`;
 

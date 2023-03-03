@@ -17,7 +17,10 @@ export default function GetApp () {
   const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton } = config;
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
-  const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
+  const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK, {
+    onError: () => trackEvent('click_button_after_input_not_target_phone', currentUser?.uid),
+    onCompleted: () => trackEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
+  });
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const status = localStorage.getItem('status');
@@ -44,9 +47,8 @@ export default function GetApp () {
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
       sendLink({ variables: { phone_number } });
-    }
-    if(!error) {
-      trackEvent('click_button_after_input_phone', currentUser?.uid || 'not authorized');
+    } else {
+      trackEvent('click_button_after_input_not_target_phone', currentUser?.uid);
     }
   };
   const onPhoneChange = (values: NumberFormatValues) => {

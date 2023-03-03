@@ -9,9 +9,11 @@ import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
 import { useLazyQuery } from '@apollo/client';
 import { VALIDATE_ADDRESS } from '../../../services/gql/queries';
-import { parseGQLerror } from '../../../utils/helpers';
+import { getFilteredList, parseGQLerror } from '../../../utils/helpers';
 import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
+import { Input } from 'components/common/Dropdown/Input';
+import { IChoices } from 'models';
 
 interface residentData {
   addressLine: string
@@ -34,6 +36,8 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
   const { currentUser } = useAuth();
   const [statesOpen, setStatesOpen] = useState(false);
   const [getValidation, {  error: validationError }] = useLazyQuery(VALIDATE_ADDRESS);
+  const [stateList, setStateList] = useState<IChoices>([]);
+  const [searchStateInput, setStateSearchInput] = useState(state?.prevValue || 'State');
 
   const onNextClick = () => {
     getValidation({
@@ -55,7 +59,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
     });
   };
 
-  const statesList = state.choices.map((choice: {value: string, name: string}) => {
+  const statesListRender = stateList.map((choice: {value: string, name: string}) => {
     return (
       <li
         onClick={() => {
@@ -65,6 +69,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
               prevValue: choice.value
             }
           });
+          setStateSearchInput(choice.name);
         }
         }
         key={choice.value}
@@ -77,6 +82,11 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
   useEffect(() => {
     logFirebaseEvent('dw_kyc_res_addr_s', currentUser, appId);
   }, []);
+
+  useEffect(() => {
+    state?.choices && setStateList(state?.choices);
+  }, [state?.choices]);
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.residentFormWrapper}>
@@ -109,14 +119,29 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
             value={city}
           />
           <Dropdown
-            list={statesList}
+            list={statesListRender}
             openDropdown={statesOpen}
             active={!!state?.prevValue}
-            onClick={() => setStatesOpen(!statesOpen)}
+            onClick={(e: MouseEvent) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setStatesOpen(!statesOpen);
+            }}
             setOpenDropdown={setStatesOpen}>
-            <div>
+            <Input
+              value={searchStateInput}
+              inActive={!state?.prevValue}
+              handleChangeInput={(value: string) => {
+                setStatesOpen(true);
+                state?.choices && setStateList(
+                  getFilteredList({ data: state?.choices, value })
+                );
+                setStateSearchInput(value);
+              }}
+            />
+            {/* <div>
               {state?.prevValue ? state?.prevValue : <span style={{ color: '#b1bdc8' }}>State</span> }
-            </div>
+            </div> */}
           </Dropdown>
         </div>
         <FloatingInput

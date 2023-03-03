@@ -54,7 +54,7 @@ export const useOutBoardingClick = (cb:any) => {
   const ref = useRef(null);
 
   const handleOutsideClick = (e:any) => {
-    if(!e.path.includes(ref.current)) {
+    if(!e.path?.includes(ref.current)) {
       cb();
     }
   };
