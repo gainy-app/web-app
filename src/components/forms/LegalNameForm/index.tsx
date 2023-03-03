@@ -48,7 +48,9 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
   };
   const isYoungster = dayjs().diff(value, 'hour') < 157776;
   const disable = !last_name.placeholder || !first_name.placeholder || isYoungster || !value;
-  const { ref } = useOutBoardingClick(() => setOnShowCalender(false));
+  const { ref } = useOutBoardingClick(() => {
+    setOnShowCalender(false);
+  });
 
   useEffect(() => {
     logFirebaseEvent('dw_kyc_legal_s', currentUser, appId);
@@ -88,7 +90,11 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
           value={last_name?.prevValue ? last_name.prevValue : last_name.placeholder}
         />
 
-        <div style={{ position: 'relative' }} ref={ref} onClick={() => setOnShowCalender(true)}>
+        <div style={{ position: 'relative' }} ref={ref} onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          setOnShowCalender(true);
+        }}>
           <FloatingInput
             id={'birthday'}
             label={'Birthday'}
