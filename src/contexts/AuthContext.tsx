@@ -38,17 +38,14 @@ interface Props {
 export function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [userLoading, setUserLoading] = useState(true);
+  const [isRefreshTokenLoaded, setIsRefreshTokenLoaded] = useState(false);
   const { data: appId, loading: addIdLoading } = useQuery(GET_APP_PROFILE, {
     skip: !currentUser
   });
-
-  const [applink, { data, loading: appLinkLoading }] = useMutation(CREATE_APP_LINK);
-
+  const [appLink, { data, loading: appLinkLoading }] = useMutation(CREATE_APP_LINK);
   const appLinkAppId =  data?.insert_app_profiles?.returning?.find((i: any) => i?.id)?.id;
   const appIdAppId = appId?.app_profiles?.find((i: any) => i?.id)?.id;
-  const appIdCondition = appIdAppId ? appIdAppId : appLinkAppId;
-
-  const isTreadingEnabled =  appId ? appId : appLinkAppId;
+  const isTreadingEnabled =  appId || appLinkAppId;
 
   async function logout() {
     await auth.signOut();
@@ -72,17 +69,35 @@ export function AuthProvider({ children }: Props) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(
-      (user) => onAuthChange(
+      (user) => onAuthChange({
         user,
         setCurrentUser,
         setUserLoading,
-        appIdCondition,
-        applink
-      )
+        setIsRefreshTokenLoaded
+      })
     );
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    if (
+      isRefreshTokenLoaded &&
+      !addIdLoading && (!appId || appId.app_profiles?.length === 0) &&
+      !appIdAppId &&
+      currentUser &&
+      currentUser.displayName
+    ) {
+      const [firstName, lastName] = currentUser.displayName.split(' ');
+
+      appLink({ variables: {
+        email: currentUser.email,
+        firstName,
+        lastName,
+        userID: currentUser.uid
+      } });
+    }
+  }, [addIdLoading, isRefreshTokenLoaded]);
 
   const value = {
     currentUser,
@@ -90,7 +105,7 @@ export function AuthProvider({ children }: Props) {
     signInWithGoogle,
     loading: userLoading,
     signInWithApple,
-    appId: appIdAppId ? appIdAppId : appLinkAppId,
+    appId: appIdAppId || appLinkAppId,
     appIdLoading: addIdLoading || appLinkLoading,
     isTreadingEnabled
   };
