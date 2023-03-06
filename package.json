@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.1",
+    "@types/amplitude-js": "^8.16.2",
     "@types/uuid": "^9.0.0",
+    "amplitude-js": "^8.21.5",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
     "firebase": "^9.14.0",

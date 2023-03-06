@@ -8,14 +8,20 @@ import { AuthProvider } from 'contexts/AuthContext';
 import { ApolloProvider } from '@apollo/client';
 import { client } from 'services/gql/client';
 import TagManager from 'react-gtm-module-defer';
+import { initAmplitude } from 'utils/logEvent';
 
-if(process.env.REACT_APP_GTM_CONTAINER) {
+const { REACT_APP_AMPLITUDE_API_KEY, REACT_APP_GTM_CONTAINER } = process.env;
+
+if(REACT_APP_GTM_CONTAINER) {
   const tagManagerArgs = {
-    gtmId: process.env.REACT_APP_GTM_CONTAINER
+    gtmId: REACT_APP_GTM_CONTAINER
   };
   TagManager.initialize(tagManagerArgs);
 }
 
+if (REACT_APP_AMPLITUDE_API_KEY) {
+  initAmplitude();
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
