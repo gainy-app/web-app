@@ -59,7 +59,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
     }
   };
   const listRender = list.map((item: { name: string, value: string }, i: number) => {
-    const selectedFlag = flags?.countries.find((flag: any) => flag.name === item.name)?.flag_w40_url;
+    const selectedFlag = flags?.countries.find((flag: any) => flag.alpha3 === item.value)?.flag_w40_url;
     return <li onClick={() => {
       setSelectedCountry(item.name);
       updateFields({
