@@ -1,11 +1,13 @@
 import {
   StepsControlForm,
-  KycLayout
+  KycLayout,
+  Loader
 } from 'components';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'contexts/FormContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { logFirebaseEvent, trackEvent } from '../../utils/logEvent';
+import styles from './kyc.module.scss';
 
 export const Kyc = () => {
   const {
@@ -13,6 +15,7 @@ export const Kyc = () => {
     next, verifyCodeRequest, verificationCodeRequest,
     onSendData, data, updateFields, appId
   } = useFormContext();
+  const [isAppIdError, setIsAppIdError] = useState(false);
   const { currentUser } = useAuth();
   useEffect(() => {
     if(verifyCodeRequest.data && currentStepIndex === 5) {
@@ -34,10 +37,20 @@ export const Kyc = () => {
   useEffect(() => {
     logFirebaseEvent('dw_kyc_main_s', currentUser, appId);
   }, []);
+  useEffect(() => {
+    const checkAppIdTimeout = setTimeout(() => {
+      appId || setIsAppIdError(true);
+    }, 30000);
 
+    return () => clearTimeout(checkAppIdTimeout);
+  }, []);
   return (
     <KycLayout>
-      {step ? step : <StepsControlForm currentStepIndex={currentStepIndex} goToStep={goToStep}/>}
+      {appId ? (
+        step ? step : <StepsControlForm currentStepIndex={currentStepIndex} goToStep={goToStep} />
+      ) : isAppIdError ? (
+        <label className={styles.loadedError}>{'Sorry can\'t load your appId. Try to refresh your page or log in again'}</label>) : <Loader />
+      }
     </KycLayout>
   );
 };
