@@ -37,6 +37,7 @@ export function FormProvider ({ children }: Props) {
     variables: {
       profile_id: appId
     },
+    skip: !appId
   });
   const { data: countries } = useQuery(GET_COUNTRIES);
 
@@ -44,12 +45,14 @@ export function FormProvider ({ children }: Props) {
     variables: {
       profile_id:  appId
     },
+    skip: !appId
   });
 
   const { data: formStatus, loading: formStatusLoading } = useQuery(TRADING_GET_PROFILE_STATUS, {
     variables: {
       profile_id: appId
-    }
+    },
+    skip: !appId
   });
 
   const [verifyCode

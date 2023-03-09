@@ -1,8 +1,8 @@
-import { Button, Image, StepControl } from 'components';
+import { Button, Image, Loader, StepControl } from 'components';
 import { FormWrapper } from '../FormWrapper';
 import { useFormContext } from '../../../contexts/FormContext';
 import styles from './stepcontrol.module.scss';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { config } from './config';
 import { imageTypes, routes } from '../../../utils/constants';
 import { useMutation } from '@apollo/client';
@@ -111,11 +111,10 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
 
   }, [createAccountEdit,verifyIdentityEdit,investProfileEdit, data]);
 
-
   return (
     <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>
       {steps.map((step, i) => {
-        return (
+        return appId ? (
           <StepControl
             stepTitle={step.title}
             key={i.toString()}
@@ -134,7 +133,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
             step={step.redirect}
             withEdit={step.edit}
           />
-        );
+        ) : <Loader/>;
       })}
       {isLastPage && (
         <div className={styles.acceptTerms}>
