@@ -32,7 +32,6 @@ interface Props {
 
 export function FormProvider ({ children }: Props) {
   const { appId, currentUser, appIdLoading, isTreadingEnabled } = useAuth();
-
   const { data: kycFormConfig, loading: kycFormConfigLoader } = useQuery(GET_FORM_CONFIG, {
     variables: {
       profile_id: appId

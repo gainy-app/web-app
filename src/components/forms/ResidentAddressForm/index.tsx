@@ -97,7 +97,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
           onChange={(e) => {
             updateFields({ addressLine: e.target.value });
           }}
-          value={addressLine}
+          value={addressLine || ''}
         />
         <FloatingInput
           id={'addressLine2'}
@@ -106,7 +106,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
           onChange={(e) => {
             updateFields({ addressLine2: e.target.value });
           }}
-          value={addressLine2}
+          value={addressLine2 || ''}
         />
         <div className={styles.cityWithState}>
           <FloatingInput
@@ -116,7 +116,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
             onChange={(e) => {
               updateFields({ city: e.target.value });
             }}
-            value={city}
+            value={city || ''}
           />
           <Dropdown
             list={statesListRender}
@@ -139,9 +139,6 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
                 setStateSearchInput(value);
               }}
             />
-            {/* <div>
-              {state?.prevValue ? state?.prevValue : <span style={{ color: '#b1bdc8' }}>State</span> }
-            </div> */}
           </Dropdown>
         </div>
         <FloatingInput
@@ -155,7 +152,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
             updateFields({ zipcode: val?.toString().slice(0, limit) });
           }}
           type={'number'}
-          value={zipcode?.toString()}
+          value={zipcode?.toString() || ''}
         />
       </div>
       {
