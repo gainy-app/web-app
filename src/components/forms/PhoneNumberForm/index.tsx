@@ -34,6 +34,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
       }
     });
     logFirebaseEvent('dw_kyc_phone_entered', currentUser, appId);
+    trackEvent('KYC_acc_phone_input', currentUser?.uid);
   };
 
   useEffect(() => {

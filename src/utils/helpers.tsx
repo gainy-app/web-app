@@ -30,4 +30,14 @@ export const getFilteredList = ({
 }: {
     data: IChoices
     value: string
-}) => data.filter((item: any) => item.name?.toLowerCase().indexOf(value?.toLowerCase()) !== -1);
+  }) => data.filter((item: any) => item.name?.toLowerCase().indexOf(value?.toLowerCase()) !== -1);
+
+export const getDeviceId = (deviceIdSearchParam?: string | null): string => {
+  const deviceId = deviceIdSearchParam || localStorage.getItem('deviceId') || '';
+
+  if (deviceId) {
+    localStorage.setItem('deviceId', deviceId);
+  }
+
+  return deviceId;
+};
