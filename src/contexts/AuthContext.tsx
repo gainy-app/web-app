@@ -4,7 +4,6 @@ import { appleProvider, auth, googleProvider } from '../firebase';
 import { onAuthChange } from 'services/auth';
 import {  useMutation, useQuery } from '@apollo/client';
 import { CREATE_APP_LINK, GET_APP_PROFILE } from '../services/gql/queries';
-import { trackEvent } from 'utils/logEvent';
 
 interface IAuthContext {
   currentUser: FirebaseUser | null,
