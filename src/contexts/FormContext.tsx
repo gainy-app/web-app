@@ -19,6 +19,7 @@ import {
 import { useAuth } from './AuthContext';
 import { refreshToken } from '../services/auth';
 import { formData } from '../models';
+import { trackEvent } from 'utils/logEvent';
 
 const FormContext = React.createContext<any>({});
 
@@ -56,7 +57,10 @@ export function FormProvider ({ children }: Props) {
 
   const [verifyCode
     , { loading: verifyLoading, data:verifyNumber, error: verifyError }
-  ] = useMutation(VERIFICATION_SEND_CODE);
+  ] = useMutation(VERIFICATION_SEND_CODE, {
+    onError: () => trackEvent('click_button_after_input_not_target_phone', currentUser?.uid),
+    onCompleted: () => trackEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
+  });
 
   const [verificationCode,
     { loading: verificationCodeLoading,error: verificationCodeError,data: verificationCodeData }
