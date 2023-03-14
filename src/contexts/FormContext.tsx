@@ -377,20 +377,10 @@ export function FormProvider ({ children }: Props) {
   useEffect(() => {
     if (appId) {
       const appIdString = appId.toString();
-      const appIdLength = appIdString.length;
       let newUserId = appIdString;
 
       while (newUserId.length < 5) {
         newUserId = '0' + newUserId;
-      }
-
-      if (appIdLength < 5) {
-        for (let index = appIdLength; index < 5; index++) {
-          newUserId += '0';
-        }
-        newUserId += appIdString;
-      } else {
-        newUserId = appIdString;
       }
 
       initAmplitude({
