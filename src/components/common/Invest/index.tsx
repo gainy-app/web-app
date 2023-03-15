@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Input, Button } from 'components';
 import { NumberFormatValues, NumericFormat } from 'react-number-format';
 import styles from './invest.module.scss';
 import { KycLayout } from '../../layout/kyc';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useFormContext } from '../../../contexts/FormContext';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
 
 interface Props {
   invest : {
@@ -28,10 +28,6 @@ export const Invest = React.memo(({
     setSum(values.formattedValue);
   };
 
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_deposit_s', currentUser, appId);
-  }, []);
-
   return (
     <KycLayout>
       <h2 className={styles.title}>{title}</h2>
@@ -50,7 +46,8 @@ export const Invest = React.memo(({
         onClick={() => {
           setStart(true);
           localStorage.setItem('invest', String(sum));
-          logFirebaseEvent('dw_kyc_deposit_e', currentUser, appId, { amount: sum });
+          logFirebaseEvent('kyc_invest_amount_input_done', currentUser?.uid, appId, { amount: sum });
+          sendAmplitudeData('kyc_invest_amount_input_done', { amount: sum });
           trackEvent('KYC_input_amount_invest', currentUser?.uid);
         }}
         className={styles.button}

@@ -11,7 +11,7 @@ export const logFirebaseEvent = (content:string, currentUser?: any, appId?: numb
     ...params,
     v: 1,
     tid: v4(),
-    source: 'web',
+    source: 'webapp',
     av: '0.1.0',
     an: '0.1.0',
     ul: getUserLocale(),

@@ -2,12 +2,11 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 import { Button } from '../../common/Button';
-import React, { useEffect } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { regExps } from '../../../utils/constants';
 import { useAuth } from '../../../contexts/AuthContext';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
 
 interface emailData {
   email_address: {
@@ -26,12 +25,9 @@ export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
   const { currentUser } = useAuth();
   const disabled = !regExps.email.test(data.email_address?.placeholder);
 
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_email_s', currentUser, appId);
-  },[]);
-
   const onNextClick = () => {
-    logFirebaseEvent('dw_kyc_email_e', currentUser, appId, { email: email_address.prevValue ? email_address.prevValue : email_address.placeholder });
+    logFirebaseEvent('kyc_acc_email_enter_done', currentUser, appId);
+    sendAmplitudeData('kyc_acc_email_enter_done');
     trackEvent('KYC_acc_email_input', currentUser?.uid);
     onSendData();
     next();

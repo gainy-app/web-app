@@ -1,9 +1,8 @@
 import { config } from './config';
 import { Button, Tag, ButtonsGroup, FormWrapper } from 'components';
-import React, { useEffect } from 'react';
 import styles from './emloymentform.module.scss';
 import { useFormContext } from 'contexts/FormContext';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface tagsData {
@@ -19,17 +18,15 @@ type Props = tagsData & {
 
 export const EmploymentForm = ({ updateFields, employment_status }:Props) => {
   const { title,subtitle } = config;
-  const { next, back, onSendData, appId } = useFormContext();
+  const { next, back, onSendData } = useFormContext();
   const { currentUser } = useAuth();
 
   const onNextClick = () => {
     if(employment_status?.prevValue === 'EMPLOYED' || employment_status?.prevValue === 'SELF_EMPLOYED') {
-      logFirebaseEvent('dw_kyc_your_empl_empl', currentUser, appId);
       trackEvent('KYC_profile_employment_choose', currentUser?.uid);
       next();
       return;
     }
-    logFirebaseEvent('dw_kyc_your_empl_non_empl', currentUser, appId);
     trackEvent('KYC_profile_employment_choose', currentUser?.uid);
     onSendData();
     next();
@@ -41,9 +38,6 @@ export const EmploymentForm = ({ updateFields, employment_status }:Props) => {
   } });
 
   const disabled = !employment_status.prevValue;
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_your_empl_s', currentUser, appId);
-  }, []);
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>

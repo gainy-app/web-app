@@ -6,7 +6,7 @@ import { Button } from 'components';
 import parse from 'html-react-parser';
 import { useFormContext } from '../../../contexts/FormContext';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../../utils/constants';
@@ -48,12 +48,12 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
   const onNextClick = () => {
     if(whiteList) {
-      logFirebaseEvent('dw_kyc_ios_usa', currentUser, appId);
+      logFirebaseEvent('kyc_acc_country_based_done', currentUser, appId, { countryCode: country?.placeholder });
+      sendAmplitudeData('kyc_acc_country_based_done', { countryCode: country?.placeholder });
       trackEvent('KYC_acc_choose_country_based', currentUser?.uid, { 'text_button' : 'Continue' });
       onSendData();
       next();
     } else {
-      logFirebaseEvent('dw_kyc_ios_none_usa', currentUser, appId, { code: country?.prevValue ? country?.prevValue : country?.placeholder });
       trackEvent('KYC_acc_choose_country_based', currentUser?.uid, { 'text_button' : 'Notify me' });
       navigate(routes.notify);
     }
@@ -81,10 +81,6 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
       <span>{item?.name}</span>
     </li>;
   });
-
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_ios_s', currentUser, appId);
-  }, []);
 
   useEffect(() => {
     country?.choices && setList(country?.choices);

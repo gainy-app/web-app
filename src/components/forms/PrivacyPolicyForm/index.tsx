@@ -3,18 +3,13 @@ import { Button } from 'components';
 import { useFormContext } from 'contexts/FormContext';
 import { config } from './config';
 import parse from 'html-react-parser';
-import { useEffect } from 'react';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 export const PrivacyPolicyForm = () => {
   const { next, appId } = useFormContext();
   const { currentUser } = useAuth();
   const { title, lists, cookie, buttonText } = config;
-
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_policy_s', currentUser, appId);
-  }, []);
 
   return (
     <div className={styles.privacyWrapper}>
@@ -47,7 +42,8 @@ export const PrivacyPolicyForm = () => {
       </ol>
       <div className={styles.acceptBlock}>
         <Button onClick={() => {
-          logFirebaseEvent('dw_kyc_policy_e', currentUser, appId);
+          logFirebaseEvent('kyc_acc_privacy_policy_accepted', currentUser, appId);
+          sendAmplitudeData('kyc_acc_privacy_policy_accepted');
           trackEvent('KYC_acc_accept_privacy_policy', currentUser?.uid);
           next();
         }}>{buttonText}</Button>

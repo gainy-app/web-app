@@ -2,14 +2,14 @@ import { Button, Image, Loader, StepControl } from 'components';
 import { FormWrapper } from '../FormWrapper';
 import { useFormContext } from '../../../contexts/FormContext';
 import styles from './stepcontrol.module.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { config } from './config';
 import { imageTypes, routes } from '../../../utils/constants';
 import { useMutation } from '@apollo/client';
 import { KYC_SEND_FORM } from '../../../services/gql/queries';
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface Props {
@@ -49,6 +49,8 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       case currentStepIndex === 0:
         return (
           <Button onClick={() => {
+            logFirebaseEvent('kyc_what_now_create_acc_done', currentUser, appId);
+            sendAmplitudeData('kyc_what_now_create_acc_done');
             trackEvent('KYC_what_now_create_acc_start', currentUser?.uid);
             next();
           }}>{'Start'}</Button>
@@ -56,6 +58,8 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       case currentStepIndex === 7:
         return (
           <Button onClick={() => {
+            logFirebaseEvent('kyc_what_now_identity_done', currentUser?.uid, appId);
+            sendAmplitudeData('kyc_what_now_identity_done');
             trackEvent('KYC_what_now_verify_continue', currentUser?.uid);
             next();
           }}>{'Continue'}</Button>
@@ -63,6 +67,8 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       case currentStepIndex === 11:
         return (
           <Button onClick={() => {
+            logFirebaseEvent('kyc_what_now_profile_done', currentUser, appId);
+            sendAmplitudeData('kyc_what_now_profile_done');
             trackEvent('KYC_what_now_profile_continue', currentUser?.uid);
             next();
           }}>{'Continue'}</Button>
@@ -83,7 +89,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                     localStorage.setItem('status', res.data.kyc_send_form.status);
                     const status = localStorage.getItem('status');
                     if(status === res.data.kyc_send_form.status) {
-                      logFirebaseEvent('dw_kyc_main_sumbitted', currentUser, appId);
                       trackEvent('KYC_done_open_account', currentUser?.uid);
                       navigate(routes.success);
                     }
@@ -95,22 +100,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
     }
   };
 
-  useEffect(() => {
-    if(!createAccountEdit && !verifyIdentityEdit && !investProfileEdit) {
-      logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 0 });
-    }
-    if(createAccountEdit && !verifyIdentityEdit && !investProfileEdit) {
-      logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 1 });
-    }
-    if (createAccountEdit && verifyIdentityEdit && !investProfileEdit) {
-      logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 2 });
-    }
-    if (createAccountEdit && verifyIdentityEdit && investProfileEdit) {
-      logFirebaseEvent('dw_kyc_main_state_change', currentUser, appId, { type: 3 });
-    }
-
-  }, [createAccountEdit,verifyIdentityEdit,investProfileEdit, data]);
-
   return (
     <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>
       {steps.map((step, i) => {
@@ -120,15 +109,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
             key={i.toString()}
             activeStep={currentStepIndex >= step.step || step.edit}
             stepNumber={i + 1}
-            onEdit={() => {
-              if(i === 0) {
-                logFirebaseEvent('dw_kyc_main_create', currentUser, appId);
-              } else if (i === 1) {
-                logFirebaseEvent('dw_kyc_main_verify', currentUser, appId);
-              } else if (i === 2) {
-                logFirebaseEvent('dw_kyc_main_investor', currentUser, appId);
-              }
-            }}
             goToStep={goToStep}
             step={step.redirect}
             withEdit={step.edit}

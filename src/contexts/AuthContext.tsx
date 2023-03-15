@@ -4,6 +4,7 @@ import { appleProvider, auth, googleProvider } from '../firebase';
 import { onAuthChange } from 'services/auth';
 import {  useMutation, useQuery } from '@apollo/client';
 import { CREATE_APP_LINK, GET_APP_PROFILE } from '../services/gql/queries';
+import { logFirebaseEvent, sendAmplitudeData } from 'utils/logEvent';
 
 interface IAuthContext {
   currentUser: FirebaseUser | null,
@@ -53,17 +54,29 @@ export function AuthProvider({ children }: Props) {
 
   async function signInWithGoogle ()  {
     try {
+      logFirebaseEvent('sign_in_clicked', currentUser, appId, { accountType: 'google' });
+      sendAmplitudeData('sign_in_clicked', { accountType: 'google' });
       await signInWithPopup(auth, googleProvider);
-    } catch (err) {
+      logFirebaseEvent('authorization_fully_authorized', currentUser, appId, { accountType: 'google' });
+      sendAmplitudeData('authorization_fully_authorized', { accountType: 'google' });
+    } catch (err: any) {
       console.error(err);
+      logFirebaseEvent('authorization_failed', currentUser, appId, { accountType: 'google', errorType: err.message });
+      sendAmplitudeData('authorization_failed', { accountType: 'google', errorType: err.message });
     }
   }
 
   async function signInWithApple () {
     try {
+      logFirebaseEvent('sign_in_clicked', currentUser, appId, { accountType: 'apple' });
+      sendAmplitudeData('sign_in_clicked', { accountType: 'apple' });
       await signInWithPopup(auth, appleProvider);
-    } catch (err) {
+      logFirebaseEvent('authorization_fully_authorized', currentUser, appId, { accountType: 'apple' });
+      sendAmplitudeData('authorization_fully_authorized', { accountType: 'apple' });
+    } catch (err: any) {
       console.error(err);
+      logFirebaseEvent('authorization_failed', currentUser, appId, { accountType: 'apple', errorType: err.message });
+      sendAmplitudeData('authorization_failed', { accountType: 'apple', errorType: err.message });
     }
   }
 
@@ -90,12 +103,25 @@ export function AuthProvider({ children }: Props) {
     ) {
       const [firstName, lastName] = currentUser.displayName.split(' ');
 
-      appLink({ variables: {
-        email: currentUser.email,
-        firstName,
-        lastName,
-        userID: currentUser.uid
-      } });
+      logFirebaseEvent('authorization_need_create_profile', currentUser, appId);
+      sendAmplitudeData('authorization_need_create_profile');
+
+      appLink({
+        variables: {
+          email: currentUser.email,
+          firstName,
+          lastName,
+          userID: currentUser.uid
+        }
+      }).then(() => {
+        logFirebaseEvent('sign_up_success', currentUser, appId);
+        sendAmplitudeData('sign_up_success');
+      }).catch(() => {
+        logFirebaseEvent('sign_up_failed', currentUser, appId);
+        sendAmplitudeData('sign_up_failed');
+      });
+
+
     }
   }, [addIdLoading, isRefreshTokenLoaded]);
 

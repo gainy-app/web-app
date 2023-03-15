@@ -6,7 +6,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'contexts/FormContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { logFirebaseEvent, trackEvent } from '../../utils/logEvent';
+import { trackEvent } from '../../utils/logEvent';
 import styles from './kyc.module.scss';
 
 export const Kyc = () => {
@@ -34,9 +34,6 @@ export const Kyc = () => {
     }
   }, [verificationCodeRequest.data]);
 
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_main_s', currentUser, appId);
-  }, []);
   useEffect(() => {
     const checkAppIdTimeout = setTimeout(() => {
       appId || setIsAppIdError(true);

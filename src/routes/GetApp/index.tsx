@@ -7,15 +7,17 @@ import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { formatNumber, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { config } from './config';
 import { Background } from '../Success/Background';
 import { useAuth } from '../../contexts/AuthContext';
-import { trackEvent } from '../../utils/logEvent';
+import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../utils/logEvent';
+import { useFormContext } from 'contexts/FormContext';
 
 export default function GetApp () {
   const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton } = config;
   const [phoneState, setPhoneState] = useState<string>('');
+  const { pathname } = useLocation();
   const [errors, setErrors] = useState<string>('');
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK, {
     onError: () => trackEvent('click_button_after_input_not_target_phone', currentUser?.uid),
@@ -24,7 +26,24 @@ export default function GetApp () {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const status = localStorage.getItem('status');
-  const authMethod =  localStorage.getItem('login');
+  const authMethod = localStorage.getItem('login');
+  const { appId } = useFormContext();
+  const handleDownloadButtonClick = () => {
+    logFirebaseEvent('download_app_clicked', currentUser, appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
+    sendAmplitudeData('download_app_clicked', {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
+  };
 
   useLayoutEffect(()=> {
     if(status === null) {
@@ -36,6 +55,10 @@ export default function GetApp () {
     if(authMethod) {
       trackEvent('web_login', currentUser?.uid, authMethod);
     }
+
+    logFirebaseEvent('get_app_page_viewed', currentUser, appId);
+    sendAmplitudeData('get_app_page_viewed');
+
     return () => {
       localStorage.removeItem('login');
     };
@@ -43,6 +66,21 @@ export default function GetApp () {
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    logFirebaseEvent('text_the_link_clicked', currentUser, appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
+    sendAmplitudeData('text_the_link_clicked', {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
@@ -63,8 +101,12 @@ export default function GetApp () {
           <h2 className={styles.title}>{title}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
           <p className={styles.paragraph}>{paragraph}</p>
-          <a href={downloadButton.link} className={styles.buttonLink}>
-            <Button variant={'download'}>
+          <a
+            href={downloadButton.link}
+            className={styles.buttonLink}
+            onClick={handleDownloadButtonClick}
+          >
+            <Button variant={'download'} id={downloadButton.id}>
               {downloadButton.text}
             </Button>
           </a>

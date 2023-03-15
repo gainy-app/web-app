@@ -10,7 +10,7 @@ import { Dropdown } from '../../common/Dropdown';
 import { useLazyQuery } from '@apollo/client';
 import { VALIDATE_ADDRESS } from '../../../services/gql/queries';
 import { getFilteredList, parseGQLerror } from '../../../utils/helpers';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Input } from 'components/common/Dropdown/Input';
 import { IChoices } from 'models';
@@ -51,7 +51,12 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
       }
     }).then(res => {
       if(!res.error) {
-        logFirebaseEvent('dw_kyc_res_addr_e', currentUser, appId);
+        logFirebaseEvent('kyc_identify_address_input_done', currentUser, appId, {
+          city, state: state?.prevValue
+        });
+        sendAmplitudeData('kyc_identify_address_input_done', {
+          city, state: state?.prevValue
+        });
         trackEvent('KYC_identify_address_input', currentUser?.uid);
         onSendData();
         next();
@@ -79,9 +84,6 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
     );
   });
   const disabled = !addressLine || !city || !state?.prevValue || zipcode?.length !== 5;
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_res_addr_s', currentUser, appId);
-  }, []);
 
   useEffect(() => {
     state?.choices && setStateList(state?.choices);

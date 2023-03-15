@@ -3,10 +3,11 @@ import styles from './button.module.scss';
 import React from 'react';
 
 interface Props extends React.HTMLProps<HTMLButtonElement> {
-    children: JSX.Element | string | JSX.Element[]
-    onClick?: () => void
-    variant?: 'apple' | 'google' | 'download' | 'continue'
-    type?: 'button' | 'submit' | 'reset'
+  children: JSX.Element | string | JSX.Element[]
+  onClick?: () => void
+  variant?: 'apple' | 'google' | 'download' | 'continue'
+  type?: 'button' | 'submit' | 'reset',
+  id?: string
 }
 
 export const Button = ({ children, onClick, variant, ...rest }: Props) => {
