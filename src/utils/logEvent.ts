@@ -17,7 +17,7 @@ export const logFirebaseEvent = (content:string, currentUser?: any, appId?: numb
     ul: getUserLocale(),
     vp: `${window.innerHeight}x${window.innerWidth}`,
     uid: currentUser?.uid || '',
-    user_id: currentUser?.uid || 'anonymous',
+    user_id: appId?.toString() || 'anonymous',
     profileId: appId,
     date: Date.now()
   });
