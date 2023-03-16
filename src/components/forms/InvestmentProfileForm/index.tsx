@@ -8,7 +8,7 @@ import { Dropdown } from '../../common/Dropdown';
 import styles from './investmentProfile.module.scss';
 import { Image } from '../../common/Image';
 import { imageTypes } from '../../../utils/constants';
-import { trackEvent } from '../../../utils/logEvent';
+import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface profileData {
@@ -65,7 +65,7 @@ export const InvestmentProfileForm = ({
   const { currentUser } = useAuth();
 
   const onNextClick = () => {
-    trackEvent('KYC_profile_income_info', currentUser?.uid);
+    sendGoogleDataLayerEvent('KYC_profile_income_info', currentUser?.uid);
     onSendData();
     next();
   };

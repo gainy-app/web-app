@@ -3,7 +3,7 @@ import { Button, ButtonsGroup } from 'components';
 import { useFormContext } from 'contexts/FormContext';
 import parse from 'html-react-parser';
 import { config } from './config';
-import { trackEvent } from '../../../utils/logEvent';
+import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 export const CustomerAgreementForm = () => {
@@ -44,7 +44,7 @@ export const CustomerAgreementForm = () => {
       <div className={styles.acceptBlock}>
         <ButtonsGroup onBack={back} onNext={next}>
           <Button onClick={() => {
-            trackEvent('KYC_profile_accept_customer_agreement', currentUser?.uid);
+            sendGoogleDataLayerEvent('KYC_profile_accept_customer_agreement', currentUser?.uid);
             next();
           }}>{buttonText}</Button>
         </ButtonsGroup>

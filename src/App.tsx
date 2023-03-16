@@ -7,7 +7,7 @@ import { accessConst, routes } from 'utils/constants';
 import styles from './components/layout/layout.module.scss';
 import { usePage } from 'hooks';
 import { FormProvider } from './contexts/FormContext';
-import { setAmplitudeUserDevice, setAmplitudeUserId, trackEvent } from './utils/logEvent';
+import { setAmplitudeUserDevice, setAmplitudeUserId, sendGoogleDataLayerEvent } from './utils/logEvent';
 import { getDeviceId } from 'utils/helpers';
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
 
   useEffect(() => {
     if(currentUser) {
-      trackEvent('user_id', currentUser?.uid);
+      sendGoogleDataLayerEvent('user_id', currentUser?.uid);
     }
   }, [currentUser?.uid]);
 

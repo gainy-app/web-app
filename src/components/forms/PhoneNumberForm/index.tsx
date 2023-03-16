@@ -8,7 +8,7 @@ import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import styles from './phonenumber.module.scss';
 import flag from '../../../assets/flag.svg';
-import { sendEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface phoneData {
@@ -26,7 +26,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
 
   const onNextClick = async () => {
     sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId);
-    trackEvent('KYC_acc_phone_input', currentUser?.uid);
+    sendGoogleDataLayerEvent('KYC_acc_phone_input', currentUser?.uid);
 
     try {
       const isVerified = await verifyCodeRequest.verifyCode({

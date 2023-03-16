@@ -6,7 +6,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'contexts/FormContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { trackEvent } from '../../utils/logEvent';
+import { sendGoogleDataLayerEvent } from '../../utils/logEvent';
 import styles from './kyc.module.scss';
 
 export const Kyc = () => {
@@ -27,7 +27,7 @@ export const Kyc = () => {
   useEffect(() => {
     if(verificationCodeRequest.data) {
       next();
-      trackEvent('KYC_acc_verify_phone_done', currentUser?.uid);
+      sendGoogleDataLayerEvent('KYC_acc_verify_phone_done', currentUser?.uid);
       updateFields({
         ...data, verifyCode: ''
       });

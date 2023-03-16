@@ -2,7 +2,7 @@ import { config } from './config';
 import { Button, Tag, ButtonsGroup, FormWrapper } from 'components';
 import styles from './emloymentform.module.scss';
 import { useFormContext } from 'contexts/FormContext';
-import { trackEvent } from '../../../utils/logEvent';
+import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface tagsData {
@@ -23,11 +23,11 @@ export const EmploymentForm = ({ updateFields, employment_status }:Props) => {
 
   const onNextClick = () => {
     if(employment_status?.prevValue === 'EMPLOYED' || employment_status?.prevValue === 'SELF_EMPLOYED') {
-      trackEvent('KYC_profile_employment_choose', currentUser?.uid);
+      sendGoogleDataLayerEvent('KYC_profile_employment_choose', currentUser?.uid);
       next();
       return;
     }
-    trackEvent('KYC_profile_employment_choose', currentUser?.uid);
+    sendGoogleDataLayerEvent('KYC_profile_employment_choose', currentUser?.uid);
     onSendData();
     next();
   };

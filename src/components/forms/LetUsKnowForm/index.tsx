@@ -9,7 +9,7 @@ import { Checkbox } from '../../common/Checkbox';
 import { Field } from '../../common/Field';
 import { FloatingInput } from '../../common/FloatingInput';
 import { imageTypes } from '../../../utils/constants';
-import { trackEvent } from '../../../utils/logEvent';
+import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface letUsKnowData {
@@ -38,7 +38,7 @@ export const LetUsKnowForm = ({
 
   const disabled = (!employment_is_director_of_a_public_company && !!directorOpen) || (!politically_exposed_names && !!politicallyOpen);
   const onNextClick = () => {
-    trackEvent('KYC_profile_law_info', currentUser?.uid);
+    sendGoogleDataLayerEvent('KYC_profile_law_info', currentUser?.uid);
     onSendData();
     next();
   };

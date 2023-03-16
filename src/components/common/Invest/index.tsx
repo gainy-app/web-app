@@ -5,7 +5,7 @@ import styles from './invest.module.scss';
 import { KycLayout } from '../../layout/kyc';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useFormContext } from '../../../contexts/FormContext';
-import { sendEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 
 interface Props {
   invest : {
@@ -47,7 +47,7 @@ export const Invest = React.memo(({
           setStart(true);
           localStorage.setItem('invest', String(sum));
           sendEvent('kyc_invest_amount_input_done', currentUser?.uid, appId, { amount: sum });
-          trackEvent('KYC_input_amount_invest', currentUser?.uid);
+          sendGoogleDataLayerEvent('KYC_input_amount_invest', currentUser?.uid);
         }}
         className={styles.button}
         disabled={!sum}

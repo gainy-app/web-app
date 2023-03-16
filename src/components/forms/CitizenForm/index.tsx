@@ -6,7 +6,7 @@ import { Button } from 'components';
 import parse from 'html-react-parser';
 import { useFormContext } from '../../../contexts/FormContext';
 import { Dropdown } from '../../common/Dropdown';
-import { sendEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../../utils/constants';
@@ -49,11 +49,11 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
   const onNextClick = () => {
     if(whiteList) {
       sendEvent('kyc_acc_country_based_done', currentUser?.uid, appId, { countryCode: country?.placeholder });
-      trackEvent('KYC_acc_choose_country_based', currentUser?.uid, { 'text_button' : 'Continue' });
+      sendGoogleDataLayerEvent('KYC_acc_choose_country_based', currentUser?.uid, { 'text_button' : 'Continue' });
       onSendData();
       next();
     } else {
-      trackEvent('KYC_acc_choose_country_based', currentUser?.uid, { 'text_button' : 'Notify me' });
+      sendGoogleDataLayerEvent('KYC_acc_choose_country_based', currentUser?.uid, { 'text_button' : 'Notify me' });
       navigate(routes.notify);
     }
   };

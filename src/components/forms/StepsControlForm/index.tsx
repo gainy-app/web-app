@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { KYC_SEND_FORM } from '../../../services/gql/queries';
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
-import { sendEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface Props {
@@ -50,7 +50,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
         return (
           <Button onClick={() => {
             sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
-            trackEvent('KYC_what_now_create_acc_start', currentUser?.uid);
+            sendGoogleDataLayerEvent('KYC_what_now_create_acc_start', currentUser?.uid);
             next();
           }}>{'Start'}</Button>
         );
@@ -58,7 +58,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
         return (
           <Button onClick={() => {
             sendEvent('kyc_what_now_identity_done', currentUser?.uid, appId);
-            trackEvent('KYC_what_now_verify_continue', currentUser?.uid);
+            sendGoogleDataLayerEvent('KYC_what_now_verify_continue', currentUser?.uid);
             next();
           }}>{'Continue'}</Button>
         );
@@ -66,7 +66,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
         return (
           <Button onClick={() => {
             sendEvent('kyc_what_now_profile_done', currentUser?.uid, appId);
-            trackEvent('KYC_what_now_profile_continue', currentUser?.uid);
+            sendGoogleDataLayerEvent('KYC_what_now_profile_continue', currentUser?.uid);
             next();
           }}>{'Continue'}</Button>
         );
@@ -86,7 +86,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                     localStorage.setItem('status', res.data.kyc_send_form.status);
                     const status = localStorage.getItem('status');
                     if(status === res.data.kyc_send_form.status) {
-                      trackEvent('KYC_done_open_account', currentUser?.uid);
+                      sendGoogleDataLayerEvent('KYC_done_open_account', currentUser?.uid);
                       navigate(routes.success);
                     }
                   }

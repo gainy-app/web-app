@@ -6,7 +6,7 @@ import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { regExps } from '../../../utils/constants';
 import { useAuth } from '../../../contexts/AuthContext';
-import { sendEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 
 interface emailData {
   email_address: {
@@ -27,7 +27,7 @@ export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
 
   const onNextClick = () => {
     sendEvent('kyc_acc_email_enter_done', currentUser?.uid, appId);
-    trackEvent('KYC_acc_email_input', currentUser?.uid);
+    sendGoogleDataLayerEvent('KYC_acc_email_input', currentUser?.uid);
     onSendData();
     next();
   };

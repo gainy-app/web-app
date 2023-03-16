@@ -36,7 +36,7 @@ export const logFirebaseEvent = (content:string, userId='', appId?: number, para
   });
 };
 
-export const trackEvent = (eventName: string, userId: any, dataLayer = {}) => {
+export const sendGoogleDataLayerEvent = (eventName: string, userId: any, dataLayer = {}) => {
   TagManager.dataLayer({ dataLayer: {
     ...dataLayer,
     event: eventName,

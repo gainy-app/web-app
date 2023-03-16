@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
-import { sendEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Input } from 'components/common/Dropdown/Input';
 import { ICitizenship } from 'models/citizenship';
@@ -39,7 +39,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
 
   const onNextClick = () => {
     sendEvent('kyc_acc_citizenship_chose', currentUser?.uid, appId);
-    trackEvent('KYC_acc_citizenship_choose', currentUser?.uid);
+    sendGoogleDataLayerEvent('KYC_acc_citizenship_choose', currentUser?.uid);
     onSendData();
     next();
   };

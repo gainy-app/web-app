@@ -11,7 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { config } from './config';
 import { Background } from '../Success/Background';
 import { useAuth } from '../../contexts/AuthContext';
-import { sendEvent, trackEvent } from '../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../utils/logEvent';
 import { useFormContext } from 'contexts/FormContext';
 
 export default function GetApp () {
@@ -20,8 +20,8 @@ export default function GetApp () {
   const { pathname } = useLocation();
   const [errors, setErrors] = useState<string>('');
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK, {
-    onError: () => trackEvent('click_button_after_input_not_target_phone', currentUser?.uid),
-    onCompleted: () => trackEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
+    onError: () => sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid),
+    onCompleted: () => sendGoogleDataLayerEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
   });
   const navigate = useNavigate();
   const { currentUser } = useAuth();
@@ -46,7 +46,7 @@ export default function GetApp () {
 
   useLayoutEffect(() => {
     if(authMethod) {
-      trackEvent('web_login', currentUser?.uid, authMethod);
+      sendGoogleDataLayerEvent('web_login', currentUser?.uid, authMethod);
     }
 
     sendEvent('get_app_page_viewed', currentUser?.uid, appId);
@@ -71,7 +71,7 @@ export default function GetApp () {
       const phone_number = formatNumber(String(phoneState), 'us');
       sendLink({ variables: { phone_number } });
     } else {
-      trackEvent('click_button_after_input_not_target_phone', currentUser?.uid);
+      sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid);
     }
   };
   const onPhoneChange = (values: NumberFormatValues) => {
