@@ -6,7 +6,7 @@ import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { regExps } from '../../../utils/constants';
 import { useAuth } from '../../../contexts/AuthContext';
-import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, trackEvent } from '../../../utils/logEvent';
 
 interface emailData {
   email_address: {
@@ -26,7 +26,7 @@ export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
   const disabled = !regExps.email.test(data.email_address?.placeholder);
 
   const onNextClick = () => {
-    sendFbAmpEvent('kyc_acc_email_enter_done', currentUser?.uid, appId);
+    sendEvent('kyc_acc_email_enter_done', currentUser?.uid, appId);
     trackEvent('KYC_acc_email_input', currentUser?.uid);
     onSendData();
     next();

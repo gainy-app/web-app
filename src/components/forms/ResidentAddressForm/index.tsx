@@ -10,7 +10,7 @@ import { Dropdown } from '../../common/Dropdown';
 import { useLazyQuery } from '@apollo/client';
 import { VALIDATE_ADDRESS } from '../../../services/gql/queries';
 import { getFilteredList, parseGQLerror } from '../../../utils/helpers';
-import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Input } from 'components/common/Dropdown/Input';
 import { IChoices } from 'models';
@@ -51,7 +51,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
       }
     }).then(res => {
       if(!res.error) {
-        sendFbAmpEvent('kyc_identify_address_input_done', currentUser?.uid, appId, {
+        sendEvent('kyc_identify_address_input_done', currentUser?.uid, appId, {
           city, state: state?.prevValue
         });
         trackEvent('KYC_identify_address_input', currentUser?.uid);

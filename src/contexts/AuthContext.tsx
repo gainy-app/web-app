@@ -4,7 +4,7 @@ import { appleProvider, auth, googleProvider } from '../firebase';
 import { onAuthChange } from 'services/auth';
 import {  useMutation, useQuery } from '@apollo/client';
 import { CREATE_APP_LINK, GET_APP_PROFILE } from '../services/gql/queries';
-import { sendFbAmpEvent } from 'utils/logEvent';
+import { sendEvent } from 'utils/logEvent';
 
 interface IAuthContext {
   currentUser: FirebaseUser | null,
@@ -54,23 +54,23 @@ export function AuthProvider({ children }: Props) {
 
   async function signInWithGoogle ()  {
     try {
-      sendFbAmpEvent('sign_in_clicked', currentUser?.uid, appId, { accountType: 'google' });
+      sendEvent('sign_in_clicked', currentUser?.uid, appId, { accountType: 'google' });
       await signInWithPopup(auth, googleProvider);
-      sendFbAmpEvent('authorization_fully_authorized', currentUser?.uid, appId, { accountType: 'google' });
+      sendEvent('authorization_fully_authorized', currentUser?.uid, appId, { accountType: 'google' });
     } catch (err: any) {
       console.error(err);
-      sendFbAmpEvent('authorization_failed', currentUser?.uid, appId, { accountType: 'google', errorType: err.message });
+      sendEvent('authorization_failed', currentUser?.uid, appId, { accountType: 'google', errorType: err.message });
     }
   }
 
   async function signInWithApple () {
     try {
-      sendFbAmpEvent('sign_in_clicked', currentUser?.uid, appId, { accountType: 'apple' });
+      sendEvent('sign_in_clicked', currentUser?.uid, appId, { accountType: 'apple' });
       await signInWithPopup(auth, appleProvider);
-      sendFbAmpEvent('authorization_fully_authorized', currentUser?.uid, appId, { accountType: 'apple' });
+      sendEvent('authorization_fully_authorized', currentUser?.uid, appId, { accountType: 'apple' });
     } catch (err: any) {
       console.error(err);
-      sendFbAmpEvent('authorization_failed', currentUser?.uid, appId, { accountType: 'apple', errorType: err.message });
+      sendEvent('authorization_failed', currentUser?.uid, appId, { accountType: 'apple', errorType: err.message });
     }
   }
 
@@ -97,7 +97,7 @@ export function AuthProvider({ children }: Props) {
     ) {
       const [firstName, lastName] = currentUser.displayName.split(' ');
 
-      sendFbAmpEvent('authorization_need_create_profile', currentUser?.uid, appId);
+      sendEvent('authorization_need_create_profile', currentUser?.uid, appId);
 
       appLink({
         variables: {
@@ -107,9 +107,9 @@ export function AuthProvider({ children }: Props) {
           userID: currentUser.uid
         }
       }).then(() => {
-        sendFbAmpEvent('sign_up_success', currentUser?.uid, appId);
+        sendEvent('sign_up_success', currentUser?.uid, appId);
       }).catch(() => {
-        sendFbAmpEvent('sign_up_failed', currentUser?.uid, appId);
+        sendEvent('sign_up_failed', currentUser?.uid, appId);
       });
 
 

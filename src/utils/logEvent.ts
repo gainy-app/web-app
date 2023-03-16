@@ -6,7 +6,7 @@ import TagManager from 'react-gtm-module-defer';
 import amplitude from 'amplitude-js';
 
 
-export const sendFbAmpEvent = (
+export const sendEvent = (
   content: string,
   userId?: string,
   appId?: number,

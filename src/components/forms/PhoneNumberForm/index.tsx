@@ -8,7 +8,7 @@ import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import styles from './phonenumber.module.scss';
 import flag from '../../../assets/flag.svg';
-import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface phoneData {
@@ -25,7 +25,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
   const { currentUser } = useAuth();
 
   const onNextClick = async () => {
-    sendFbAmpEvent('kyc_acc_phone_input_done', currentUser?.uid, appId);
+    sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId);
     trackEvent('KYC_acc_phone_input', currentUser?.uid);
 
     try {
@@ -37,11 +37,11 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
         }
       });
 
-      sendFbAmpEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
         error: isVerified ? '' : 'phone is not valid'
       });
     } catch (error: any) {
-      sendFbAmpEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
         error: error.message
       });
     }

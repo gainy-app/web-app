@@ -3,7 +3,7 @@ import { Button } from 'components';
 import { useFormContext } from 'contexts/FormContext';
 import { config } from './config';
 import parse from 'html-react-parser';
-import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 export const PrivacyPolicyForm = () => {
@@ -42,7 +42,7 @@ export const PrivacyPolicyForm = () => {
       </ol>
       <div className={styles.acceptBlock}>
         <Button onClick={() => {
-          sendFbAmpEvent('kyc_acc_privacy_policy_accepted', currentUser?.uid, appId);
+          sendEvent('kyc_acc_privacy_policy_accepted', currentUser?.uid, appId);
           trackEvent('KYC_acc_accept_privacy_policy', currentUser?.uid);
           next();
         }}>{buttonText}</Button>

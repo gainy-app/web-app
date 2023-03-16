@@ -12,7 +12,7 @@ import { Background } from './Background';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useFormContext } from 'contexts/FormContext';
 import { useAuth } from 'contexts/AuthContext';
-import { sendFbAmpEvent } from 'utils/logEvent';
+import { sendEvent } from 'utils/logEvent';
 
 export default function Success () {
   const { form,qrcode,subtitle,title,description,validate, downloadButton } = config;
@@ -25,7 +25,7 @@ export default function Success () {
   const { currentUser } = useAuth();
   const { pathname } = useLocation();
   const handleDownloadButtonClick = () => {
-    sendFbAmpEvent('download_app_clicked', currentUser?.uid, appId, {
+    sendEvent('download_app_clicked', currentUser?.uid, appId, {
       pageUrl: window.location.href,
       pagePath: pathname,
       clickText: downloadButton.text,
@@ -39,13 +39,13 @@ export default function Success () {
       navigate(routes.home);
     }
 
-    sendFbAmpEvent('get_app_page_viewed', currentUser?.uid, appId);
+    sendEvent('get_app_page_viewed', currentUser?.uid, appId);
   }, [status]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    sendFbAmpEvent('text_the_link_clicked', currentUser?.uid, appId, {
+    sendEvent('text_the_link_clicked', currentUser?.uid, appId, {
       pageUrl: window.location.href,
       pagePath: pathname,
       clickText: downloadButton.text,
