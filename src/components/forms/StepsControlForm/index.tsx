@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { KYC_SEND_FORM } from '../../../services/gql/queries';
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
-import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
+import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface Props {
@@ -49,8 +49,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       case currentStepIndex === 0:
         return (
           <Button onClick={() => {
-            logFirebaseEvent('kyc_what_now_create_acc_done', currentUser, appId);
-            sendAmplitudeData('kyc_what_now_create_acc_done');
+            sendFbAmpEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
             trackEvent('KYC_what_now_create_acc_start', currentUser?.uid);
             next();
           }}>{'Start'}</Button>
@@ -58,8 +57,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       case currentStepIndex === 7:
         return (
           <Button onClick={() => {
-            logFirebaseEvent('kyc_what_now_identity_done', currentUser?.uid, appId);
-            sendAmplitudeData('kyc_what_now_identity_done');
+            sendFbAmpEvent('kyc_what_now_identity_done', currentUser?.uid, appId);
             trackEvent('KYC_what_now_verify_continue', currentUser?.uid);
             next();
           }}>{'Continue'}</Button>
@@ -67,8 +65,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       case currentStepIndex === 11:
         return (
           <Button onClick={() => {
-            logFirebaseEvent('kyc_what_now_profile_done', currentUser, appId);
-            sendAmplitudeData('kyc_what_now_profile_done');
+            sendFbAmpEvent('kyc_what_now_profile_done', currentUser?.uid, appId);
             trackEvent('KYC_what_now_profile_continue', currentUser?.uid);
             next();
           }}>{'Continue'}</Button>

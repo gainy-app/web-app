@@ -11,7 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { config } from './config';
 import { Background } from '../Success/Background';
 import { useAuth } from '../../contexts/AuthContext';
-import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../utils/logEvent';
+import { sendFbAmpEvent, trackEvent } from '../../utils/logEvent';
 import { useFormContext } from 'contexts/FormContext';
 
 export default function GetApp () {
@@ -29,14 +29,7 @@ export default function GetApp () {
   const authMethod = localStorage.getItem('login');
   const { appId } = useFormContext();
   const handleDownloadButtonClick = () => {
-    logFirebaseEvent('download_app_clicked', currentUser, appId, {
-      pageUrl: window.location.href,
-      pagePath: pathname,
-      clickText: downloadButton.text,
-      clickUrl: downloadButton.link,
-      buttonId: downloadButton.id
-    });
-    sendAmplitudeData('download_app_clicked', {
+    sendFbAmpEvent('download_app_clicked', currentUser?.uid, appId, {
       pageUrl: window.location.href,
       pagePath: pathname,
       clickText: downloadButton.text,
@@ -56,8 +49,7 @@ export default function GetApp () {
       trackEvent('web_login', currentUser?.uid, authMethod);
     }
 
-    logFirebaseEvent('get_app_page_viewed', currentUser, appId);
-    sendAmplitudeData('get_app_page_viewed');
+    sendFbAmpEvent('get_app_page_viewed', currentUser?.uid, appId);
 
     return () => {
       localStorage.removeItem('login');
@@ -67,14 +59,7 @@ export default function GetApp () {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    logFirebaseEvent('text_the_link_clicked', currentUser, appId, {
-      pageUrl: window.location.href,
-      pagePath: pathname,
-      clickText: downloadButton.text,
-      clickUrl: downloadButton.link,
-      buttonId: downloadButton.id
-    });
-    sendAmplitudeData('text_the_link_clicked', {
+    sendFbAmpEvent('text_the_link_clicked', currentUser?.uid, appId, {
       pageUrl: window.location.href,
       pagePath: pathname,
       clickText: downloadButton.text,

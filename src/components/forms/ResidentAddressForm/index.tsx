@@ -2,7 +2,7 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { FloatingInput } from '../../common/FloatingInput';
 import styles from './residentaddress.module.scss';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../../common/Button';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
@@ -10,7 +10,7 @@ import { Dropdown } from '../../common/Dropdown';
 import { useLazyQuery } from '@apollo/client';
 import { VALIDATE_ADDRESS } from '../../../services/gql/queries';
 import { getFilteredList, parseGQLerror } from '../../../utils/helpers';
-import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
+import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Input } from 'components/common/Dropdown/Input';
 import { IChoices } from 'models';
@@ -51,10 +51,7 @@ export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, c
       }
     }).then(res => {
       if(!res.error) {
-        logFirebaseEvent('kyc_identify_address_input_done', currentUser, appId, {
-          city, state: state?.prevValue
-        });
-        sendAmplitudeData('kyc_identify_address_input_done', {
+        sendFbAmpEvent('kyc_identify_address_input_done', currentUser?.uid, appId, {
           city, state: state?.prevValue
         });
         trackEvent('KYC_identify_address_input', currentUser?.uid);

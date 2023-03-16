@@ -5,7 +5,7 @@ import styles from './social.module.scss';
 import { Button } from '../../common/Button';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
-import { logFirebaseEvent, sendAmplitudeData } from '../../../utils/logEvent';
+import { sendFbAmpEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { usePin } from '../../../hooks';
 
@@ -21,8 +21,7 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
   const { PIN_LENGTH,pin,onChange,onKeyDown,inputRefs } = usePin(9,0, 9, data, updateFields, 'socialSecurityNumber');
 
   const onNextClick = () => {
-    logFirebaseEvent('kyc_identity_ssn_input_done', currentUser, appId);
-    sendAmplitudeData('kyc_identity_ssn_input_done');
+    sendFbAmpEvent('kyc_identity_ssn_input_done', currentUser?.uid, appId);
     onSendData();
     next();
   };

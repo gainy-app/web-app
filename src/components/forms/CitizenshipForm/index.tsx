@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
+import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Input } from 'components/common/Dropdown/Input';
 import { ICitizenship } from 'models/citizenship';
@@ -38,9 +38,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   };
 
   const onNextClick = () => {
-    logFirebaseEvent('kyc_acc_citizenship_chose', currentUser, appId);
-    sendAmplitudeData('kyc_acc_citizenship_chose');
-
+    sendFbAmpEvent('kyc_acc_citizenship_chose', currentUser?.uid, appId);
     trackEvent('KYC_acc_citizenship_choose', currentUser?.uid);
     onSendData();
     next();

@@ -6,7 +6,7 @@ import { Button } from 'components';
 import parse from 'html-react-parser';
 import { useFormContext } from '../../../contexts/FormContext';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
+import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../../utils/constants';
@@ -48,8 +48,7 @@ export const CitizenForm = ({ updateFields, country }: Props) => {
 
   const onNextClick = () => {
     if(whiteList) {
-      logFirebaseEvent('kyc_acc_country_based_done', currentUser, appId, { countryCode: country?.placeholder });
-      sendAmplitudeData('kyc_acc_country_based_done', { countryCode: country?.placeholder });
+      sendFbAmpEvent('kyc_acc_country_based_done', currentUser?.uid, appId, { countryCode: country?.placeholder });
       trackEvent('KYC_acc_choose_country_based', currentUser?.uid, { 'text_button' : 'Continue' });
       onSendData();
       next();

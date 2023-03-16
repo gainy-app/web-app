@@ -5,7 +5,7 @@ import { imageTypes, routes } from 'utils/constants';
 import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
 import { useLayoutEffect } from 'react';
-import { logFirebaseEvent, sendAmplitudeData } from 'utils/logEvent';
+import { sendFbAmpEvent } from 'utils/logEvent';
 import { useFormContext } from 'contexts/FormContext';
 
 export default function SignIn () {
@@ -29,12 +29,7 @@ export default function SignIn () {
   };
 
   useLayoutEffect(() => {
-    logFirebaseEvent('sign_in_page_viewed', null, appId, {
-      pageUrl: window.location.href,
-      pagePath: pathname,
-      title: document.title
-    });
-    sendAmplitudeData('sign_in_page_viewed', {
+    sendFbAmpEvent('sign_in_page_viewed', '', appId, {
       pageUrl: window.location.href,
       pagePath: pathname,
       title: document.title

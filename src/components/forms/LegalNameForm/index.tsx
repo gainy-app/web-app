@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useOutBoardingClick } from '../../../hooks';
-import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
+import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface userData {
@@ -42,8 +42,7 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
       });
     }
     trackEvent('KYC_identify_legal_name_input', currentUser?.uid);
-    logFirebaseEvent('kyc_identity_legal_name_input_done', currentUser, appId);
-    sendAmplitudeData('kyc_identity_legal_name_input_done');
+    sendFbAmpEvent('kyc_identity_legal_name_input_done', currentUser?.uid, appId);
     onSendData();
     next();
   };

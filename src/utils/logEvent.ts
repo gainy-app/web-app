@@ -6,7 +6,20 @@ import TagManager from 'react-gtm-module-defer';
 import amplitude from 'amplitude-js';
 
 
-export const logFirebaseEvent = (content:string, currentUser?: any, appId?: number, params?: any) => {
+export const sendFbAmpEvent = (
+  content: string,
+  userId?: string,
+  appId?: number,
+  params?: any,
+  callback?: amplitude.Callback | undefined,
+  errorCallback?: amplitude.Callback | undefined,
+  outOfSession?: boolean | undefined
+) => {
+  logFirebaseEvent(content, userId, appId, params);
+  sendAmplitudeData(content, params, callback, errorCallback, outOfSession);
+};
+
+export const logFirebaseEvent = (content:string, userId='', appId?: number, params?: any) => {
   logEvent(analytics, content, {
     ...params,
     v: 1,
@@ -16,7 +29,7 @@ export const logFirebaseEvent = (content:string, currentUser?: any, appId?: numb
     an: '0.1.0',
     ul: getUserLocale(),
     vp: `${window.innerHeight}x${window.innerWidth}`,
-    uid: currentUser?.uid || '',
+    uid: userId,
     user_id: appId?.toString() || 'anonymous',
     profileId: appId,
     date: Date.now()

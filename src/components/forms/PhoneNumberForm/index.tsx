@@ -8,7 +8,7 @@ import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import styles from './phonenumber.module.scss';
 import flag from '../../../assets/flag.svg';
-import { logFirebaseEvent, sendAmplitudeData, trackEvent } from '../../../utils/logEvent';
+import { sendFbAmpEvent, trackEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface phoneData {
@@ -25,8 +25,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
   const { currentUser } = useAuth();
 
   const onNextClick = async () => {
-    logFirebaseEvent('kyc_acc_phone_input_done', currentUser, appId);
-    sendAmplitudeData('kyc_acc_phone_input_done');
+    sendFbAmpEvent('kyc_acc_phone_input_done', currentUser?.uid, appId);
     trackEvent('KYC_acc_phone_input', currentUser?.uid);
 
     try {
@@ -38,17 +37,11 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
         }
       });
 
-      logFirebaseEvent('kyc_acc_verify_phone_done', currentUser, appId, {
-        error: isVerified ? '' : 'phone is not valid'
-      });
-      sendAmplitudeData('kyc_acc_verify_phone_done', {
+      sendFbAmpEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
         error: isVerified ? '' : 'phone is not valid'
       });
     } catch (error: any) {
-      logFirebaseEvent('kyc_acc_verify_phone_done', currentUser, appId, {
-        error: error.message
-      });
-      sendAmplitudeData('kyc_acc_verify_phone_done', {
+      sendFbAmpEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
         error: error.message
       });
     }
