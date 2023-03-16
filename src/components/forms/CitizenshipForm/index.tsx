@@ -38,7 +38,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   };
 
   const onNextClick = () => {
-    sendEvent('kyc_acc_citizenship_chose', currentUser?.uid, appId);
+    sendEvent('kyc_acc_citizenship_choose', currentUser?.uid, appId);
     sendGoogleDataLayerEvent('KYC_acc_citizenship_choose', currentUser?.uid);
     onSendData();
     next();
