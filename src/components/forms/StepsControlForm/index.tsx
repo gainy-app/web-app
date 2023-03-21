@@ -99,7 +99,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
 
   return (
     <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>
-      {steps.map((step, i) => {
+      {steps.map((step, i, a) => {
         return appId ? (
           <StepControl
             stepTitle={step.title}
