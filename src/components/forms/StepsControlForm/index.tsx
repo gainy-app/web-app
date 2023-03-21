@@ -118,7 +118,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
           <StepControl
             stepTitle={step.title}
             key={i.toString()}
-            activeStep={currentStepIndex >= step.step || step.edit}
+            activeStep={step.edit || (!!i && !step.edit && a[i - 1].edit)}
             stepNumber={i + 1}
             onEdit={() => {
               if(i === 0) {
