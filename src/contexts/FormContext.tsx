@@ -19,7 +19,9 @@ import {
 import { useAuth } from './AuthContext';
 import { refreshToken } from '../services/auth';
 import { formData } from '../models';
-import { trackEvent } from 'utils/logEvent';
+import { initAmplitude, sendGoogleDataLayerEvent } from 'utils/logEvent';
+import { useSearchParams } from 'react-router-dom';
+import { getDeviceId } from 'utils/helpers';
 
 const FormContext = React.createContext<any>({});
 
@@ -58,8 +60,8 @@ export function FormProvider ({ children }: Props) {
   const [verifyCode
     , { loading: verifyLoading, data:verifyNumber, error: verifyError }
   ] = useMutation(VERIFICATION_SEND_CODE, {
-    onError: () => trackEvent('click_button_after_input_not_target_phone', currentUser?.uid),
-    onCompleted: () => trackEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
+    onError: () => sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid),
+    onCompleted: () => sendGoogleDataLayerEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
   });
 
   const [verificationCode,
@@ -165,6 +167,7 @@ export function FormProvider ({ children }: Props) {
   };
 
   const [data, setData] = useState<formData>(INITIAL_DATA);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     setData({ ...data,
@@ -373,6 +376,28 @@ export function FormProvider ({ children }: Props) {
     isTreadingEnabled,
     loader: formLoading || kycFormConfigLoader || appIdLoading || formStatusLoading
   };
+
+  useEffect(() => {
+    if (appId) {
+      const appIdString = appId.toString();
+      let newUserId = appIdString;
+
+      while (newUserId.length < 5) {
+        newUserId = '0' + newUserId;
+      }
+
+      initAmplitude({
+        userId: newUserId,
+        config: {
+          includeUtm: true,
+          includeReferrer: true,
+          includeFbclid: true,
+          includeGclid: true,
+          deviceId: getDeviceId(searchParams.get('deviceId')),
+        }
+      });
+    }
+  }, [appId]);
 
   return (
     <FormContext.Provider value={value}>

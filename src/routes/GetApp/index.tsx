@@ -7,24 +7,36 @@ import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { formatNumber, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { config } from './config';
 import { Background } from '../Success/Background';
 import { useAuth } from '../../contexts/AuthContext';
-import { trackEvent } from '../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../utils/logEvent';
+import { useFormContext } from 'contexts/FormContext';
 
 export default function GetApp () {
   const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton } = config;
   const [phoneState, setPhoneState] = useState<string>('');
+  const { pathname } = useLocation();
   const [errors, setErrors] = useState<string>('');
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK, {
-    onError: () => trackEvent('click_button_after_input_not_target_phone', currentUser?.uid),
-    onCompleted: () => trackEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
+    onError: () => sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid),
+    onCompleted: () => sendGoogleDataLayerEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
   });
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const status = localStorage.getItem('status');
-  const authMethod =  localStorage.getItem('login');
+  const authMethod = localStorage.getItem('login');
+  const { appId } = useFormContext();
+  const handleDownloadButtonClick = () => {
+    sendEvent('download_app_clicked', currentUser?.uid, appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
+  };
 
   useLayoutEffect(()=> {
     if(status === null) {
@@ -34,8 +46,11 @@ export default function GetApp () {
 
   useLayoutEffect(() => {
     if(authMethod) {
-      trackEvent('web_login', currentUser?.uid, authMethod);
+      sendGoogleDataLayerEvent('web_login', currentUser?.uid, authMethod);
     }
+
+    sendEvent('get_app_page_viewed', currentUser?.uid, appId);
+
     return () => {
       localStorage.removeItem('login');
     };
@@ -44,11 +59,19 @@ export default function GetApp () {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    sendEvent('text_the_link_clicked', currentUser?.uid, appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
+
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
       sendLink({ variables: { phone_number } });
     } else {
-      trackEvent('click_button_after_input_not_target_phone', currentUser?.uid);
+      sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid);
     }
   };
   const onPhoneChange = (values: NumberFormatValues) => {
@@ -63,8 +86,12 @@ export default function GetApp () {
           <h2 className={styles.title}>{title}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
           <p className={styles.paragraph}>{paragraph}</p>
-          <a href={downloadButton.link} className={styles.buttonLink}>
-            <Button variant={'download'}>
+          <a
+            href={downloadButton.link}
+            className={styles.buttonLink}
+            onClick={handleDownloadButtonClick}
+          >
+            <Button variant={'download'} id={downloadButton.id}>
               {downloadButton.text}
             </Button>
           </a>

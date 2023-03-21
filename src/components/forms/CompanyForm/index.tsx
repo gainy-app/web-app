@@ -2,13 +2,11 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Button } from '../../common/Button';
 import styles from './company.module.scss';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { FloatingInput } from '../../common/FloatingInput';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent } from '../../../utils/logEvent';
-import { useAuth } from '../../../contexts/AuthContext';
 import { IChoices } from 'models';
 import { Input } from 'components/common/Dropdown/Input';
 import { getFilteredList } from 'utils/helpers';
@@ -33,8 +31,7 @@ type Props = companyData & {
 
 export const CompanyForm = ({ updateFields, companyName, employment_position, employment_type }:Props) => {
   const { title,subtitle } = config;
-  const { next, back, onSendData, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { next, back, onSendData } = useFormContext();
   const [openType,setOpenType] = useState(false);
 
   const [openPosition, setOpenPosition] = useState(false);
@@ -84,14 +81,10 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
   };
 
   const onNextClick = () => {
-    logFirebaseEvent('dw_kyc_your_firm_e', currentUser, appId, { company: companyName });
     onSendData();
     next();
   };
 
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_your_firm_s', currentUser, appId);
-  }, []);
   useEffect(() => {
     employment_type.choices && setEmploymentTypeList(employment_type.choices);
   }, [employment_type.choices]);

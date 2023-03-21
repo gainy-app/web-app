@@ -1,14 +1,14 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Button } from '../../common/Button';
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
 import styles from './investmentProfile.module.scss';
 import { Image } from '../../common/Image';
 import { imageTypes } from '../../../utils/constants';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface profileData {
@@ -55,7 +55,7 @@ export const InvestmentProfileForm = ({
   investor_profile_risk_tolerance
 }:Props) => {
   const { title,subtitle,income , networth, liquid } = config;
-  const {  next, back , onSendData, appId } = useFormContext();
+  const {  next, back , onSendData } = useFormContext();
   const [openExp,setOpenExp] = useState(false);
   const [openObj,setOpenObj] = useState(false);
   const [openTolerance,setOpenTolerance] = useState(false);
@@ -65,15 +65,7 @@ export const InvestmentProfileForm = ({
   const { currentUser } = useAuth();
 
   const onNextClick = () => {
-    logFirebaseEvent('dw_kyc_ip_e', currentUser, appId, {
-      income:investor_profile_annual_income?.value,
-      netWorth:investor_profile_net_worth_total?.value,
-      liquidNetWorth:investor_profile_net_worth_liquid?.value,
-      investmentExperience:investor_profile_experience?.prevValue,
-      objectives:investor_profile_objectives?.prevValue,
-      riskTolerance:investor_profile_risk_tolerance?.prevValue
-    });
-    trackEvent('KYC_profile_income_info', currentUser?.uid);
+    sendGoogleDataLayerEvent('KYC_profile_income_info', currentUser?.uid);
     onSendData();
     next();
   };
@@ -127,9 +119,7 @@ export const InvestmentProfileForm = ({
     key={choice.value}
     >{choice.name}</li>;
   });
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_ip_s', currentUser, appId);
-  }, []);
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.investmentProfile}>

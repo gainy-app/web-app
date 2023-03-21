@@ -7,7 +7,8 @@ import { accessConst, routes } from 'utils/constants';
 import styles from './components/layout/layout.module.scss';
 import { usePage } from 'hooks';
 import { FormProvider } from './contexts/FormContext';
-import { trackEvent } from './utils/logEvent';
+import { setAmplitudeUserDevice, setAmplitudeUserId, sendGoogleDataLayerEvent } from './utils/logEvent';
+import { getDeviceId } from 'utils/helpers';
 
 function App() {
   const { loading, currentUser } = useAuth();
@@ -16,14 +17,18 @@ function App() {
   const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
 
   useEffect(() => {
-    if(searchParams.get('trading_access') === accessConst.trading_access) {
+    setAmplitudeUserDevice(getDeviceId(searchParams.get('deviceId')));
+
+    if (searchParams.get('trading_access') === accessConst.trading_access) {
       localStorage.setItem('withLink', accessWithLink.toString());
     }
+
+    setAmplitudeUserId(currentUser?.uid || null);
   }, []);
 
   useEffect(() => {
     if(currentUser) {
-      trackEvent('user_id', currentUser?.uid);
+      sendGoogleDataLayerEvent('user_id', currentUser?.uid);
     }
   }, [currentUser?.uid]);
 

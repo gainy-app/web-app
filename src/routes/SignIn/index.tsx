@@ -4,12 +4,16 @@ import styles from './signin.module.scss';
 import { imageTypes, routes } from 'utils/constants';
 import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
+import { useLayoutEffect } from 'react';
+import { sendEvent } from 'utils/logEvent';
+import { useFormContext } from 'contexts/FormContext';
 
 export default function SignIn () {
   const { title,form, description, subDescription } = config;
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { signInWithGoogle, currentUser, signInWithApple } = useAuth();
+  const { appId } = useFormContext();
 
   if(currentUser) {
     return <Navigate to={routes.home} replace state={{ path: pathname }}/>;
@@ -23,6 +27,14 @@ export default function SignIn () {
         navigate(routes.home);
       });
   };
+
+  useLayoutEffect(() => {
+    sendEvent('sign_in_page_viewed', '', appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      title: document.title
+    });
+  }, []);
 
   return (
     <Layout>

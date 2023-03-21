@@ -1,11 +1,11 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './social.module.scss';
 import { Button } from '../../common/Button';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
-import { logFirebaseEvent } from '../../../utils/logEvent';
+import { sendEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { usePin } from '../../../hooks';
 
@@ -21,7 +21,7 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
   const { PIN_LENGTH,pin,onChange,onKeyDown,inputRefs } = usePin(9,0, 9, data, updateFields, 'socialSecurityNumber');
 
   const onNextClick = () => {
-    logFirebaseEvent('dw_kyc_ssn_e', currentUser, appId);
+    sendEvent('kyc_identity_ssn_input_done', currentUser?.uid, appId);
     onSendData();
     next();
   };
@@ -29,9 +29,6 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
   const [open, setOpen] = useState(true);
 
   const { title,subtitle } = config;
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_ssn_s', currentUser, appId);
-  }, []);
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>

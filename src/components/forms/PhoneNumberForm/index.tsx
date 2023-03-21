@@ -2,14 +2,13 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import React, { useEffect } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { parseGQLerror } from '../../../utils/helpers';
 import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import styles from './phonenumber.module.scss';
 import flag from '../../../assets/flag.svg';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface phoneData {
@@ -25,20 +24,28 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
   const { verifyCodeRequest, appId, back } = useFormContext();
   const { currentUser } = useAuth();
 
-  const onNextClick = () => {
-    verifyCodeRequest.verifyCode({
-      variables: {
-        profile_id:  appId,
-        channel: 'SMS',
-        address: `+1${String(phone)}`
-      }
-    });
-    logFirebaseEvent('dw_kyc_phone_entered', currentUser, appId);
-  };
+  const onNextClick = async () => {
+    sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId);
+    sendGoogleDataLayerEvent('KYC_acc_phone_input', currentUser?.uid);
 
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_phone_s', currentUser, appId);
-  }, []);
+    try {
+      const isVerified = await verifyCodeRequest.verifyCode({
+        variables: {
+          profile_id:  appId,
+          channel: 'SMS',
+          address: `+1${String(phone)}`
+        }
+      });
+
+      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+        error: isVerified ? '' : 'phone is not valid'
+      });
+    } catch (error: any) {
+      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+        error: error.message
+      });
+    }
+  };
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>

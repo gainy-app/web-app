@@ -9,7 +9,10 @@ import { formatNumber, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
 import { Background } from './Background';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useFormContext } from 'contexts/FormContext';
+import { useAuth } from 'contexts/AuthContext';
+import { sendEvent } from 'utils/logEvent';
 
 export default function Success () {
   const { form,qrcode,subtitle,title,description,validate, downloadButton } = config;
@@ -18,15 +21,37 @@ export default function Success () {
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
   const navigate = useNavigate();
   const status = localStorage.getItem('status');
+  const { appId } = useFormContext();
+  const { currentUser } = useAuth();
+  const { pathname } = useLocation();
+  const handleDownloadButtonClick = () => {
+    sendEvent('download_app_clicked', currentUser?.uid, appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
+  };
 
   useLayoutEffect(()=> {
     if(status === null) {
       navigate(routes.home);
     }
+
+    sendEvent('get_app_page_viewed', currentUser?.uid, appId);
   }, [status]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    sendEvent('text_the_link_clicked', currentUser?.uid, appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
@@ -45,8 +70,11 @@ export default function Success () {
           <h1>Congratulations!</h1>
           <h2 className={styles.title}>{title}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
-          <a href={downloadButton.link} className={styles.buttonLink}>
-            <Button variant={'download'}>
+          <a
+            href={downloadButton.link}
+            onClick={handleDownloadButtonClick}
+          >
+            <Button variant={'download'} id={downloadButton.id}>
               {downloadButton.text}
             </Button>
           </a>

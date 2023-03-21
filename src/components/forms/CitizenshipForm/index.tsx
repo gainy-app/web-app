@@ -4,11 +4,11 @@ import styles from './citizenshipform.module.scss';
 import { Checkbox } from '../../common/Checkbox';
 import { Field } from '../../common/Field';
 import { Button } from '../../common/Button';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Input } from 'components/common/Dropdown/Input';
 import { ICitizenship } from 'models/citizenship';
@@ -38,12 +38,8 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   };
 
   const onNextClick = () => {
-    if(citizenship.placeholder === 'USA') {
-      logFirebaseEvent('dw_kyc_citz_usa', currentUser, appId);
-    } else {
-      logFirebaseEvent('dw_kyc_citz_non_usa', currentUser, appId);
-    }
-    trackEvent('KYC_acc_citizenship_choose', currentUser?.uid);
+    sendEvent('kyc_acc_citizenship_choose', currentUser?.uid, appId);
+    sendGoogleDataLayerEvent('KYC_acc_citizenship_choose', currentUser?.uid);
     onSendData();
     next();
   };
@@ -68,10 +64,6 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
       <span>{item?.name}</span>
     </li>;
   });
-
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_citz_s', currentUser, appId);
-  }, []);
 
   useEffect(() => {
     citizenship?.choices && setList(citizenship?.choices);

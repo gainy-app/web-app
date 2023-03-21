@@ -4,7 +4,8 @@ export const config = {
   paragraph: 'For now, please continue in our mobile app by signing in with the account you’ve just created.',
   downloadButton: {
     text: 'Download App',
-    link: 'https://go.gainy.app/ZOFw/Webp'
+    link: 'https://go.gainy.app/ZOFw/Webp',
+    id: 'downloadAppButton'
   },
   qrcode: 'https://go.gainy.app/ZOFw/Webp?af_qr=true',
   description: 'Scan the QR code or enter your phone number for the download link',
