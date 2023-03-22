@@ -5,7 +5,7 @@ export const config = {
   downloadButton: {
     text: 'Download App',
     link: 'https://go.gainy.app/ZOFw/Webp',
-    id: 'downloadAppButton'
+    id: 'download_app_web_platform'
   },
   qrcode: 'https://go.gainy.app/ZOFw/Webp?af_qr=true',
   description: 'Scan the QR code or enter your phone number for the download link',

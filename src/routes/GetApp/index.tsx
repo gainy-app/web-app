@@ -1,6 +1,6 @@
 import styles from './getApp.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
-import { Button, Image, Input, Loader } from '../../components';
+import { Button, Image, Input, Loader, ButtonLink } from '../../components';
 import React, { FormEvent, useLayoutEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
@@ -86,15 +86,15 @@ export default function GetApp () {
           <h2 className={styles.title}>{title}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
           <p className={styles.paragraph}>{paragraph}</p>
-          <a
+          <ButtonLink
             href={downloadButton.link}
             className={styles.buttonLink}
             onClick={handleDownloadButtonClick}
+            variant={'download'}
+            id={downloadButton.id}
           >
-            <Button variant={'download'} id={downloadButton.id}>
-              {downloadButton.text}
-            </Button>
-          </a>
+            {downloadButton.text}
+          </ButtonLink>
           <div className={styles.line}>
             <Image type={imageTypes.line}/>
           </div>

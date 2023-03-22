@@ -1,6 +1,6 @@
 import styles from './success.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
-import { Button, Image, Input, Loader } from '../../components';
+import { Button, ButtonLink, Image, Input, Loader } from '../../components';
 import React, { FormEvent, useLayoutEffect, useState } from 'react';
 import { config } from './config';
 import { QRCodeSVG } from 'qrcode.react';
@@ -70,14 +70,14 @@ export default function Success () {
           <h1>Congratulations!</h1>
           <h2 className={styles.title}>{title}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
-          <a
+          <ButtonLink
             href={downloadButton.link}
             onClick={handleDownloadButtonClick}
+            variant={'download'}
+            id={downloadButton.id}
           >
-            <Button variant={'download'} id={downloadButton.id}>
-              {downloadButton.text}
-            </Button>
-          </a>
+            {downloadButton.text}
+          </ButtonLink>
           <div className={styles.line}>
             <Image type={imageTypes.line}/>
           </div>
