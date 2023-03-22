@@ -98,8 +98,8 @@ export default function GetApp () {
           <div className={styles.line}>
             <Image type={imageTypes.line}/>
           </div>
-          <div className={styles.qrWrapper}>
-            <QRCodeSVG value={qrcode} className={styles.qrCode}/>
+          <div className={styles.qrWrapper} id={qrcode.id}>
+            <QRCodeSVG value={qrcode.link} className={styles.qrCode}/>
           </div>
           <p className={styles.description}>{description}</p>
           <form

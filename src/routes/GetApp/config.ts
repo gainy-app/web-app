@@ -7,7 +7,10 @@ export const config = {
     link: 'https://go.gainy.app/ZOFw/Webp',
     id: 'download_app_web_platform'
   },
-  qrcode: 'https://go.gainy.app/ZOFw/Webp?af_qr=true',
+  qrcode: {
+    link: 'https://go.gainy.app/ZOFw/Webp?af_qr=true',
+    id: 'qr_code_place'
+  },
   description: 'Scan the QR code or enter your phone number for the download link',
   form: {
     phone: 'Enter your phone number',
