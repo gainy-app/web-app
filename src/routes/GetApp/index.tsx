@@ -1,10 +1,10 @@
 import styles from './getApp.module.scss';
-import { imageTypes, routes, utmConfig } from '../../utils/constants';
+import { imageTypes, routes } from '../../utils/constants';
 import { Button, Image, Input, Loader, ButtonLink } from '../../components';
 import { FormEvent, useLayoutEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import { formatNumber, parseGQLerror } from '../../utils/helpers';
+import { formatNumber, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -73,7 +73,7 @@ export default function GetApp () {
       sendLink({
         variables: {
           phone_number,
-          query_string: `https://go.gainy.app/ZOFw?af_js_web=true&af_ss_ver=2_2_0&pid=website_${utmConfig.source}_${utmConfig.channel}&c=${utmConfig.company}`
+          query_string: getQueryAppLink()
         }
       });
     } else {

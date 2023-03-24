@@ -1,10 +1,10 @@
 import styles from './notify.module.scss';
-import { imageTypes, utmConfig } from '../../utils/constants';
+import { imageTypes } from '../../utils/constants';
 import { Button, ButtonLink, Image, Input, Loader } from '../../components';
 import React, { FormEvent, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import { formatNumber, parseGQLerror } from '../../utils/helpers';
+import { formatNumber, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
 import { config } from './config';
@@ -28,7 +28,7 @@ export default function Notify () {
       sendLink({
         variables: {
           phone_number,
-          query_string: `https://go.gainy.app/ZOFw?af_js_web=true&af_ss_ver=2_2_0&pid=website_${utmConfig.source}_${utmConfig.channel}&c=${utmConfig.company}`
+          query_string: getQueryAppLink()
         }
       });
     }
