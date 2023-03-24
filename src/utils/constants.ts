@@ -32,3 +32,17 @@ export const phoneMasks = {
 export const regExps = {
   email: /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
 };
+
+/**
+ * sbjs_first (equal to sbjs_current)
+ *
+ * typ%3Dtypein%7C%7C%7Csrc%3D%28direct%29%7C%7C%7Cmdm%3D%28none%29%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Ctrm%3D%28none%29
+ */
+export const utmConfig = {
+  // sbjs.get.first.src
+  source: 'direct',
+  // sbjs.get.first.mdm
+  channel: 'none',
+  // sbjs.get.first.cmp
+  company: 'none',
+};

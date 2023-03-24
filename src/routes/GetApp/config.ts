@@ -17,19 +17,6 @@ export const config = {
     button: 'Text me the link',
     successMessage: 'Link sent!'
   },
-  /**
-   * sbjs_first (equal to sbjs_current)
-   *
-   * typ%3Dtypein%7C%7C%7Csrc%3D%28direct%29%7C%7C%7Cmdm%3D%28none%29%7C%7C%7Ccmp%3D%28none%29%7C%7C%7Ccnt%3D%28none%29%7C%7C%7Ctrm%3D%28none%29
-   */
-  utm: {
-    // sbjs.get.first.src
-    source :'direct',
-    // sbjs.get.first.mdm
-    channel: 'none',
-    // sbjs.get.first.cmp
-    company: 'none',
-  },
   validate(value:string, setErrors: (arg: string) => void) {
     let phoneError = '';
     if(value.length <= 9) {

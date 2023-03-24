@@ -1,5 +1,5 @@
 import styles from './notify.module.scss';
-import { imageTypes } from '../../utils/constants';
+import { imageTypes, utmConfig } from '../../utils/constants';
 import { Button, ButtonLink, Image, Input, Loader } from '../../components';
 import React, { FormEvent, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
@@ -15,7 +15,7 @@ import { useAuth } from 'contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
 
 export default function Notify () {
-  const { form,qrcode,subtitle,description,validate, downloadButton, utm } = config;
+  const { form,qrcode,subtitle,description,validate, downloadButton } = config;
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
@@ -28,7 +28,7 @@ export default function Notify () {
       sendLink({
         variables: {
           phone_number,
-          query_string: `https://go.gainy.app/ZOFw?af_js_web=true&af_ss_ver=2_2_0&pid=website_${utm.source}_${utm.channel}&c=${utm.company}`
+          query_string: `https://go.gainy.app/ZOFw?af_js_web=true&af_ss_ver=2_2_0&pid=website_${utmConfig.source}_${utmConfig.channel}&c=${utmConfig.company}`
         }
       });
     }

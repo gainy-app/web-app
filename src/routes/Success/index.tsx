@@ -1,5 +1,5 @@
 import styles from './success.module.scss';
-import { imageTypes, routes } from '../../utils/constants';
+import { imageTypes, routes, utmConfig } from '../../utils/constants';
 import { Button, ButtonLink, Image, Input, Loader } from '../../components';
 import React, { FormEvent, useLayoutEffect, useState } from 'react';
 import { config } from './config';
@@ -15,7 +15,7 @@ import { useAuth } from 'contexts/AuthContext';
 import { sendEvent } from 'utils/logEvent';
 
 export default function Success () {
-  const { form,qrcode,subtitle,title,description,validate, downloadButton, utm } = config;
+  const { form,qrcode,subtitle,title,description,validate, downloadButton } = config;
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
@@ -58,7 +58,7 @@ export default function Success () {
       sendLink({
         variables: {
           phone_number,
-          query_string: `https://go.gainy.app/ZOFw?af_js_web=true&af_ss_ver=2_2_0&pid=website_${utm.source}_${utm.channel}&c=${utm.company}`
+          query_string: `https://go.gainy.app/ZOFw?af_js_web=true&af_ss_ver=2_2_0&pid=website_${utmConfig.source}_${utmConfig.channel}&c=${utmConfig.company}`
         }
       });
     }
