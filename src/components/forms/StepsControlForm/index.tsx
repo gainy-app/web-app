@@ -23,12 +23,10 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   const [sendFormFinale, { error }] = useMutation(KYC_SEND_FORM);
   const navigate = useNavigate();
   const { titleWithLink, subtitleWithLink } = config;
-
   const createAccountEdit = !!data.country?.prevValue || !!data.phone;
-
   const verifyIdentityEdit = !!data.addressLine;
-
   const investProfileEdit = !!data.investor_profile_annual_income.value;
+  let stepIndex = currentStepIndex;
 
   const steps = [
     { title: 'Create your account',
@@ -46,7 +44,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   ];
   const buttonRender = () => {
     switch (true) {
-      case currentStepIndex === 0:
+      case stepIndex === 0:
         return (
           <Button onClick={() => {
             sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
@@ -54,7 +52,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
             next();
           }}>{'Start'}</Button>
         );
-      case currentStepIndex === 7:
+      case stepIndex === 7:
         return (
           <Button onClick={() => {
             sendEvent('kyc_what_now_identity_done', currentUser?.uid, appId);
@@ -62,7 +60,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
             next();
           }}>{'Continue'}</Button>
         );
-      case currentStepIndex === 11:
+      case stepIndex === 11:
         return (
           <Button onClick={() => {
             sendEvent('kyc_what_now_profile_done', currentUser?.uid, appId);
@@ -100,11 +98,15 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   return (
     <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>
       {steps.map((step, i, a) => {
+        const isActiveStep = step.edit || a[i - 1]?.edit;
+
+        isActiveStep && (stepIndex = step.step);
+
         return appId ? (
           <StepControl
             stepTitle={step.title}
             key={i.toString()}
-            activeStep={step.edit || (!!i && !step.edit && a[i - 1].edit)}
+            activeStep={isActiveStep}
             stepNumber={i + 1}
             goToStep={goToStep}
             step={step.redirect}
