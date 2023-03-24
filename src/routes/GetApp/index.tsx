@@ -1,7 +1,7 @@
 import styles from './getApp.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
 import { Button, Image, Input, Loader, ButtonLink } from '../../components';
-import React, { FormEvent, useLayoutEffect, useState } from 'react';
+import { FormEvent, useLayoutEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { formatNumber, parseGQLerror } from '../../utils/helpers';
@@ -15,7 +15,7 @@ import { sendEvent, sendGoogleDataLayerEvent } from '../../utils/logEvent';
 import { useFormContext } from 'contexts/FormContext';
 
 export default function GetApp () {
-  const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton } = config;
+  const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton, utm } = config;
   const [phoneState, setPhoneState] = useState<string>('');
   const { pathname } = useLocation();
   const [errors, setErrors] = useState<string>('');
@@ -69,7 +69,13 @@ export default function GetApp () {
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
-      sendLink({ variables: { phone_number } });
+
+      sendLink({
+        variables: {
+          phone_number,
+          query_string: `https://go.gainy.app/ZOFw?af_js_web=true&af_ss_ver=2_2_0&pid=website_${utm.source}_${utm.channel}&c=${utm.company}`
+        }
+      });
     } else {
       sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid);
     }

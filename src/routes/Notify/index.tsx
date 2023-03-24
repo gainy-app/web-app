@@ -15,7 +15,7 @@ import { useAuth } from 'contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
 
 export default function Notify () {
-  const { form,qrcode,subtitle,description,validate, downloadButton } = config;
+  const { form,qrcode,subtitle,description,validate, downloadButton, utm } = config;
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
@@ -25,7 +25,12 @@ export default function Notify () {
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
-      sendLink({ variables: { phone_number } });
+      sendLink({
+        variables: {
+          phone_number,
+          query_string: `https://go.gainy.app/ZOFw?af_js_web=true&af_ss_ver=2_2_0&pid=website_${utm.source}_${utm.channel}&c=${utm.company}`
+        }
+      });
     }
   };
   const onPhoneChange = (values: NumberFormatValues) => {
