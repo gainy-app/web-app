@@ -5,7 +5,6 @@ export { ButtonLink } from 'components/common/ButtonLink';
 export { Input } from 'components/common/Input';
 export { PrivateRoute } from 'components/common/PrivateRoute';
 export { Loader } from 'components/common/Loader';
-export { Invest } from 'components/common/Invest';
 export { StepControl } from 'components/common/StepControl';
 export { StepsControlForm } from 'components/forms/StepsControlForm';
 export { KycLayout } from 'components/layout/kyc';
