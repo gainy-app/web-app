@@ -5,7 +5,6 @@ import { getUserLocale } from 'get-user-locale';
 import TagManager from 'react-gtm-module-defer';
 import amplitude from 'amplitude-js';
 
-
 export const sendEvent = (
   content: string,
   userId?: string,

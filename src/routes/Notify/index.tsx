@@ -1,14 +1,18 @@
 import styles from './notify.module.scss';
 import { imageTypes } from '../../utils/constants';
-import { Button, Image, Input, Loader } from '../../components';
+import { Button, ButtonLink, Image, Input, Loader } from '../../components';
 import React, { FormEvent, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import { formatNumber, parseGQLerror } from '../../utils/helpers';
+import { formatNumber, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
 import { config } from './config';
 import { Background } from '../Success/Background';
+import { sendEvent } from 'utils/logEvent';
+import { useFormContext } from 'contexts/FormContext';
+import { useAuth } from 'contexts/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 export default function Notify () {
   const { form,qrcode,subtitle,description,validate, downloadButton } = config;
@@ -21,13 +25,30 @@ export default function Notify () {
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
-      sendLink({ variables: { phone_number } });
+      sendLink({
+        variables: {
+          phone_number,
+          query_string: getQueryAppLink()
+        }
+      });
     }
   };
   const onPhoneChange = (values: NumberFormatValues) => {
     setPhoneState(values.value);
   };
   const notifyCountry = localStorage.getItem('notify') || 'Germany';
+  const { appId } = useFormContext();
+  const { currentUser } = useAuth();
+  const { pathname } = useLocation();
+  const handleDownloadButtonClick = () => {
+    sendEvent('download_app_clicked', currentUser?.uid, appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
+  };
 
   return (
     <>
@@ -37,16 +58,19 @@ export default function Notify () {
           <h2 className={styles.mainTitle}>You’ll be notified when</h2>
           <h2 className={styles.title}>{`Trading feature will be available in ${notifyCountry}`}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
-          <a href={downloadButton.link} className={styles.buttonLink}>
-            <Button variant={'download'}>
-              {downloadButton.text}
-            </Button>
-          </a>
+          <ButtonLink
+            href={downloadButton.link}
+            onClick={handleDownloadButtonClick}
+            variant={'download'}
+            id={downloadButton.id}
+          >
+            {downloadButton.text}
+          </ButtonLink>
           <div className={styles.line}>
             <Image type={imageTypes.line}/>
           </div>
-          <div className={styles.qrWrapper}>
-            <QRCodeSVG value={qrcode} className={styles.qrCode}/>
+          <div className={styles.qrWrapper} id={qrcode.id}>
+            <QRCodeSVG value={qrcode.link} className={styles.qrCode}/>
           </div>
           <p className={styles.description}>{description}</p>
           <form
