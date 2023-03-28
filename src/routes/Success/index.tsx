@@ -1,11 +1,11 @@
 import styles from './success.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
-import { Button, Image, Input, Loader } from '../../components';
-import React, { FormEvent, useEffect, useLayoutEffect, useState } from 'react';
+import { Button, ButtonLink, Image, Input, Loader } from '../../components';
+import { FormEvent, useLayoutEffect, useEffect, useState } from 'react';
 import { config } from './config';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import { formatNumber, parseGQLerror } from '../../utils/helpers';
+import { formatNumber, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
 import { Background } from './Background';
@@ -55,7 +55,12 @@ export default function Success () {
 
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
-      sendLink({ variables: { phone_number } });
+      sendLink({
+        variables: {
+          phone_number,
+          query_string: getQueryAppLink()
+        }
+      });
     }
   };
   const onPhoneChange = (values: NumberFormatValues) => {
@@ -70,19 +75,19 @@ export default function Success () {
           <h1>Congratulations!</h1>
           <h2 className={styles.title}>{title}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
-          <a
+          <ButtonLink
             href={downloadButton.link}
             onClick={handleDownloadButtonClick}
+            variant={'download'}
+            id={downloadButton.id}
           >
-            <Button variant={'download'} id={downloadButton.id}>
-              {downloadButton.text}
-            </Button>
-          </a>
+            {downloadButton.text}
+          </ButtonLink>
           <div className={styles.line}>
             <Image type={imageTypes.line}/>
           </div>
-          <div className={styles.qrWrapper}>
-            <QRCodeSVG value={qrcode} className={styles.qrCode}/>
+          <div className={styles.qrWrapper} id={qrcode.id}>
+            <QRCodeSVG value={qrcode.link} className={styles.qrCode}/>
           </div>
           <p className={styles.description}>{description}</p>
           <form
