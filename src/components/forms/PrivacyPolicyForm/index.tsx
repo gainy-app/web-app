@@ -7,8 +7,8 @@ import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 export const PrivacyPolicyForm = () => {
-  const { next, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { next } = useFormContext();
+  const { currentUser, appId } = useAuth();
   const { title, lists, cookie, buttonText } = config;
 
   return (

@@ -22,8 +22,8 @@ type Props = {
 
 export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   const { title,subtitle } = config;
-  const {  next, back , onSendData, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const {  next, back , onSendData } = useFormContext();
+  const { currentUser, appId } = useAuth();
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [list, setList] = useState<IChoices>([]);

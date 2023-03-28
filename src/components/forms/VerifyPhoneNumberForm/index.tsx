@@ -7,6 +7,7 @@ import parse from 'html-react-parser';
 import { parseGQLerror } from '../../../utils/helpers';
 import styles from './verifyphonenumber.module.scss';
 import { Input } from '../../common/Input';
+import { useAuth } from 'contexts/AuthContext';
 
 interface verifyData {
   verifyCode: string
@@ -17,7 +18,8 @@ type Props = verifyData & {
 }
 
 export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
-  const { data , verificationCodeRequest, verifyCodeRequest, back, appId } = useFormContext();
+  const { data, verificationCodeRequest, verifyCodeRequest, back } = useFormContext();
+  const { appId } = useAuth();
   const { title,subtitle } = config(data.phone);
 
   const disabled  = verifyCode?.length !== 6;

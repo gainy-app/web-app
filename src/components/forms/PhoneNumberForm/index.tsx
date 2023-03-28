@@ -21,8 +21,8 @@ type Props = phoneData & {
 
 export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
   const { title,subtitle } = config;
-  const { verifyCodeRequest, appId, back } = useFormContext();
-  const { currentUser } = useAuth();
+  const { verifyCodeRequest, back } = useFormContext();
+  const { currentUser, appId } = useAuth();
 
   const onNextClick = async () => {
     sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId);

@@ -1,7 +1,7 @@
 import styles from './getApp.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
 import { Button, Image, Input, Loader } from '../../components';
-import React, { FormEvent, useLayoutEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useLayoutEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { formatNumber, parseGQLerror } from '../../utils/helpers';
@@ -12,7 +12,6 @@ import { config } from './config';
 import { Background } from '../Success/Background';
 import { useAuth } from '../../contexts/AuthContext';
 import { sendEvent, sendGoogleDataLayerEvent } from '../../utils/logEvent';
-import { useFormContext } from 'contexts/FormContext';
 
 export default function GetApp () {
   const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton } = config;
@@ -24,10 +23,9 @@ export default function GetApp () {
     onCompleted: () => sendGoogleDataLayerEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
   });
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, appId } = useAuth();
   const status = localStorage.getItem('status');
   const authMethod = localStorage.getItem('login');
-  const { appId } = useFormContext();
   const handleDownloadButtonClick = () => {
     sendEvent('download_app_clicked', currentUser?.uid, appId, {
       pageUrl: window.location.href,
@@ -49,12 +47,14 @@ export default function GetApp () {
       sendGoogleDataLayerEvent('web_login', currentUser?.uid, authMethod);
     }
 
-    sendEvent('get_app_page_viewed', currentUser?.uid, appId);
-
     return () => {
       localStorage.removeItem('login');
     };
   }, []);
+
+  useEffect(() => {
+    appId && sendEvent('get_app_page_viewed', currentUser?.uid, appId);
+  }, [appId]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
