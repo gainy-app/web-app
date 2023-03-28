@@ -98,7 +98,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   return (
     <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>
       {steps.map((step, i, a) => {
-        const isActiveStep = step.edit || a[i - 1]?.edit;
+        const isActiveStep = step.edit || i === 0 || a[i - 1]?.edit;
 
         isActiveStep && (stepIndex = step.step);
 
