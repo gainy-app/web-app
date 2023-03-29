@@ -25,7 +25,6 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
   const { currentUser } = useAuth();
 
   const onNextClick = async () => {
-    sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId);
     sendGoogleDataLayerEvent('KYC_acc_phone_input', currentUser?.uid);
 
     try {
@@ -36,13 +35,12 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
           address: `+1${String(phone)}`
         }
       });
-
-      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
-        error: isVerified ? '' : 'phone is not valid'
+      sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
+        error: isVerified ? '' : 'Invalid phone number.'
       });
     } catch (error: any) {
-      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
-        error: error.message
+      sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
+        error: error.message || 'Invalid phone number.'
       });
     }
   };
