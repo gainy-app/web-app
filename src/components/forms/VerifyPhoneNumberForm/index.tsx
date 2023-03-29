@@ -36,6 +36,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
       sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
         error: isVerified ? '' : 'Invalid phone number.'
       });
+      isVerified && sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
     } catch (error: any) {
       sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
         error: error.message || 'Invalid phone number.'

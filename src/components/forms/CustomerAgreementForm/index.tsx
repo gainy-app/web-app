@@ -3,12 +3,12 @@ import { Button, ButtonsGroup } from 'components';
 import { useFormContext } from 'contexts/FormContext';
 import parse from 'html-react-parser';
 import { config } from './config';
-import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 export const CustomerAgreementForm = () => {
   const { next, back } = useFormContext();
-  const { currentUser } = useAuth();
+  const { currentUser, appId } = useAuth();
   const { title, list, buttonText } = config;
 
   return (
@@ -46,6 +46,7 @@ export const CustomerAgreementForm = () => {
           <Button onClick={() => {
             sendGoogleDataLayerEvent('KYC_profile_accept_customer_agreement', currentUser?.uid);
             next();
+            sendEvent('kyc_what_now_profile_done', currentUser?.uid, appId);
           }}>{buttonText}</Button>
         </ButtonsGroup>
       </div>
