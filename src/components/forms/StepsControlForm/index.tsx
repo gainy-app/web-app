@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { KYC_SEND_FORM } from '../../../services/gql/queries';
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
-import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
+import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface Props {
@@ -47,7 +47,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       case stepIndex === 0:
         return (
           <Button onClick={() => {
-            sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
             sendGoogleDataLayerEvent('KYC_what_now_create_acc_start', currentUser?.uid);
             next();
           }}>{'Start'}</Button>
@@ -55,7 +54,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       case stepIndex === 7:
         return (
           <Button onClick={() => {
-            sendEvent('kyc_what_now_identity_done', currentUser?.uid, appId);
             sendGoogleDataLayerEvent('KYC_what_now_verify_continue', currentUser?.uid);
             next();
           }}>{'Continue'}</Button>
@@ -63,7 +61,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
       case stepIndex === 11:
         return (
           <Button onClick={() => {
-            sendEvent('kyc_what_now_profile_done', currentUser?.uid, appId);
             sendGoogleDataLayerEvent('KYC_what_now_profile_continue', currentUser?.uid);
             next();
           }}>{'Continue'}</Button>

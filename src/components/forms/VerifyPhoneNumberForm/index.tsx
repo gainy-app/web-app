@@ -8,6 +8,7 @@ import { parseGQLerror } from '../../../utils/helpers';
 import styles from './verifyphonenumber.module.scss';
 import { Input } from '../../common/Input';
 import { useAuth } from 'contexts/AuthContext';
+import { sendEvent } from 'utils/logEvent';
 
 interface verifyData {
   verifyCode: string
@@ -19,18 +20,28 @@ type Props = verifyData & {
 
 export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   const { data, verificationCodeRequest, verifyCodeRequest, back } = useFormContext();
-  const { appId } = useAuth();
+  const { appId, currentUser } = useAuth();
   const { title,subtitle } = config(data.phone);
 
   const disabled  = verifyCode?.length !== 6;
 
-  const onNextClick = () => {
-    verificationCodeRequest.verificationCode({
-      variables: {
-        verification_code_id: verifyCodeRequest?.data?.verification_send_code?.verification_code_id,
-        user_input: verifyCode,
-      }
-    });
+  const onNextClick = async() => {
+    try {
+      const isVerified = await verificationCodeRequest.verificationCode({
+        variables: {
+          verification_code_id: verifyCodeRequest?.data?.verification_send_code?.verification_code_id,
+          user_input: verifyCode,
+        }
+      });
+      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+        error: isVerified ? '' : 'Invalid phone number.'
+      });
+      isVerified && sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
+    } catch (error: any) {
+      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+        error: error.message || 'Invalid phone number.'
+      });
+    }
   };
 
   const onSendVerifyCodeAgain = () => {

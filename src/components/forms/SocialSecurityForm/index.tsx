@@ -24,6 +24,7 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
     sendEvent('kyc_identity_ssn_input_done', currentUser?.uid, appId);
     onSendData();
     next();
+    sendEvent('kyc_what_now_identity_done', currentUser?.uid, appId);
   };
 
   const [open, setOpen] = useState(true);
