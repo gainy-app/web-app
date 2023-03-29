@@ -6,14 +6,12 @@ import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
 import { useLayoutEffect } from 'react';
 import { sendEvent } from 'utils/logEvent';
-import { useFormContext } from 'contexts/FormContext';
 
 export default function SignIn () {
   const { title,form, description, subDescription } = config;
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { signInWithGoogle, currentUser, signInWithApple } = useAuth();
-  const { appId } = useFormContext();
+  const { signInWithGoogle, currentUser, signInWithApple, appId } = useAuth();
 
   if(currentUser) {
     return <Navigate to={routes.home} replace state={{ path: pathname }}/>;

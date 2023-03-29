@@ -15,8 +15,8 @@ type Props =  {
 
 
 export const SocialSecurityForm = ({ updateFields }:Props) => {
-  const { next, back, onSendData, data, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { next, back, onSendData, data } = useFormContext();
+  const { currentUser, appId } = useAuth();
 
   const { PIN_LENGTH,pin,onChange,onKeyDown,inputRefs } = usePin(9,0, 9, data, updateFields, 'socialSecurityNumber');
 

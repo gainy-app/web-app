@@ -28,8 +28,8 @@ type Props = citizenData & {
 }
 
 export const CitizenForm = ({ updateFields, country }: Props) => {
-  const { flags, next, onSendData, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { flags, next, onSendData } = useFormContext();
+  const { currentUser, appId } = useAuth();
   const [openDropdown, setOpenDropdown] = useState(false);
   const findCountryName = (countryValue: string) => country?.choices?.find((choicedCountry: any) => choicedCountry.value === countryValue).name;
   const [searchInput, setSearchInput] = useState(country?.prevValue ? findCountryName(country?.prevValue) : findCountryName(country.placeholder));

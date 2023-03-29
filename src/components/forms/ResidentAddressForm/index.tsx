@@ -32,8 +32,8 @@ type Props = residentData & {
 
 export const ResidentAddressForm = ({ updateFields, addressLine, addressLine2, city, state, zipcode }:Props) => {
   const { title,subtitle } = config;
-  const { next, back ,onSendData, data, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { next, back ,onSendData, data } = useFormContext();
+  const { currentUser, appId } = useAuth();
   const [statesOpen, setStatesOpen] = useState(false);
   const [getValidation, {  error: validationError }] = useLazyQuery(VALIDATE_ADDRESS);
   const [stateList, setStateList] = useState<IChoices>([]);

@@ -1,7 +1,7 @@
 import styles from './success.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
 import { Button, ButtonLink, Image, Input, Loader } from '../../components';
-import React, { FormEvent, useLayoutEffect, useState } from 'react';
+import { FormEvent, useLayoutEffect, useEffect, useState } from 'react';
 import { config } from './config';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
@@ -10,7 +10,6 @@ import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
 import { Background } from './Background';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useFormContext } from 'contexts/FormContext';
 import { useAuth } from 'contexts/AuthContext';
 import { sendEvent } from 'utils/logEvent';
 
@@ -21,8 +20,7 @@ export default function Success () {
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
   const navigate = useNavigate();
   const status = localStorage.getItem('status');
-  const { appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { currentUser, appId } = useAuth();
   const { pathname } = useLocation();
   const handleDownloadButtonClick = () => {
     sendEvent('download_app_clicked', currentUser?.uid, appId, {
@@ -38,9 +36,11 @@ export default function Success () {
     if(status === null) {
       navigate(routes.home);
     }
-
-    sendEvent('get_app_page_viewed', currentUser?.uid, appId);
   }, [status]);
+
+  useEffect(() => {
+    appId && sendEvent('get_app_page_viewed', currentUser?.uid, appId);
+  }, [appId]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
