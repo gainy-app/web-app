@@ -31,8 +31,8 @@ type Props = userData & {
 
 export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:Props) => {
   const { title,subtitle } = config;
-  const { next ,back, onSendData, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { next ,back, onSendData } = useFormContext();
+  const { currentUser, appId } = useAuth();
   const [value, onChange] = useState(birthday ? dayjs(birthday).toDate() : null);
   const [onShowCalender, setOnShowCalender] = useState(false);
   const onNextClick = () => {

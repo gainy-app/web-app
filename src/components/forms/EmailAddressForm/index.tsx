@@ -21,8 +21,8 @@ type Props = emailData & {
 
 export const EmailAddressForm = ({ updateFields, email_address }:Props) => {
   const { title,subtitle } = config;
-  const {  next, back, data, onSendData, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const {  next, back, data, onSendData } = useFormContext();
+  const { currentUser, appId } = useAuth();
   const disabled = !regExps.email.test(data.email_address?.placeholder);
 
   const onNextClick = () => {
