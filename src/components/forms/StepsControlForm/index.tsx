@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { KYC_SEND_FORM } from '../../../services/gql/queries';
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
-import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface Props {
@@ -81,9 +81,20 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                     const status = localStorage.getItem('status');
                     if(status === res.data.kyc_send_form.status) {
                       sendGoogleDataLayerEvent('KYC_done_open_account', currentUser?.uid);
+                      sendEvent('kyc_open_account_done', currentUser?.uid, appId, {
+                        error: ''
+                      });
                       navigate(routes.success);
+                    } else {
+                      sendEvent('kyc_open_account_done', currentUser?.uid, appId, {
+                        error: 'failed to open account'
+                      });
                     }
                   }
+                }).catch((err) => {
+                  sendEvent('kyc_open_account_done', currentUser?.uid, appId, {
+                    error: err || 'failed to open account'
+                  });
                 });
               }
             }}>{'Done! Open my account'}</Button>

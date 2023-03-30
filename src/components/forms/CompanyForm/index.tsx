@@ -10,6 +10,8 @@ import { Dropdown } from '../../common/Dropdown';
 import { IChoices } from 'models';
 import { Input } from 'components/common/Dropdown/Input';
 import { getFilteredList } from 'utils/helpers';
+import { sendEvent } from 'utils/logEvent';
+import { useAuth } from 'contexts/AuthContext';
 
 interface companyData {
   companyName: string
@@ -33,7 +35,7 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
   const { title,subtitle } = config;
   const { next, back, onSendData } = useFormContext();
   const [openType,setOpenType] = useState(false);
-
+  const { currentUser, appId } = useAuth();
   const [openPosition, setOpenPosition] = useState(false);
   const [employmentPositionList, setEmploymentPositionList] = useState<IChoices>([]);
   const [employmentTypeList, setEmploymentTypeList] = useState<IChoices>([]);
@@ -83,6 +85,11 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
   const onNextClick = () => {
     onSendData();
     next();
+    sendEvent('kyc_profile_employment_choose', currentUser?.uid, appId, {
+      companyName,
+      industry: searchTypeInput,
+      jobTitle:  searchPositionInput
+    });
   };
 
   useEffect(() => {
