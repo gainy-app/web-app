@@ -8,7 +8,7 @@ import { Dropdown } from '../../common/Dropdown';
 import styles from './investmentProfile.module.scss';
 import { Image } from '../../common/Image';
 import { imageTypes } from '../../../utils/constants';
-import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface profileData {
@@ -62,12 +62,24 @@ export const InvestmentProfileForm = ({
   const [openIncome,setOpenIncome] = useState(false);
   const [openNetWorth, setOpenNetWorth] = useState(false);
   const [openLiquid, setOpenLiquid] = useState(false);
-  const { currentUser } = useAuth();
+  const { currentUser, appId } = useAuth();
+  const incomeValue = investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name;
+  const netWorthValue = investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name : networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name;
+  const liquidValue = investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name : liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name;
+
 
   const onNextClick = () => {
     sendGoogleDataLayerEvent('KYC_profile_income_info', currentUser?.uid);
     onSendData();
     next();
+    sendEvent('kyc_profile_income_info_done', currentUser?.uid, appId, {
+      income: incomeValue,
+      netWorth: netWorthValue,
+      liquid: liquidValue,
+      investExperience: investor_profile_experience.name,
+      investHorizon: investor_profile_objectives.name,
+      riskTollerance: investor_profile_risk_tolerance.name
+    });
   };
 
   const disabled = !investor_profile_annual_income.value
@@ -129,7 +141,7 @@ export const InvestmentProfileForm = ({
             withPlaceholder={'Annual Income'}
             openDropdown={openIncome}
             isInvest
-            value={investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}
+            value={incomeValue}
             onClick={(e:MouseEvent) => {
               e.stopPropagation();
               e.preventDefault();
@@ -149,7 +161,7 @@ export const InvestmentProfileForm = ({
                 }
                 }>{i.name}</li>;
             })} >
-            <div>{investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}</div>
+            <div>{incomeValue}</div>
           </Dropdown>
         </div>
         <div className={styles.networth}>
@@ -159,7 +171,7 @@ export const InvestmentProfileForm = ({
             withPlaceholder={'Total net worth'}
             openDropdown={openNetWorth}
             isInvest
-            value={investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name :  networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}
+            value={netWorthValue}
             onClick={(e: MouseEvent) => {
               e.stopPropagation();
               e.preventDefault();
@@ -180,7 +192,7 @@ export const InvestmentProfileForm = ({
                 }
                 }>{i.name}</li>;
             })} >
-            <div>{investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name : networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}</div>
+            <div>{netWorthValue}</div>
           </Dropdown>
         </div>
         <div className={styles.liquid}>
@@ -190,7 +202,7 @@ export const InvestmentProfileForm = ({
             withPlaceholder={'Liquid net worth'}
             openDropdown={openLiquid}
             isInvest
-            value={investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name :  liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}
+            value={liquidValue}
             onClick={(e: MouseEvent) => {
               e.stopPropagation();
               e.preventDefault();
@@ -211,7 +223,7 @@ export const InvestmentProfileForm = ({
                 }
                 }>{i.name}</li>;
             })} >
-            <div>{investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name : liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}</div>
+            <div>{liquidValue}</div>
           </Dropdown>
           <div className={styles.line}>
             <Image type={imageTypes.line}/>

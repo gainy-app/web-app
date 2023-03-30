@@ -9,7 +9,7 @@ import { Checkbox } from '../../common/Checkbox';
 import { Field } from '../../common/Field';
 import { FloatingInput } from '../../common/FloatingInput';
 import { imageTypes } from '../../../utils/constants';
-import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface letUsKnowData {
@@ -32,7 +32,7 @@ export const LetUsKnowForm = ({
 }:Props) => {
   const { title,subtitle, broker, member } = config;
   const {  next, back, onSendData } = useFormContext();
-  const { currentUser } = useAuth();
+  const { currentUser, appId } = useAuth();
   const [politicallyOpen, setPoliticallyOpen] = useState(politically_exposed_names ? politically_exposed_names : false);
   const [directorOpen, setDirectorOpen] = useState(employment_is_director_of_a_public_company ? employment_is_director_of_a_public_company : false);
 
@@ -41,6 +41,7 @@ export const LetUsKnowForm = ({
     sendGoogleDataLayerEvent('KYC_profile_law_info', currentUser?.uid);
     onSendData();
     next();
+    sendEvent('kyc_profile_law_info_done', currentUser?.uid, appId);
   };
 
   return (
