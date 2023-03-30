@@ -324,29 +324,36 @@ export function FormProvider ({ children }: Props) {
       },
     });
   };
-
+  const createAccountEdit = !!data.country?.prevValue || !!data.phone;
+  const verifyIdentityEdit = !!data.addressLine;
+  const investProfileEdit = !!data.investor_profile_annual_income.value;
   const {
     step, back,
     next, isLastPage, currentStepIndex, goToStep
-  } = useMultistepForm([
-    null,
-    <CitizenForm {...data} updateFields={updateFields}/>,
-    <PrivacyPolicyForm />,
-    <CitizenshipForm {...data} updateFields={updateFields}/>,
-    <EmailAddressForm {...data} updateFields={updateFields}/>,
-    <PhoneNumberForm {...data} updateFields={updateFields}/>,
-    <VerifyPhoneNumberForm {...data} updateFields={updateFields}/>,
-    null,
-    <LegalNameForm {...data} updateFields={updateFields}/>,
-    <ResidentAddressForm {...data} updateFields={updateFields}/>,
-    <SocialSecurityForm {...data} updateFields={updateFields}/>,
-    null,
-    <EmploymentForm {...data} updateFields={updateFields}/>,
-    data?.employment_status?.prevValue === 'EMPLOYED' || data?.employment_status?.prevValue === 'SELF_EMPLOYED' ? [<CompanyForm {...data} updateFields={updateFields}/>,  <LetUsKnowForm {...data} updateFields={updateFields}/>]: <LetUsKnowForm {...data} updateFields={updateFields}/>,
-    <InvestmentProfileForm {...data} updateFields={updateFields}/>,
-    <CustomerAgreementForm/>,
-    null
-  ].flat());
+  } = useMultistepForm({
+    steps: [
+      null,
+      <CitizenForm {...data} updateFields={updateFields}/>,
+      <PrivacyPolicyForm />,
+      <CitizenshipForm {...data} updateFields={updateFields}/>,
+      <EmailAddressForm {...data} updateFields={updateFields}/>,
+      <PhoneNumberForm {...data} updateFields={updateFields}/>,
+      <VerifyPhoneNumberForm {...data} updateFields={updateFields}/>,
+      null,
+      <LegalNameForm {...data} updateFields={updateFields}/>,
+      <ResidentAddressForm {...data} updateFields={updateFields}/>,
+      <SocialSecurityForm {...data} updateFields={updateFields}/>,
+      null,
+      <EmploymentForm {...data} updateFields={updateFields}/>,
+      data?.employment_status?.prevValue === 'EMPLOYED' || data?.employment_status?.prevValue === 'SELF_EMPLOYED' ? [<CompanyForm {...data} updateFields={updateFields}/>,  <LetUsKnowForm {...data} updateFields={updateFields}/>]: <LetUsKnowForm {...data} updateFields={updateFields}/>,
+      <InvestmentProfileForm {...data} updateFields={updateFields}/>,
+      <CustomerAgreementForm/>,
+      null
+    ].flat(),
+    createAccountEdit,
+    verifyIdentityEdit,
+    investProfileEdit
+  });
 
   const value = {
     step,
