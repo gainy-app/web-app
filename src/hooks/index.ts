@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { routes } from 'utils/constants';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import { useAuth } from 'contexts/AuthContext';
 
 export const usePage = () => {
   const { pathname } = useLocation();
@@ -16,8 +17,43 @@ export const usePage = () => {
 };
 export type IuseMultistepForm = ReactElement | null
 
-export const useMultistepForm = (steps: IuseMultistepForm[]) => {
-  const [currentStepIndex,setCurrentStepIndex] = useState(0);
+export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit, investProfileEdit }: {
+  steps: IuseMultistepForm[],
+  createAccountEdit: boolean,
+  verifyIdentityEdit: boolean,
+  investProfileEdit: boolean
+}) => {
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const { currentUser } = useAuth();
+
+  const stepsMap = [
+    {
+      step: 0,
+      edit:  createAccountEdit
+    },
+    {
+      step: 7,
+      edit: verifyIdentityEdit
+    },
+    {
+      step: 11,
+      edit: investProfileEdit
+    },
+  ];
+  useEffect(() => {
+    if (currentUser) {
+      let stepIndex = 0;
+      for (let index = stepsMap.length - 1; index >= 0 ; index -= 1) {
+        const element = stepsMap[index];
+
+        if (element.edit || index === 0 || stepsMap[index - 1]?.edit) {
+          stepIndex = element.step;
+          break;
+        }
+      }
+      setCurrentStepIndex(stepIndex);
+    }
+  }, [currentUser?.uid]);
 
   const next = () => {
     setCurrentStepIndex(prev => {

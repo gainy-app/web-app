@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { KYC_SEND_FORM } from '../../../services/gql/queries';
 import { useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
-import { sendGoogleDataLayerEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface Props {
@@ -26,7 +26,6 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   const createAccountEdit = !!data.country?.prevValue || !!data.phone;
   const verifyIdentityEdit = !!data.addressLine;
   const investProfileEdit = !!data.investor_profile_annual_income.value;
-  let stepIndex = currentStepIndex;
 
   const steps = [
     { title: 'Create your account',
@@ -44,21 +43,21 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   ];
   const buttonRender = () => {
     switch (true) {
-      case stepIndex === 0:
+      case currentStepIndex === 0:
         return (
           <Button onClick={() => {
             sendGoogleDataLayerEvent('KYC_what_now_create_acc_start', currentUser?.uid);
             next();
           }}>{'Start'}</Button>
         );
-      case stepIndex === 7:
+      case currentStepIndex === 7:
         return (
           <Button onClick={() => {
             sendGoogleDataLayerEvent('KYC_what_now_verify_continue', currentUser?.uid);
             next();
           }}>{'Continue'}</Button>
         );
-      case stepIndex === 11:
+      case currentStepIndex === 11:
         return (
           <Button onClick={() => {
             sendGoogleDataLayerEvent('KYC_what_now_profile_continue', currentUser?.uid);
@@ -82,9 +81,20 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
                     const status = localStorage.getItem('status');
                     if(status === res.data.kyc_send_form.status) {
                       sendGoogleDataLayerEvent('KYC_done_open_account', currentUser?.uid);
+                      sendEvent('kyc_open_account_done', currentUser?.uid, appId, {
+                        error: ''
+                      });
                       navigate(routes.success);
+                    } else {
+                      sendEvent('kyc_open_account_done', currentUser?.uid, appId, {
+                        error: 'failed to open account'
+                      });
                     }
                   }
+                }).catch((err) => {
+                  sendEvent('kyc_open_account_done', currentUser?.uid, appId, {
+                    error: err || 'failed to open account'
+                  });
                 });
               }
             }}>{'Done! Open my account'}</Button>
@@ -94,23 +104,19 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
 
   return (
     <FormWrapper title={'What now?'} subtitle={'On the next few screens we\'ll ask you some questions about your ID, employment status and so on. We\'re required to get this information by law.'}>
-      {steps.map((step, i, a) => {
-        const isActiveStep = step.edit || i === 0 || a[i - 1]?.edit;
-
-        isActiveStep && (stepIndex = step.step);
-
-        return appId ? (
+      {steps.map((step, i) => (
+        appId ? (
           <StepControl
             stepTitle={step.title}
             key={i.toString()}
-            activeStep={isActiveStep}
+            activeStep={step.step <= currentStepIndex}
             stepNumber={i + 1}
             goToStep={goToStep}
             step={step.redirect}
             withEdit={step.edit}
           />
-        ) : <Loader/>;
-      })}
+        ) : <Loader/>
+      ))}
       {isLastPage && (
         <div className={styles.acceptTerms}>
           <h2>Accept Terms & Conditions</h2>
