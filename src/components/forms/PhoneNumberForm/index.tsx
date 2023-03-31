@@ -10,6 +10,7 @@ import styles from './phonenumber.module.scss';
 import flag from '../../../assets/flag.svg';
 import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useEffect } from 'react';
 
 interface phoneData {
   phone: string
@@ -28,15 +29,12 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
     sendGoogleDataLayerEvent('KYC_acc_phone_input', currentUser?.uid);
 
     try {
-      const isVerified = await verifyCodeRequest.verifyCode({
+      verifyCodeRequest.verifyCode({
         variables: {
           profile_id:  appId,
           channel: 'SMS',
           address: `+1${String(phone)}`
         }
-      });
-      sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
-        error: isVerified ? '' : 'Invalid phone number.'
       });
     } catch (error: any) {
       sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
@@ -44,6 +42,14 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (verifyCodeRequest?.error) {
+      sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
+        error: parseGQLerror(verifyCodeRequest?.error)
+      });
+    }
+  }, [verifyCodeRequest?.error]);
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>

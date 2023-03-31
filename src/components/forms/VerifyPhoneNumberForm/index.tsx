@@ -9,6 +9,7 @@ import styles from './verifyphonenumber.module.scss';
 import { Input } from '../../common/Input';
 import { useAuth } from 'contexts/AuthContext';
 import { sendEvent } from 'utils/logEvent';
+import { useEffect } from 'react';
 
 interface verifyData {
   verifyCode: string
@@ -33,10 +34,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
           user_input: verifyCode,
         }
       });
-      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
-        error: isVerified ? '' : 'Invalid phone number.'
-      });
-      isVerified && sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
+      !isVerified?.errors && sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
     } catch (error: any) {
       sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
         error: error.message || 'Invalid phone number.'
@@ -56,6 +54,14 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
       ...data, verifyCode: ''
     });
   };
+
+  useEffect(() => {
+    if (verifyCodeRequest?.error) {
+      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+        error: parseGQLerror(verifyCodeRequest?.error)
+      });
+    }
+  }, [verifyCodeRequest?.error]);
 
   return (
     <FormWrapper title={title} subtitle={parse(subtitle)}>
