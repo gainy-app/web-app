@@ -42,8 +42,8 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
     }
   };
 
-  const onSendVerifyCodeAgain = () => {
-    verifyCodeRequest.verifyCode({
+  const onSendVerifyCodeAgain = async () => {
+    await verifyCodeRequest.verifyCode({
       variables: {
         profile_id:  appId,
         channel: 'SMS',

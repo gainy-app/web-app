@@ -29,7 +29,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
     sendGoogleDataLayerEvent('KYC_acc_phone_input', currentUser?.uid);
 
     try {
-      verifyCodeRequest.verifyCode({
+      await verifyCodeRequest.verifyCode({
         variables: {
           profile_id:  appId,
           channel: 'SMS',
