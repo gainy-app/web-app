@@ -85,7 +85,7 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
   const onNextClick = () => {
     onSendData();
     next();
-    sendEvent('kyc_profile_employment_choose', currentUser?.uid, appId, {
+    sendEvent('kyc_profile_empl_firm_done', currentUser?.uid, appId, {
       companyName,
       industry: searchTypeInput,
       jobTitle:  searchPositionInput

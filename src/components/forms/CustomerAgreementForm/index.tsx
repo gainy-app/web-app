@@ -45,7 +45,7 @@ export const CustomerAgreementForm = () => {
         <ButtonsGroup onBack={back} onNext={next}>
           <Button onClick={() => {
             sendGoogleDataLayerEvent('KYC_profile_accept_customer_agreement', currentUser?.uid);
-            sendGoogleDataLayerEvent('kyc_profile_customer_agreement_accepted', currentUser?.uid, appId);
+            sendEvent('kyc_profile_customer_agreement_accepted', currentUser?.uid, appId);
             next();
             sendEvent('kyc_what_now_profile_done', currentUser?.uid, appId);
           }}>{buttonText}</Button>
