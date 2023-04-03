@@ -9,9 +9,10 @@ import { usePage } from 'hooks';
 import { FormProvider } from './contexts/FormContext';
 import { setAmplitudeUserDevice, setAmplitudeUserId, sendGoogleDataLayerEvent } from './utils/logEvent';
 import { getDeviceId } from 'utils/helpers';
+import { setAnalyticsUserId } from './firebase';
 
 function App() {
-  const { loading, currentUser } = useAuth();
+  const { loading, currentUser, appId } = useAuth();
   const { withHeader, isSuccess } = usePage();
   const [searchParams] = useSearchParams();
   const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
@@ -31,6 +32,12 @@ function App() {
       sendGoogleDataLayerEvent('user_id', currentUser?.uid);
     }
   }, [currentUser?.uid]);
+
+  useEffect(() => {
+    if(appId) {
+      setAnalyticsUserId(appId.toString());
+    }
+  }, [appId]);
 
   if(loading) {
     return <Loader/>;

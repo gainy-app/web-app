@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
+import { getAnalytics, setUserId } from 'firebase/analytics';
 import {
   GoogleAuthProvider, getAuth, OAuthProvider
 } from 'firebase/auth';
@@ -20,3 +20,5 @@ export const analytics = getAnalytics(app);
 
 export const googleProvider = new GoogleAuthProvider();
 export const appleProvider = new OAuthProvider('apple.com');
+
+export const setAnalyticsUserId = (id: string) => setUserId(analytics, id || 'anonymous');

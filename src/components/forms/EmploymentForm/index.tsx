@@ -22,18 +22,15 @@ export const EmploymentForm = ({ updateFields, employment_status }:Props) => {
   const { currentUser, appId } = useAuth();
 
   const onNextClick = () => {
+    sendEvent('kyc_profile_employment_choose', currentUser?.uid, appId, {
+      emplType: employment_status?.prevValue?.toLowerCase().replace('_', '-') || ''
+    });
     if(employment_status?.prevValue === 'EMPLOYED' || employment_status?.prevValue === 'SELF_EMPLOYED') {
       sendGoogleDataLayerEvent('KYC_profile_employment_choose', currentUser?.uid);
-      sendEvent('kyc_profile_employment_choose', currentUser?.uid, appId, {
-        emplType: 'employed'
-      });
       next();
       return;
     }
     sendGoogleDataLayerEvent('KYC_profile_employment_choose', currentUser?.uid);
-    sendEvent('kyc_profile_employment_choose', currentUser?.uid, appId, {
-      emplType: 'unemployed'
-    });
     onSendData();
     next();
   };
