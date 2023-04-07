@@ -24,7 +24,7 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
   investProfileEdit: boolean
 }) => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const { currentUser } = useAuth();
+  const { appId } = useAuth();
 
   const stepsMap = [
     {
@@ -39,21 +39,28 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
       step: 11,
       edit: investProfileEdit
     },
+    {
+      step: 17
+    },
   ];
+
   useEffect(() => {
-    if (currentUser) {
+    if (appId) {
       let stepIndex = 0;
-      for (let index = stepsMap.length - 1; index >= 0 ; index -= 1) {
+      for (let index = stepsMap.length - 2; index > 0 ; index -= 1) {
         const element = stepsMap[index];
 
-        if (element.edit || index === 0 || stepsMap[index - 1]?.edit) {
+        if (element.edit || index === 0) {
+          stepIndex = stepsMap[index + 1].step;
+          break;
+        } else if(stepsMap[index - 1]?.edit) {
           stepIndex = element.step;
           break;
         }
       }
       setCurrentStepIndex(stepIndex);
     }
-  }, [currentUser?.uid]);
+  }, [appId, createAccountEdit, verifyIdentityEdit, investProfileEdit]);
 
   const next = () => {
     setCurrentStepIndex(prev => {
