@@ -85,6 +85,5 @@ export const getQueryAppLink = () => {
       });
     }
   }
-
-  return `https://go.gainy.app/ZOFw?af_js_web=true&af_ss_ver=2_2_0&pid=website_${utmConfig.source}_${utmConfig.channel}&c=${utmConfig.company}`;
+  return `af_js_web=true&af_ss_ver=2_2_0&pid=website_${utmConfig.source}_${utmConfig.channel}&c=${utmConfig.company}`;
 };
