@@ -45,8 +45,10 @@
     text-decoration: none;
     color: $white;
     line-height: 24px;
+    margin-bottom: 40px;
 
     @include phone {
+      margin-bottom: 10px;
       padding: 16px 89px;
     }
   }

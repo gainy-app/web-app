@@ -94,7 +94,6 @@ export default function GetApp () {
           <p className={styles.paragraph}>{paragraph}</p>
           <ButtonLink
             href={downloadButton.link}
-            className={styles.buttonLink}
             onClick={handleDownloadButtonClick}
             variant={'download'}
             id={downloadButton.id}

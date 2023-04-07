@@ -11,7 +11,7 @@ interface Props extends React.HTMLProps<HTMLAnchorElement> {
   id?: string
 }
 
-export const ButtonLink = ({ children, onClick, variant, href, ...rest }: Props) => {
+export const ButtonLink = ({ children, onClick, variant, href, className,  ...rest }: Props) => {
   return (
     <a
       href={href}
@@ -20,7 +20,7 @@ export const ButtonLink = ({ children, onClick, variant, href, ...rest }: Props)
         [styles.button_google]: variant === 'google',
         [styles.button_download]: variant === 'download',
         [styles.button_continue]: variant === 'continue',
-      })}
+      }, className)}
       onClick={onClick}
       {...rest}
     >
