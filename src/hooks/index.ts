@@ -24,7 +24,7 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
   investProfileEdit: boolean
 }) => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const { currentUser } = useAuth();
+  const { appId } = useAuth();
 
   const stepsMap = [
     {
@@ -39,21 +39,32 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
       step: 11,
       edit: investProfileEdit
     },
+    {
+      step: 17
+    },
   ];
-  useEffect(() => {
-    if (currentUser) {
-      let stepIndex = 0;
-      for (let index = stepsMap.length - 1; index >= 0 ; index -= 1) {
-        const element = stepsMap[index];
 
-        if (element.edit || index === 0 || stepsMap[index - 1]?.edit) {
-          stepIndex = element.step;
-          break;
-        }
+  useEffect(() => {
+    if (!appId) { return; }
+
+    let stepIndex = 0;
+    /**
+     * In that loop we go from {step: 11, edit: investProfileEdit} till {step: 7,edit: verifyIdentityEdit}
+     * 1. if investProfileEdit = true , then set stepIndex=17 to set Done status
+     * 2. if verifyIdentityEdit = true , then set stepIndex=11 to set Continue status
+     * 3. if createAccountEdit = true , then set stepIndex=7 to set Continue status (from this line if(stepsMap[index - 1]?.edit))
+     * by default set setCurrentStepIndex to 0
+     */
+    for (let index = stepsMap.length - 2; index >= 0 ; index -= 1) {
+      const element = stepsMap[index];
+
+      if (element.edit) {
+        stepIndex = stepsMap[index + 1].step;
+        break;
       }
-      setCurrentStepIndex(stepIndex);
     }
-  }, [currentUser?.uid]);
+    setCurrentStepIndex(stepIndex);
+  }, [appId, createAccountEdit, verifyIdentityEdit, investProfileEdit]);
 
   const next = () => {
     setCurrentStepIndex(prev => {
