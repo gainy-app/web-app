@@ -109,7 +109,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
           <StepControl
             stepTitle={step.title}
             key={i.toString()}
-            activeStep={step.step <= currentStepIndex}
+            activeStep={step.step <= currentStepIndex || step.edit}
             stepNumber={i + 1}
             goToStep={goToStep}
             step={step.redirect}
