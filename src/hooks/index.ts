@@ -40,7 +40,7 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
       edit: investProfileEdit
     },
     {
-      step: 17
+      step: 16
     },
   ];
 
@@ -51,7 +51,7 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
         currentStepIndex === 7 ||
         currentStepIndex === 11 ||
         currentStepIndex === 11 ||
-        currentStepIndex ===17)) {
+        currentStepIndex ===16)) {
       return;
     }
 

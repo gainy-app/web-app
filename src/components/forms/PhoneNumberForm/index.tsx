@@ -29,13 +29,6 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
     sendGoogleDataLayerEvent('KYC_acc_phone_input', currentUser?.uid);
 
     try {
-      await verifyCodeRequest.verifyCode({
-        variables: {
-          profile_id:  appId,
-          channel: 'SMS',
-          address: `+1${String(phone)}`
-        }
-      });
       const isVerified = await verifyCodeRequest.verifyCode({
         variables: {
           profile_id:  appId,
@@ -43,9 +36,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
           address: `+1${String(phone)}`
         }
       });
-      sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
-        error: isVerified ? '' : 'Invalid phone number.'
-      });
+
       isVerified?.data && sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
         error: ''
       });
