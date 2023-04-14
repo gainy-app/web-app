@@ -43,28 +43,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
   ];
   const buttonRender = () => {
     switch (true) {
-      case currentStepIndex === 0:
-        return (
-          <Button onClick={() => {
-            sendGoogleDataLayerEvent('KYC_what_now_create_acc_start', currentUser?.uid);
-            next();
-          }}>{'Start'}</Button>
-        );
-      case currentStepIndex === 7:
-        return (
-          <Button onClick={() => {
-            sendGoogleDataLayerEvent('KYC_what_now_verify_continue', currentUser?.uid);
-            next();
-          }}>{'Continue'}</Button>
-        );
-      case currentStepIndex === 11:
-        return (
-          <Button onClick={() => {
-            sendGoogleDataLayerEvent('KYC_what_now_profile_continue', currentUser?.uid);
-            next();
-          }}>{'Continue'}</Button>
-        );
-      case isLastPage:
+      case (createAccountEdit && verifyIdentityEdit && investProfileEdit) || isLastPage:
         return (
           <Button type={'button'}
             disabled={!checked}
@@ -99,6 +78,28 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
               }
             }}>{'Done! Open my account'}</Button>
         );
+      case currentStepIndex === 0:
+        return (
+          <Button onClick={() => {
+            sendGoogleDataLayerEvent('KYC_what_now_create_acc_start', currentUser?.uid);
+            next();
+          }}>{'Start'}</Button>
+        );
+      case currentStepIndex === 7 :
+        return (
+          <Button onClick={() => {
+            sendGoogleDataLayerEvent('KYC_what_now_verify_continue', currentUser?.uid);
+            next();
+          }}>{'Continue'}</Button>
+        );
+      case currentStepIndex === 1:
+        return (
+          <Button onClick={() => {
+            sendGoogleDataLayerEvent('KYC_what_now_profile_continue', currentUser?.uid);
+            next();
+          }}>{'Continue'}</Button>
+        );
+
     }
   };
 
@@ -117,7 +118,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
           />
         ) : <Loader/>
       ))}
-      {isLastPage && (
+      {((createAccountEdit && verifyIdentityEdit && investProfileEdit) || isLastPage) && (
         <div className={styles.acceptTerms}>
           <h2>Accept Terms & Conditions</h2>
           <p>By tapping Open my account, you are opening a new Individual Investment Account.</p>
