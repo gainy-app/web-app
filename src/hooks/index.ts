@@ -40,18 +40,15 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
       edit: investProfileEdit
     },
     {
-      step: 16
+      step: steps.length-1
     },
   ];
 
   useEffect(() => {
     if (
       !appId ||
-      !(currentStepIndex === 0 ||
-        currentStepIndex === 7 ||
-        currentStepIndex === 11 ||
-        currentStepIndex === 11 ||
-        currentStepIndex ===16)) {
+      !(stepsMap.find(({ step }) => step === currentStepIndex))
+    ) {
       return;
     }
 
