@@ -34,9 +34,13 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
           user_input: verifyCode,
         }
       });
-      isVerified?.data && sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId, {
-        error: ''
-      });
+
+      if(isVerified?.data) {
+        sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+          error: ''
+        });
+        sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
+      }
     } catch (error: any) {
       sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
         error: error.message || 'Invalid phone number.'
