@@ -34,7 +34,9 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
           user_input: verifyCode,
         }
       });
-      !isVerified?.errors && sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
+      isVerified?.data && sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId, {
+        error: ''
+      });
     } catch (error: any) {
       sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
         error: error.message || 'Invalid phone number.'
@@ -56,12 +58,22 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   };
 
   useEffect(() => {
-    if (verifyCodeRequest?.error) {
+    if (verificationCodeRequest?.error) {
       sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
-        error: parseGQLerror(verifyCodeRequest?.error)
+        error: parseGQLerror(verificationCodeRequest?.error)
       });
     }
-  }, [verifyCodeRequest?.error]);
+  }, [verificationCodeRequest?.error]);
+
+  // uncomment if isVerified?.data not working
+
+  // useEffect(() => {
+  //   if (verificationCodeRequest?.data) {
+  //     sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
+  //       error:''
+  //     });
+  //   }
+  // }, [verificationCodeRequest?.data]);
 
   return (
     <FormWrapper title={title} subtitle={parse(subtitle)}>

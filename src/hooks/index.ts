@@ -75,8 +75,6 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
   }, [appId, createAccountEdit, verifyIdentityEdit, investProfileEdit]);
 
   const next = () => {
-    console.log(currentStepIndex);
-
     setCurrentStepIndex(prev => {
       if(prev >= steps.length - 1) return prev;
       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -85,7 +83,6 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
   };
 
   const back = () => {
-    console.log(currentStepIndex);
     setCurrentStepIndex(prev => {
       if(prev <= 0) return prev;
       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -94,7 +91,6 @@ export const useMultistepForm = ({ steps, createAccountEdit, verifyIdentityEdit,
   };
 
   const goToStep = (index: number) => {
-    console.log(currentStepIndex);
     setCurrentStepIndex(index);
   };
 
