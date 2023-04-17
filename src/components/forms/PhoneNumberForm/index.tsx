@@ -41,9 +41,7 @@ export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
         error: ''
       });
     } catch (error: any) {
-      sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
-        error: error.message || 'Invalid phone number.'
-      });
+      console.error(`Failed to send verifyCode - ${error.message}`);
     }
   };
 

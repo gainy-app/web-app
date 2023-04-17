@@ -42,9 +42,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
         sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
       }
     } catch (error: any) {
-      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
-        error: error.message || 'Invalid phone number.'
-      });
+      console.error(`Failed to send verificationCode - ${error.message}`);
     }
   };
 
@@ -64,7 +62,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   useEffect(() => {
     if (verificationCodeRequest?.error) {
       sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
-        error: parseGQLerror(verificationCodeRequest?.error)
+        error: parseGQLerror(verificationCodeRequest?.error)  || 'Invalid phone number.'
       });
     }
   }, [verificationCodeRequest?.error]);
