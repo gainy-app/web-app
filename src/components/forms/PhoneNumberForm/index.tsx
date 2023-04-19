@@ -2,15 +2,15 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Input } from '../../common/Input';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import React, { useEffect } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { parseGQLerror } from '../../../utils/helpers';
 import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import styles from './phonenumber.module.scss';
 import flag from '../../../assets/flag.svg';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useEffect } from 'react';
 
 interface phoneData {
   phone: string
@@ -22,24 +22,46 @@ type Props = phoneData & {
 
 export const PhoneNumberForm = ({ updateFields, phone }:Props) => {
   const { title,subtitle } = config;
-  const { verifyCodeRequest, appId, back } = useFormContext();
-  const { currentUser } = useAuth();
+  const { verifyCodeRequest, back } = useFormContext();
+  const { currentUser, appId } = useAuth();
 
-  const onNextClick = () => {
-    verifyCodeRequest.verifyCode({
-      variables: {
-        profile_id:  appId,
-        channel: 'SMS',
-        address: `+1${String(phone)}`
-      }
-    });
-    logFirebaseEvent('dw_kyc_phone_entered', currentUser, appId);
-    trackEvent('KYC_acc_phone_input', currentUser?.uid);
+  const onNextClick = async () => {
+    sendGoogleDataLayerEvent('KYC_acc_phone_input', currentUser?.uid);
+
+    try {
+      const isVerified = await verifyCodeRequest.verifyCode({
+        variables: {
+          profile_id:  appId,
+          channel: 'SMS',
+          address: `+1${String(phone)}`
+        }
+      });
+
+      isVerified?.data && sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
+        error: ''
+      });
+    } catch (error: any) {
+      console.error(`Failed to send verifyCode - ${error.message}`);
+    }
   };
 
   useEffect(() => {
-    logFirebaseEvent('dw_kyc_phone_s', currentUser, appId);
-  }, []);
+    if (verifyCodeRequest?.error) {
+      sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
+        error: parseGQLerror(verifyCodeRequest?.error)
+      });
+    }
+  }, [verifyCodeRequest?.error]);
+
+  // uncomment if isVerified?.data not working
+
+  // useEffect(() => {
+  //   if (verifyCodeRequest?.data) {
+  //     sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
+  //       error:''
+  //     });
+  //   }
+  // }, [verifyCodeRequest?.data]);
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>

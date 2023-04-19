@@ -2,13 +2,16 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Button } from '../../common/Button';
 import styles from './company.module.scss';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { FloatingInput } from '../../common/FloatingInput';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent } from '../../../utils/logEvent';
-import { useAuth } from '../../../contexts/AuthContext';
+import { IChoices } from 'models';
+import { Input } from 'components/common/Dropdown/Input';
+import { getFilteredList } from 'utils/helpers';
+import { sendEvent } from 'utils/logEvent';
+import { useAuth } from 'contexts/AuthContext';
 
 interface companyData {
   companyName: string
@@ -30,14 +33,17 @@ type Props = companyData & {
 
 export const CompanyForm = ({ updateFields, companyName, employment_position, employment_type }:Props) => {
   const { title,subtitle } = config;
-  const { next, back, onSendData, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { next, back, onSendData } = useFormContext();
   const [openType,setOpenType] = useState(false);
+  const { currentUser, appId } = useAuth();
+  const [openPosition, setOpenPosition] = useState(false);
+  const [employmentPositionList, setEmploymentPositionList] = useState<IChoices>([]);
+  const [employmentTypeList, setEmploymentTypeList] = useState<IChoices>([]);
+  const [searchTypeInput, setSearchTypeInput] = useState(employment_type.name);
+  const [searchPositionInput, setSearchPositionInput] = useState(employment_position.name);
 
-  const [openPosition,setOpenPosition] = useState(false);
-
-  const typeList = employment_type?.choices?.map((choice: {value: string, name: string}) => {
-    return <div
+  const typeListRender = employmentTypeList.map((choice: {value: string, name: string}) => {
+    return <li
       key={choice.value}
       onClick={() => {
         updateFields({
@@ -46,12 +52,14 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
             prevValue: choice.value,
             name: choice.name
           }
-        });}
-      }>{choice.name}</div>;
+        });
+        setSearchTypeInput(choice.name);
+      }
+      }>{choice.name}</li>;
   });
 
-  const positionList = employment_position?.choices?.map((choice: {value: string, name: string}) => {
-    return <div
+  const positionListRender = employmentPositionList.map((choice: {value: string, name: string}) => {
+    return <li
       key={choice.value}
       onClick={() => {
         updateFields({
@@ -60,8 +68,10 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
             prevValue: choice.value,
             name: choice.name
           }
-        });}
-      }>{choice.name}</div>;
+        });
+        setSearchPositionInput(choice.name);
+      }
+      }>{choice.name}</li>;
   });
 
   const toggleVisibleTypePopUp = () => {
@@ -73,14 +83,21 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
   };
 
   const onNextClick = () => {
-    logFirebaseEvent('dw_kyc_your_firm_e', currentUser, appId, { company: companyName });
     onSendData();
     next();
+    sendEvent('kyc_profile_empl_firm_done', currentUser?.uid, appId, {
+      companyName,
+      industry: searchTypeInput,
+      jobTitle:  searchPositionInput
+    });
   };
 
   useEffect(() => {
-    logFirebaseEvent('dw_kyc_your_firm_s', currentUser, appId);
-  }, []);
+    employment_type.choices && setEmploymentTypeList(employment_type.choices);
+  }, [employment_type.choices]);
+  useEffect(() => {
+    employment_position.choices && setEmploymentPositionList(employment_position.choices);
+  }, [employment_position.choices]);
 
   const disabled = !companyName || !employment_type.name || !employment_position.name;
 
@@ -98,13 +115,39 @@ export const CompanyForm = ({ updateFields, companyName, employment_position, em
             });
           }}
         />
-        <Dropdown list={typeList} openDropdown={openType} onClick={toggleVisibleTypePopUp} setOpenDropdown={setOpenType}>
-          <div className={employment_type.name ? styles.activeLabel : styles.label}>Industry</div>
-          <div>{employment_type.name}</div>
+        <Dropdown list={typeListRender} openDropdown={openType} onClick={(e: MouseEvent) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleVisibleTypePopUp();
+        }} setOpenDropdown={setOpenType}>
+          <div className={searchTypeInput? styles.activeLabel : styles.label}>Industry</div>
+          <Input
+            value={searchTypeInput}
+            handleChangeInput={(value: string) => {
+              setOpenType(true);
+              employment_type?.choices && setEmploymentTypeList(
+                getFilteredList({ data: employment_position.choices, value })
+              );
+              setSearchTypeInput(value);
+            }}
+          />
         </Dropdown>
-        <Dropdown list={positionList} openDropdown={openPosition} onClick={toggleVisibleOpenPopUp} setOpenDropdown={setOpenPosition}>
-          <div className={employment_position.name ? styles.activeLabel : styles.label}>Your job title</div>
-          <div>{employment_position.name}</div>
+        <Dropdown list={positionListRender} openDropdown={openPosition} onClick={(e: MouseEvent) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleVisibleOpenPopUp();
+        }} setOpenDropdown={setOpenPosition}>
+          <div className={searchPositionInput ? styles.activeLabel : styles.label}>Your job title</div>
+          <Input
+            value={searchPositionInput}
+            handleChangeInput={(value: string) => {
+              setOpenPosition(true);
+              employment_position?.choices && setEmploymentPositionList(
+                getFilteredList({ data: employment_position.choices, value })
+              );
+              setSearchPositionInput(value);
+            }}
+          />
         </Dropdown>
       </div>
 

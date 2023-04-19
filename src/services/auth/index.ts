@@ -1,19 +1,24 @@
 import { getAuth, User as FirebaseUser } from 'firebase/auth';
 
-type IonAuthChange = (user: FirebaseUser | null,
-  setUser: (user:FirebaseUser | null) => void,
-  setLoading: (erg: boolean) => void,
-  appIdCondition: boolean,
-  appLink: any
-  ) => void
+type IonAuthChange = ({
+  user,
+  setCurrentUser,
+  setUserLoading,
+  setIsRefreshTokenLoaded
+}:{
+    user: FirebaseUser | null,
+    setCurrentUser: (user:FirebaseUser | null) => void,
+    setUserLoading: (erg: boolean) => void,
+    setIsRefreshTokenLoaded: (isRefreshTokenLoaded: boolean) => void
+}) => void;
 
-export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appIdCondition, appLink) => {
+export const onAuthChange: IonAuthChange = ({ user, setCurrentUser, setUserLoading, setIsRefreshTokenLoaded }) => {
   const auth = getAuth();
-  setLoading(true);
+  setUserLoading(true);
 
   if(user) {
-    setUser(user);
-    setLoading(false);
+    setCurrentUser(user);
+    setUserLoading(false);
 
     user.getIdToken()
       .then(token => auth.currentUser?.getIdTokenResult()
@@ -24,24 +29,16 @@ export const onAuthChange: IonAuthChange = (user, setUser, setLoading, appIdCond
           return refreshToken(user);
         }))
       .then(res => {
-        if(res) {
-          const [tempUser, ...rest] = user.displayName?.split(' ') || [];
-          if(!appIdCondition) {
-            appLink({ variables: {
-              email: user.email,
-              firstName: tempUser,
-              lastName: String(rest),
-              userID: user.uid
-            } });
-          }
+        if (res) {
+          setIsRefreshTokenLoaded(true);
           localStorage.setItem('token', res);
         }
       })
       .catch(rej => console.log(rej));
   } else {
-    setUser(null);
+    setCurrentUser(null);
   }
-  setLoading(false);
+  setUserLoading(false);
 };
 
 export const refreshToken = (user: any) => {

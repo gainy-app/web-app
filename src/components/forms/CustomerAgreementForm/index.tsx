@@ -3,17 +3,14 @@ import { Button, ButtonsGroup } from 'components';
 import { useFormContext } from 'contexts/FormContext';
 import parse from 'html-react-parser';
 import { config } from './config';
-import React, { useEffect } from 'react';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 export const CustomerAgreementForm = () => {
-  const { next, back , appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { next, back } = useFormContext();
+  const { currentUser, appId } = useAuth();
   const { title, list, buttonText } = config;
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_cust_agrm_s', currentUser, appId);
-  }, []);
+
   return (
     <div className={styles.privacyWrapper}>
       <h1>Gainy Customer Agreement</h1>
@@ -47,9 +44,10 @@ export const CustomerAgreementForm = () => {
       <div className={styles.acceptBlock}>
         <ButtonsGroup onBack={back} onNext={next}>
           <Button onClick={() => {
-            logFirebaseEvent('dw_kyc_cust_agrm_e', currentUser, appId);
-            trackEvent('KYC_profile_accept_customer_agreement', currentUser?.uid);
+            sendGoogleDataLayerEvent('KYC_profile_accept_customer_agreement', currentUser?.uid);
+            sendEvent('kyc_profile_customer_agreement_accepted', currentUser?.uid, appId);
             next();
+            sendEvent('kyc_what_now_profile_done', currentUser?.uid, appId);
           }}>{buttonText}</Button>
         </ButtonsGroup>
       </div>

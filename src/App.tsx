@@ -7,22 +7,37 @@ import { accessConst, routes } from 'utils/constants';
 import styles from './components/layout/layout.module.scss';
 import { usePage } from 'hooks';
 import { FormProvider } from './contexts/FormContext';
-import { trackEvent } from './utils/logEvent';
+import { setAmplitudeUserDevice, setAmplitudeUserId, sendGoogleDataLayerEvent } from './utils/logEvent';
+import { getDeviceId } from 'utils/helpers';
+import { setAnalyticsUserId } from './firebase';
 
 function App() {
-  const { loading, currentUser } = useAuth();
+  const { loading, currentUser, appId } = useAuth();
   const { withHeader, isSuccess } = usePage();
   const [searchParams] = useSearchParams();
   const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
 
   useEffect(() => {
-    if(searchParams.get('trading_access') === accessConst.trading_access) {
+    setAmplitudeUserDevice(getDeviceId(searchParams.get('deviceId')));
+
+    if (searchParams.get('trading_access') === accessConst.trading_access) {
       localStorage.setItem('withLink', accessWithLink.toString());
     }
-    if(currentUser) {
-      trackEvent('user_id', currentUser?.uid);
-    }
+
+    setAmplitudeUserId(currentUser?.uid || null);
   }, []);
+
+  useEffect(() => {
+    if(currentUser) {
+      sendGoogleDataLayerEvent('user_id', currentUser?.uid);
+    }
+  }, [currentUser?.uid]);
+
+  useEffect(() => {
+    if(appId) {
+      setAnalyticsUserId(appId.toString());
+    }
+  }, [appId]);
 
   if(loading) {
     return <Loader/>;
