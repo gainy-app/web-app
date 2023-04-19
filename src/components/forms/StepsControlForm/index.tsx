@@ -2,7 +2,7 @@ import { Button, Image, Loader, StepControl } from 'components';
 import { FormWrapper } from '../FormWrapper';
 import { useFormContext } from '../../../contexts/FormContext';
 import styles from './stepcontrol.module.scss';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { config } from './config';
 import { imageTypes, routes } from '../../../utils/constants';
 import { useMutation } from '@apollo/client';
@@ -92,7 +92,7 @@ export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
             next();
           }}>{'Continue'}</Button>
         );
-      case currentStepIndex === 1:
+      case currentStepIndex === 11:
         return (
           <Button onClick={() => {
             sendGoogleDataLayerEvent('KYC_what_now_profile_continue', currentUser?.uid);
