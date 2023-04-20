@@ -2,7 +2,7 @@ import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import styles from './legalname.module.scss';
 import { FloatingInput } from '../../common/FloatingInput';
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../../common/Button';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useOutBoardingClick } from '../../../hooks';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface userData {
@@ -31,8 +31,8 @@ type Props = userData & {
 
 export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:Props) => {
   const { title,subtitle } = config;
-  const { next ,back, onSendData, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { next ,back, onSendData } = useFormContext();
+  const { currentUser, appId } = useAuth();
   const [value, onChange] = useState(birthday ? dayjs(birthday).toDate() : null);
   const [onShowCalender, setOnShowCalender] = useState(false);
   const onNextClick = () => {
@@ -41,18 +41,16 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
         birthday: dayjs(value).format('YYYY.MM.DD')
       });
     }
-    logFirebaseEvent('dw_kyc_legal_e', currentUser, appId);
-    trackEvent('KYC_identify_legal_name_input', currentUser?.uid);
+    sendGoogleDataLayerEvent('KYC_identify_legal_name_input', currentUser?.uid);
+    sendEvent('kyc_identity_legal_name_input_done', currentUser?.uid, appId);
     onSendData();
     next();
   };
   const isYoungster = dayjs().diff(value, 'hour') < 157776;
   const disable = !last_name.placeholder || !first_name.placeholder || isYoungster || !value;
-  const { ref } = useOutBoardingClick(() => setOnShowCalender(false));
-
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_legal_s', currentUser, appId);
-  }, []);
+  const { ref } = useOutBoardingClick(() => {
+    setOnShowCalender(false);
+  });
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>
@@ -88,7 +86,11 @@ export const LegalNameForm = ({ updateFields, first_name, last_name, birthday }:
           value={last_name?.prevValue ? last_name.prevValue : last_name.placeholder}
         />
 
-        <div style={{ position: 'relative' }} ref={ref} onClick={() => setOnShowCalender(true)}>
+        <div style={{ position: 'relative' }} ref={ref} onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          setOnShowCalender(true);
+        }}>
           <FloatingInput
             id={'birthday'}
             label={'Birthday'}

@@ -3,9 +3,13 @@ export const config = {
   subtitle: 'To check your KYC status and continue, please get our mobile app by signing in with the account you’ve just created.',
   downloadButton: {
     text: 'Download App',
-    link: 'https://go.gainy.app/ZOFw/Webp'
+    link: 'https://go.gainy.app/ZOFw/Webp',
+    id: 'download_app_web_platform'
   },
-  qrcode: 'https://go.gainy.app/ZOFw/Webp?af_qr=true',
+  qrcode: {
+    link: 'https://go.gainy.app/ZOFw/Webp?af_qr=true',
+    id: 'qr_code_place'
+  },
   description: 'Scan the QR code or enter your phone number for the download link',
   form: {
     phone: 'Enter your phone number',

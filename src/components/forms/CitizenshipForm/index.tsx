@@ -4,54 +4,47 @@ import styles from './citizenshipform.module.scss';
 import { Checkbox } from '../../common/Checkbox';
 import { Field } from '../../common/Field';
 import { Button } from '../../common/Button';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
+import { Input } from 'components/common/Dropdown/Input';
+import { ICitizenship } from 'models/citizenship';
+import { IChoices } from 'models';
+import { getFilteredList } from 'utils/helpers';
 
-interface citizenData {
-  citizenship: {
-    placeholder?: string
-    prevValue?: {
-      name?:string
-      value?:string
-    }
-    choices?: any
-  }
-}
-
-type Props = citizenData & {
-  updateFields: (fields: Partial<citizenData>) => void
+type Props = {
+  updateFields: (fields: { citizenship: ICitizenship }) => void
+  citizenship: ICitizenship
 }
 
 export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
   const { title,subtitle } = config;
-  const {  next, back , onSendData, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const {  next, back , onSendData } = useFormContext();
+  const { currentUser, appId } = useAuth();
 
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [list, setList] = useState<IChoices>([]);
+  const [searchInput, setSearchInput] = useState(citizenship.prevValue?.name);
+
   const disable = citizenship.placeholder === 'USA' || !!citizenship.prevValue?.value;
 
-  const toggleVisiblePopUp = () => {
+  const toggleVisiblePopUp = (e: MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
     setOpenDropdown(!openDropdown);
   };
 
   const onNextClick = () => {
-    if(citizenship.placeholder === 'USA') {
-      logFirebaseEvent('dw_kyc_citz_usa', currentUser, appId);
-    } else {
-      logFirebaseEvent('dw_kyc_citz_non_usa', currentUser, appId);
-    }
-    trackEvent('KYC_acc_citizenship_choose', currentUser?.uid);
+    sendEvent('kyc_acc_citizenship_choose', currentUser?.uid, appId);
+    sendGoogleDataLayerEvent('KYC_acc_citizenship_choose', currentUser?.uid);
     onSendData();
     next();
   };
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_citz_s', currentUser, appId);
-  }, []);
-  const listRender = citizenship?.choices?.map((item: { name: string, value: string }, i: number) => {
+
+  const listRender = list.map((item: { name: string, value: string }, i: number) => {
     return <li
       onClick={() => {
         updateFields({
@@ -63,6 +56,7 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
             },
           }
         });
+        setSearchInput(item.name);
       }
       }
       key={i.toString()}
@@ -70,6 +64,10 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
       <span>{item?.name}</span>
     </li>;
   });
+
+  useEffect(() => {
+    citizenship?.choices && setList(citizenship?.choices);
+  }, [citizenship?.choices]);
 
   return (
     <FormWrapper title={title} subtitle={subtitle}>
@@ -123,8 +121,18 @@ export const CitizenshipForm = ({ updateFields, citizenship }:Props) => {
               list={listRender}
               openDropdown={openDropdown}
               onClick={toggleVisiblePopUp}
-              setOpenDropdown={setOpenDropdown}>
-              <div>{citizenship.prevValue?.name}</div>
+              setOpenDropdown={setOpenDropdown}
+              value={citizenship.prevValue?.name}>
+              <Input
+                value={searchInput}
+                handleChangeInput={(value: string) => {
+                  setOpenDropdown(true);
+                  citizenship?.choices && setList(
+                    getFilteredList({ data: citizenship?.choices, value })
+                  );
+                  setSearchInput(value);
+                }}
+              />
             </Dropdown>
           </div>
         )}

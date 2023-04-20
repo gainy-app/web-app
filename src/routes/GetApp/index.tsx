@@ -1,27 +1,40 @@
 import styles from './getApp.module.scss';
 import { imageTypes, routes } from '../../utils/constants';
-import { Button, Image, Input, Loader } from '../../components';
-import React, { FormEvent, useLayoutEffect, useState } from 'react';
+import { Button, Image, Input, Loader, ButtonLink } from '../../components';
+import { FormEvent, useLayoutEffect, useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import { formatNumber, parseGQLerror } from '../../utils/helpers';
+import { formatNumber, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { config } from './config';
 import { Background } from '../Success/Background';
 import { useAuth } from '../../contexts/AuthContext';
-import { trackEvent } from '../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../utils/logEvent';
 
 export default function GetApp () {
   const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton } = config;
   const [phoneState, setPhoneState] = useState<string>('');
+  const { pathname } = useLocation();
   const [errors, setErrors] = useState<string>('');
-  const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
+  const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK, {
+    onError: () => sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid),
+    onCompleted: () => sendGoogleDataLayerEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
+  });
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, appId } = useAuth();
   const status = localStorage.getItem('status');
-  const authMethod =  localStorage.getItem('login');
+  const authMethod = localStorage.getItem('login');
+  const handleDownloadButtonClick = () => {
+    sendEvent('download_app_clicked', currentUser?.uid, appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
+  };
 
   useLayoutEffect(()=> {
     if(status === null) {
@@ -31,24 +44,40 @@ export default function GetApp () {
 
   useLayoutEffect(() => {
     if(authMethod) {
-      trackEvent('web_login', currentUser?.uid, authMethod);
+      sendGoogleDataLayerEvent('web_login', currentUser?.uid, authMethod);
     }
+
     return () => {
       localStorage.removeItem('login');
     };
   }, []);
 
+  useEffect(() => {
+    appId && sendEvent('get_app_page_viewed', currentUser?.uid, appId);
+  }, [appId]);
+
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    sendEvent('text_the_link_clicked', currentUser?.uid, appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      clickText: downloadButton.text,
+      clickUrl: downloadButton.link,
+      buttonId: downloadButton.id
+    });
+
     if(validate(phoneState, setErrors)) {
       const phone_number = formatNumber(String(phoneState), 'us');
-      sendLink({ variables: { phone_number } });
-    }
-    if(!error) {
-      trackEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized');
+
+      sendLink({
+        variables: {
+          phone_number,
+          query_string: getQueryAppLink()
+        }
+      });
     } else {
-      trackEvent('click_button_after_input_not_target_phone', currentUser?.uid);
+      sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid);
     }
   };
   const onPhoneChange = (values: NumberFormatValues) => {
@@ -63,16 +92,19 @@ export default function GetApp () {
           <h2 className={styles.title}>{title}</h2>
           <p className={styles.subtitle}>{subtitle}</p>
           <p className={styles.paragraph}>{paragraph}</p>
-          <a href={downloadButton.link} className={styles.buttonLink}>
-            <Button variant={'download'}>
-              {downloadButton.text}
-            </Button>
-          </a>
+          <ButtonLink
+            href={downloadButton.link}
+            onClick={handleDownloadButtonClick}
+            variant={'download'}
+            id={downloadButton.id}
+          >
+            {downloadButton.text}
+          </ButtonLink>
           <div className={styles.line}>
             <Image type={imageTypes.line}/>
           </div>
-          <div className={styles.qrWrapper}>
-            <QRCodeSVG value={qrcode} className={styles.qrCode}/>
+          <div className={styles.qrWrapper} id={qrcode.id}>
+            <QRCodeSVG value={qrcode.link} className={styles.qrCode}/>
           </div>
           <p className={styles.description}>{description}</p>
           <form

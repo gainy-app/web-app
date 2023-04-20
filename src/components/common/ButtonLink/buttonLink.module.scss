@@ -1,0 +1,61 @@
+@import "../../../styles/mixins";
+
+.button {
+  font-family: "SF Pro Display Medium", sans-serif;
+
+  @include flex(row,center,center);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all ease-out .4s;
+  color: $white;
+  background-color: $blue;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 18px 29px;
+  border-radius: 16px;
+
+  &:hover,
+  &:active {
+    opacity: .9;
+  }
+
+  &:disabled {
+    background-color: $disabled;
+  }
+
+  &_apple {
+    background-color: $dark-blue;
+    color: $white;
+  }
+
+  &_google {
+    background-color: $white;
+    color: $black;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 18px 23px 18px 22px;
+    letter-spacing: .2px;
+  }
+
+  &_download {
+    padding: 16px 109px;
+    background: $pink;
+    font-size: 16px;
+    text-decoration: none;
+    color: $white;
+    line-height: 24px;
+    margin-bottom: 40px;
+
+    @include phone {
+      margin-bottom: 10px;
+      padding: 16px 89px;
+    }
+  }
+
+  &_continue {
+    @include phone {
+      padding: 16px 65px;
+    }
+  }
+}

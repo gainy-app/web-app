@@ -6,7 +6,7 @@ interface Props {
   stepTitle: string
   activeStep?: boolean
   withEdit?: boolean
-  onEdit: () => void
+  onEdit?: () => void
   step: number
   goToStep: (arg: number) => void
 }
@@ -26,7 +26,7 @@ export const StepControl = ({ stepNumber,withEdit, stepTitle, activeStep, onEdit
       {withEdit && (
         <div className={styles.edit} onClick={() => {
           goToStep(step);
-          onEdit();
+          onEdit && onEdit();
         }}>Edit</div>
       )}
     </div>

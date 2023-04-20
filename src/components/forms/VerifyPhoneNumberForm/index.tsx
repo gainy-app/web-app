@@ -1,15 +1,15 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { useFormContext } from 'contexts/FormContext';
-import React, { useEffect } from 'react';
 import { Button } from '../../common/Button';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import parse from 'html-react-parser';
 import { parseGQLerror } from '../../../utils/helpers';
 import styles from './verifyphonenumber.module.scss';
-import { logFirebaseEvent } from '../../../utils/logEvent';
-import { useAuth } from '../../../contexts/AuthContext';
 import { Input } from '../../common/Input';
+import { useAuth } from 'contexts/AuthContext';
+import { sendEvent } from 'utils/logEvent';
+import { useEffect } from 'react';
 
 interface verifyData {
   verifyCode: string
@@ -20,24 +20,34 @@ type Props = verifyData & {
 }
 
 export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
-  const { data , verificationCodeRequest, verifyCodeRequest, back, appId } = useFormContext();
-  const { currentUser } = useAuth();
+  const { data, verificationCodeRequest, verifyCodeRequest, back } = useFormContext();
+  const { appId, currentUser } = useAuth();
   const { title,subtitle } = config(data.phone);
 
   const disabled  = verifyCode?.length !== 6;
 
-  const onNextClick = () => {
-    verificationCodeRequest.verificationCode({
-      variables: {
-        verification_code_id: verifyCodeRequest?.data?.verification_send_code?.verification_code_id,
-        user_input: verifyCode,
+  const onNextClick = async() => {
+    try {
+      const isVerified = await verificationCodeRequest.verificationCode({
+        variables: {
+          verification_code_id: verifyCodeRequest?.data?.verification_send_code?.verification_code_id,
+          user_input: verifyCode,
+        }
+      });
+
+      if(isVerified?.data) {
+        sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+          error: ''
+        });
+        sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
       }
-    });
-    logFirebaseEvent('dw_kyc_phonev_e', currentUser, appId);
+    } catch (error: any) {
+      console.error(`Failed to send verificationCode - ${error.message}`);
+    }
   };
 
-  const onSendVerifyCodeAgain = () => {
-    verifyCodeRequest.verifyCode({
+  const onSendVerifyCodeAgain = async () => {
+    await verifyCodeRequest.verifyCode({
       variables: {
         profile_id:  appId,
         channel: 'SMS',
@@ -50,8 +60,22 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
   };
 
   useEffect(() => {
-    logFirebaseEvent('dw_kyc_phonev_s', currentUser, appId);
-  }, []);
+    if (verificationCodeRequest?.error) {
+      sendEvent('kyc_acc_verify_phone_done', currentUser?.uid, appId, {
+        error: parseGQLerror(verificationCodeRequest?.error)  || 'Invalid phone number.'
+      });
+    }
+  }, [verificationCodeRequest?.error]);
+
+  // uncomment if isVerified?.data not working
+
+  // useEffect(() => {
+  //   if (verificationCodeRequest?.data) {
+  //     sendEvent('kyc_acc_phone_input_done', currentUser?.uid, appId, {
+  //       error:''
+  //     });
+  //   }
+  // }, [verificationCodeRequest?.data]);
 
   return (
     <FormWrapper title={title} subtitle={parse(subtitle)}>

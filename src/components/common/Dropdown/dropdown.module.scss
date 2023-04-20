@@ -20,6 +20,10 @@
   text-transform: uppercase;
 }
 
+.dropdown {
+  cursor: pointer;
+}
+
 .dropdownInner {
   position: absolute;
   top: 50px;
@@ -27,13 +31,13 @@
   right: 0;
   background: $white;
   list-style: none;
-  padding: 20px 24px;
+  padding: 0;
   margin: 0;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
   z-index: -1;
   max-height: 400px;
-  overflow-y: scroll;
+  overflow: auto;
   font-family: "SF Pro Display Medium", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -41,14 +45,28 @@
   opacity: 0;
   transition: all .4s ease-in-out;
 
+  li {
+    margin-top: 10px;
+    padding: 0 24px;
+    transition: background-color ease-in-out .3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, .03);
+    }
+
+    & + li {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 20px;
+    }
+  }
+
   @media (max-height: 820px) {
     max-height: 200px;
   }
-}
-
-.rotate {
-  transform: rotateZ(180deg);
-  align-self: initial;
 }
 
 .default {
@@ -62,4 +80,16 @@
 .openDropdown {
   opacity: 1;
   z-index: 2;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 24px;
+  transition: transform ease-in-out .3s;
+}
+
+.rotate {
+  transform: translateY(-50%) rotateZ(180deg);
 }

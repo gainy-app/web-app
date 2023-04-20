@@ -1,14 +1,14 @@
 import { FormWrapper } from '../FormWrapper';
 import { config } from './config';
 import { Button } from '../../common/Button';
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFormContext } from '../../../contexts/FormContext';
 import { ButtonsGroup } from '../../common/ButtonsGroup';
 import { Dropdown } from '../../common/Dropdown';
 import styles from './investmentProfile.module.scss';
 import { Image } from '../../common/Image';
 import { imageTypes } from '../../../utils/constants';
-import { logFirebaseEvent, trackEvent } from '../../../utils/logEvent';
+import { sendEvent, sendGoogleDataLayerEvent } from '../../../utils/logEvent';
 import { useAuth } from '../../../contexts/AuthContext';
 
 interface profileData {
@@ -55,27 +55,31 @@ export const InvestmentProfileForm = ({
   investor_profile_risk_tolerance
 }:Props) => {
   const { title,subtitle,income , networth, liquid } = config;
-  const {  next, back , onSendData, appId } = useFormContext();
+  const {  next, back , onSendData } = useFormContext();
   const [openExp,setOpenExp] = useState(false);
   const [openObj,setOpenObj] = useState(false);
   const [openTolerance,setOpenTolerance] = useState(false);
   const [openIncome,setOpenIncome] = useState(false);
   const [openNetWorth, setOpenNetWorth] = useState(false);
   const [openLiquid, setOpenLiquid] = useState(false);
-  const { currentUser } = useAuth();
+  const { currentUser, appId } = useAuth();
+  const incomeValue = investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name;
+  const netWorthValue = investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name : networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name;
+  const liquidValue = investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name : liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name;
+
 
   const onNextClick = () => {
-    logFirebaseEvent('dw_kyc_ip_e', currentUser, appId, {
-      income:investor_profile_annual_income?.value,
-      netWorth:investor_profile_net_worth_total?.value,
-      liquidNetWorth:investor_profile_net_worth_liquid?.value,
-      investmentExperience:investor_profile_experience?.prevValue,
-      objectives:investor_profile_objectives?.prevValue,
-      riskTolerance:investor_profile_risk_tolerance?.prevValue
-    });
-    trackEvent('KYC_profile_income_info', currentUser?.uid);
+    sendGoogleDataLayerEvent('KYC_profile_income_info', currentUser?.uid);
     onSendData();
     next();
+    sendEvent('kyc_profile_income_info_done', currentUser?.uid, appId, {
+      income: incomeValue,
+      netWorth: netWorthValue,
+      liquid: liquidValue,
+      investExperience: investor_profile_experience.name,
+      investHorizon: investor_profile_objectives.name,
+      riskTollerance: investor_profile_risk_tolerance.name
+    });
   };
 
   const disabled = !investor_profile_annual_income.value
@@ -87,7 +91,7 @@ export const InvestmentProfileForm = ({
   ;
 
   const expList = investor_profile_experience?.choices?.map((choice: {value: string, name: string}) => {
-    return <div onClick={() => {
+    return <li onClick={() => {
       updateFields({
         investor_profile_experience: {
           ...investor_profile_experience,
@@ -97,11 +101,11 @@ export const InvestmentProfileForm = ({
       });}
     }
     key={choice.value}
-    >{choice.name}</div>;
+    >{choice.name}</li>;
   });
 
   const objList = investor_profile_objectives?.choices?.map((choice: {value: string, name: string}) => {
-    return <div onClick={() => {
+    return <li onClick={() => {
       updateFields({
         investor_profile_objectives: {
           ...investor_profile_objectives,
@@ -111,11 +115,11 @@ export const InvestmentProfileForm = ({
       });}
     }
     key={choice.value}
-    >{choice.name}</div>;
+    >{choice.name}</li>;
   });
 
   const toleranceList = investor_profile_risk_tolerance?.choices?.map((choice: {value: string, name: string}) => {
-    return <div onClick={() => {
+    return <li onClick={() => {
       updateFields({
         investor_profile_risk_tolerance: {
           ...investor_profile_risk_tolerance,
@@ -125,11 +129,9 @@ export const InvestmentProfileForm = ({
       });}
     }
     key={choice.value}
-    >{choice.name}</div>;
+    >{choice.name}</li>;
   });
-  useEffect(() => {
-    logFirebaseEvent('dw_kyc_ip_s', currentUser, appId);
-  }, []);
+
   return (
     <FormWrapper title={title} subtitle={subtitle}>
       <div className={styles.investmentProfile}>
@@ -139,11 +141,15 @@ export const InvestmentProfileForm = ({
             withPlaceholder={'Annual Income'}
             openDropdown={openIncome}
             isInvest
-            value={investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}
-            onClick={() => setOpenIncome(!openIncome)}
+            value={incomeValue}
+            onClick={(e:MouseEvent) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setOpenIncome(!openIncome);
+            }}
             setOpenDropdown={setOpenIncome}
             list={income.map(i => {
-              return <div
+              return <li
                 key={i.value}
                 onClick={() => {
                   updateFields({
@@ -153,9 +159,9 @@ export const InvestmentProfileForm = ({
                     }
                   });
                 }
-                }>{i.name}</div>;
+                }>{i.name}</li>;
             })} >
-            <div>{investor_profile_annual_income.name ? investor_profile_annual_income.name : income?.find(i => i?.value === investor_profile_annual_income?.value)?.name}</div>
+            <div>{incomeValue}</div>
           </Dropdown>
         </div>
         <div className={styles.networth}>
@@ -165,11 +171,16 @@ export const InvestmentProfileForm = ({
             withPlaceholder={'Total net worth'}
             openDropdown={openNetWorth}
             isInvest
-            value={investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name :  networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}
-            onClick={() => setOpenNetWorth(!openNetWorth)}
+            value={netWorthValue}
+            onClick={(e: MouseEvent) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setOpenNetWorth(!openNetWorth);
+            }
+            }
             setOpenDropdown={setOpenNetWorth}
             list={networth.map(i => {
-              return <div
+              return <li
                 key={i.value}
                 onClick={() => {
                   updateFields({
@@ -179,9 +190,9 @@ export const InvestmentProfileForm = ({
                     }
                   });
                 }
-                }>{i.name}</div>;
+                }>{i.name}</li>;
             })} >
-            <div>{investor_profile_net_worth_total.name ? investor_profile_net_worth_total.name : networth?.find(i => i?.value === investor_profile_net_worth_total?.value)?.name}</div>
+            <div>{netWorthValue}</div>
           </Dropdown>
         </div>
         <div className={styles.liquid}>
@@ -191,11 +202,16 @@ export const InvestmentProfileForm = ({
             withPlaceholder={'Liquid net worth'}
             openDropdown={openLiquid}
             isInvest
-            value={investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name :  liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}
-            onClick={() => setOpenLiquid(!openLiquid)}
+            value={liquidValue}
+            onClick={(e: MouseEvent) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setOpenLiquid(!openLiquid);
+            }
+            }
             setOpenDropdown={setOpenLiquid}
             list={liquid.map(i => {
-              return <div
+              return <li
                 key={i.value}
                 onClick={() => {
                   updateFields({
@@ -205,9 +221,9 @@ export const InvestmentProfileForm = ({
                     }
                   });
                 }
-                }>{i.name}</div>;
+                }>{i.name}</li>;
             })} >
-            <div>{investor_profile_net_worth_liquid.name ? investor_profile_net_worth_liquid.name : liquid?.find(i => i?.value === investor_profile_net_worth_liquid?.value)?.name}</div>
+            <div>{liquidValue}</div>
           </Dropdown>
           <div className={styles.line}>
             <Image type={imageTypes.line}/>
@@ -220,7 +236,12 @@ export const InvestmentProfileForm = ({
             list={expList}
             openDropdown={openExp}
             isInvest
-            onClick={() => setOpenExp(!openExp)}
+            onClick={(e: MouseEvent) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setOpenExp(!openExp);
+            }
+            }
             setOpenDropdown={setOpenExp}
             withPlaceholder={'Investment Experience'}
             value={investor_profile_experience.name}
@@ -234,7 +255,12 @@ export const InvestmentProfileForm = ({
             list={objList}
             openDropdown={openObj}
             isInvest
-            onClick={() => setOpenObj(!openObj)}
+            onClick={(e: MouseEvent) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setOpenObj(!openObj);
+            }
+            }
             withPlaceholder={'Investment Objectives'}
             value={investor_profile_objectives.name}
             setOpenDropdown={setOpenObj}>
@@ -247,7 +273,12 @@ export const InvestmentProfileForm = ({
             list={toleranceList}
             openDropdown={openTolerance}
             isInvest
-            onClick={() => setOpenTolerance(!openTolerance)}
+            onClick={(e: MouseEvent) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setOpenTolerance(!openTolerance);
+            }
+            }
             withPlaceholder={'Risk Tolerance'}
             value={investor_profile_risk_tolerance.name}
             setOpenDropdown={setOpenTolerance}>

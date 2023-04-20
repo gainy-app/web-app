@@ -43,6 +43,7 @@ jobs:
           firebase_sender_id: ${{ secrets.FIREBASE_SENDER_ID }}
           firebase_app_id: ${{ secrets.FIREBASE_APP_ID }}
           firebase_measurement_id: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+          amplitude_api_key: ${{ secrets.AMPLITUDE_API_KEY }}
           hasura_url: ${{ secrets.HASURA_URL }}
           gtm_container: ${{ secrets.GTM_CONTAINER }}
 

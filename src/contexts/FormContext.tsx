@@ -19,6 +19,9 @@ import {
 import { useAuth } from './AuthContext';
 import { refreshToken } from '../services/auth';
 import { formData } from '../models';
+import { initAmplitude, sendGoogleDataLayerEvent } from 'utils/logEvent';
+import { useSearchParams } from 'react-router-dom';
+import { getDeviceId } from 'utils/helpers';
 
 const FormContext = React.createContext<any>({});
 
@@ -32,11 +35,11 @@ interface Props {
 
 export function FormProvider ({ children }: Props) {
   const { appId, currentUser, appIdLoading, isTreadingEnabled } = useAuth();
-
   const { data: kycFormConfig, loading: kycFormConfigLoader } = useQuery(GET_FORM_CONFIG, {
     variables: {
       profile_id: appId
     },
+    skip: !appId
   });
   const { data: countries } = useQuery(GET_COUNTRIES);
 
@@ -44,17 +47,22 @@ export function FormProvider ({ children }: Props) {
     variables: {
       profile_id:  appId
     },
+    skip: !appId
   });
 
   const { data: formStatus, loading: formStatusLoading } = useQuery(TRADING_GET_PROFILE_STATUS, {
     variables: {
       profile_id: appId
-    }
+    },
+    skip: !appId
   });
 
   const [verifyCode
     , { loading: verifyLoading, data:verifyNumber, error: verifyError }
-  ] = useMutation(VERIFICATION_SEND_CODE);
+  ] = useMutation(VERIFICATION_SEND_CODE, {
+    onError: () => sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid),
+    onCompleted: () => sendGoogleDataLayerEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
+  });
 
   const [verificationCode,
     { loading: verificationCodeLoading,error: verificationCodeError,data: verificationCodeData }
@@ -159,6 +167,7 @@ export function FormProvider ({ children }: Props) {
   };
 
   const [data, setData] = useState<formData>(INITIAL_DATA);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     setData({ ...data,
@@ -315,29 +324,36 @@ export function FormProvider ({ children }: Props) {
       },
     });
   };
-
+  const createAccountEdit = !!data.country?.prevValue || !!data.phone;
+  const verifyIdentityEdit = !!data.addressLine;
+  const investProfileEdit = !!data.investor_profile_annual_income.value;
   const {
     step, back,
     next, isLastPage, currentStepIndex, goToStep
-  } = useMultistepForm([
-    null,
-    <CitizenForm {...data} updateFields={updateFields}/>,
-    <PrivacyPolicyForm />,
-    <CitizenshipForm {...data} updateFields={updateFields}/>,
-    <EmailAddressForm {...data} updateFields={updateFields}/>,
-    <PhoneNumberForm {...data} updateFields={updateFields}/>,
-    <VerifyPhoneNumberForm {...data} updateFields={updateFields}/>,
-    null,
-    <LegalNameForm {...data} updateFields={updateFields}/>,
-    <ResidentAddressForm {...data} updateFields={updateFields}/>,
-    <SocialSecurityForm {...data} updateFields={updateFields}/>,
-    null,
-    <EmploymentForm {...data} updateFields={updateFields}/>,
-    data?.employment_status?.prevValue === 'EMPLOYED' || data?.employment_status?.prevValue === 'SELF_EMPLOYED' ? [<CompanyForm {...data} updateFields={updateFields}/>,  <LetUsKnowForm {...data} updateFields={updateFields}/>]: <LetUsKnowForm {...data} updateFields={updateFields}/>,
-    <InvestmentProfileForm {...data} updateFields={updateFields}/>,
-    <CustomerAgreementForm/>,
-    null
-  ].flat());
+  } = useMultistepForm({
+    steps: [
+      null,
+      <CitizenForm {...data} updateFields={updateFields}/>,
+      <PrivacyPolicyForm />,
+      <CitizenshipForm {...data} updateFields={updateFields}/>,
+      <EmailAddressForm {...data} updateFields={updateFields}/>,
+      <PhoneNumberForm {...data} updateFields={updateFields}/>,
+      <VerifyPhoneNumberForm {...data} updateFields={updateFields}/>,
+      null,
+      <LegalNameForm {...data} updateFields={updateFields}/>,
+      <ResidentAddressForm {...data} updateFields={updateFields}/>,
+      <SocialSecurityForm {...data} updateFields={updateFields}/>,
+      null,
+      <EmploymentForm {...data} updateFields={updateFields}/>,
+      data?.employment_status?.prevValue === 'EMPLOYED' || data?.employment_status?.prevValue === 'SELF_EMPLOYED' ? [<CompanyForm {...data} updateFields={updateFields}/>,  <LetUsKnowForm {...data} updateFields={updateFields}/>]: <LetUsKnowForm {...data} updateFields={updateFields}/>,
+      <InvestmentProfileForm {...data} updateFields={updateFields}/>,
+      <CustomerAgreementForm/>,
+      null
+    ].flat(),
+    createAccountEdit,
+    verifyIdentityEdit,
+    investProfileEdit
+  });
 
   const value = {
     step,
@@ -367,6 +383,28 @@ export function FormProvider ({ children }: Props) {
     isTreadingEnabled,
     loader: formLoading || kycFormConfigLoader || appIdLoading || formStatusLoading
   };
+
+  useEffect(() => {
+    if (appId) {
+      const appIdString = appId.toString();
+      let newUserId = appIdString;
+
+      while (newUserId.length < 5) {
+        newUserId = '0' + newUserId;
+      }
+
+      initAmplitude({
+        userId: newUserId,
+        config: {
+          includeUtm: true,
+          includeReferrer: true,
+          includeFbclid: true,
+          includeGclid: true,
+          deviceId: getDeviceId(searchParams.get('deviceId')),
+        }
+      });
+    }
+  }, [appId]);
 
   return (
     <FormContext.Provider value={value}>
