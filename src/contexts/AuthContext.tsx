@@ -41,6 +41,7 @@ export function AuthProvider({ children }: Props) {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [userLoading, setUserLoading] = useState(true);
   const [isRefreshTokenLoaded, setIsRefreshTokenLoaded] = useState(false);
+  const [accountType, setAccountType] = useState<'google'|'apple'>('google');
   const { data: appIdData, loading: addIdLoading } = useQuery(GET_APP_PROFILE, {
     skip: !currentUser
   });
@@ -49,8 +50,9 @@ export function AuthProvider({ children }: Props) {
   const appIdAppId = appIdData?.app_profiles?.find((i: any) => i?.id)?.id;
   const isTreadingEnabled =  appIdData || appLinkAppId;
   const appId = appIdAppId || appLinkAppId;
-
   const reinitAmplitude = () => {
+    if(!appId) return false;
+
     const appIdString = appId.toString();
     let newUserId = appIdString;
 
@@ -77,10 +79,9 @@ export function AuthProvider({ children }: Props) {
 
   async function signInWithGoogle ()  {
     try {
+      setAccountType('google');
       sendEvent('sign_in_clicked', currentUser?.uid, appIdData, { accountType: 'google' });
       await signInWithPopup(auth, googleProvider);
-      reinitAmplitude();
-      sendEvent('authorization_fully_authorized', currentUser?.uid, appIdData, { accountType: 'google' });
     } catch (err: any) {
       console.error(err);
       sendEvent('authorization_failed', currentUser?.uid, appIdData, { accountType: 'google', errorType: err.message });
@@ -89,10 +90,9 @@ export function AuthProvider({ children }: Props) {
 
   async function signInWithApple () {
     try {
+      setAccountType('apple');
       sendEvent('sign_in_clicked', currentUser?.uid, appIdData, { accountType: 'apple' });
       await signInWithPopup(auth, appleProvider);
-      reinitAmplitude();
-      sendEvent('authorization_fully_authorized', currentUser?.uid, appIdData, { accountType: 'apple' });
     } catch (err: any) {
       console.error(err);
       sendEvent('authorization_failed', currentUser?.uid, appIdData, { accountType: 'apple', errorType: err.message });
@@ -131,9 +131,6 @@ export function AuthProvider({ children }: Props) {
           lastName,
           userID: currentUser.uid
         }
-      }).then(()=>{
-        reinitAmplitude();
-        sendEvent('sign_up_success', currentUser?.uid, appId);
       }).catch(() => {
         sendEvent('sign_up_failed', currentUser?.uid, appIdData);
       });
@@ -141,6 +138,14 @@ export function AuthProvider({ children }: Props) {
 
     }
   }, [addIdLoading, isRefreshTokenLoaded]);
+
+  useEffect(()=>{
+    if (appId) {
+      reinitAmplitude();
+      sendEvent('sign_up_success', currentUser?.uid, appId);
+      sendEvent('authorization_fully_authorized', currentUser?.uid, appIdData, { accountType });
+    }
+  },[appId]);
 
   const value = {
     currentUser,
