@@ -17,15 +17,19 @@ interface Props {
   goToStep: (step: number) => void
 }
 export const StepsControlForm = ({ currentStepIndex, goToStep }: Props) => {
-  const { isLastPage, next, onSendData, data } = useFormContext();
+  const {
+    isLastPage,
+    next,
+    onSendData,
+    createAccountEdit,
+    verifyIdentityEdit,
+    investProfileEdit
+  } = useFormContext();
   const { currentUser, appId } = useAuth();
   const [checked, setChecked] = useState(true);
   const [sendFormFinale, { error }] = useMutation(KYC_SEND_FORM);
   const navigate = useNavigate();
   const { titleWithLink, subtitleWithLink } = config;
-  const createAccountEdit = !!data.country?.prevValue || !!data.phone;
-  const verifyIdentityEdit = !!data.addressLine;
-  const investProfileEdit = !!data.investor_profile_annual_income.value;
 
   const steps = [
     { title: 'Create your account',

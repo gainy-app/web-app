@@ -324,9 +324,9 @@ export function FormProvider ({ children }: Props) {
       },
     });
   };
-  const createAccountEdit = !!data.country?.prevValue || !!data.phone;
-  const verifyIdentityEdit = !!data.addressLine;
-  const investProfileEdit = !!data.investor_profile_annual_income.value;
+  const createAccountEdit = (!!data.country?.prevValue || !!data.phone) && localStorage.getItem('createAccountEdit') === 'true';
+  const verifyIdentityEdit = !!data.addressLine && localStorage.getItem('verifyIdentityEdit') === 'true';
+  const investProfileEdit = !!data.investor_profile_annual_income.value  && localStorage.getItem('investProfileEdit') === 'true';
   const {
     step, back,
     next, isLastPage, currentStepIndex, goToStep
@@ -381,7 +381,10 @@ export function FormProvider ({ children }: Props) {
     updateFields,
     formStatus,
     isTreadingEnabled,
-    loader: formLoading || kycFormConfigLoader || appIdLoading || formStatusLoading
+    loader: formLoading || kycFormConfigLoader || appIdLoading || formStatusLoading,
+    createAccountEdit,
+    verifyIdentityEdit,
+    investProfileEdit,
   };
 
   useEffect(() => {
