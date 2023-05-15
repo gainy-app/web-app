@@ -1,89 +1,200 @@
 @import "../../styles/mixins";
 
 .section {
-  p {
-    padding: 0;
-    margin: 0;
+  position: relative;
+
+  @include flex(row, center, center);
+  overflow: hidden;
+  padding: 50px 10px 64px;
+
+  @media (max-width: 980px) {
+    @include flex(column, center, center);
+    padding: 80px 20px 64px;
   }
 
-  @include flex(column,initial,center);
-  padding-top: 56px;
+  .contentWrapper {
+    z-index: 3;
 
-  @include phone {
-    padding-top: 48px;
+    @media (max-width: 980px) {
+      @include flex(column, center, center);
+    }
+
+    @media (max-width: $medium-mobile-size) {
+      .logoWrapper {
+        svg {
+          width: 96px;
+          height: 32px;
+        }
+      }
+    }
   }
 
-  .car {
-    @include size(240px, 186.5px);
-    margin-bottom: 32px;
+  .starsBackground {
+    left: 40%;
+    z-index: 2;
+    position: absolute;
+    width: 900px;
+    height: 100%;
+    background: url("../../assets/stars.gif"), no-repeat center center fixed;
+    background-size: cover;
 
-    @include phone {
-      @include size(200px, 155px);
+    @media (max-width: 980px) {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 75%;
+    }
+
+    @media (max-width: $medium-mobile-size) {
+      height: 50%;
+    }
+  }
+
+  .mainVideo {
+    z-index: 3;
+    position: relative;
+    top: 25px;
+    width: 360px;
+    height: 560px;
+    margin-left: 40px;
+
+    @media (max-width: 980px) {
+      top: 90px;
+      width: 325px;
+      height: 509px;
+      margin-left: 0;
+    }
+
+    @media (max-width: $medium-mobile-size) {
+      top: 80px;
+      width: 280px;
+      height: 438px;
     }
   }
 
   .title,
-  .description {
-    text-align: center;
-    margin-bottom: 24px;
+  .description,
+  .subDescription,
+  .contentFooter,
+  .sectionFooter {
     color: $white;
+
+    @media (max-width: 980px) {
+      text-align: center;
+    }
   }
 
   .title {
+    margin-bottom: 24px;
+    margin-top: 52px;
     font-family: "SF Pro Display", sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 31px;
     line-height: 32px;
-    font-weight: 700;
-    font-size: 24px;
     max-width: 440px;
 
-    @include iPhone {
-      max-width: 400px;
+    @media (max-width: 980px) {
+      max-width: 480px;
     }
 
-    @include phone {
-      font-size: 21px;
-      max-width: 225px;
+    @media (max-width: $medium-mobile-size) {
+      max-width: 220px;
+      font-size: 24px;
+      margin-top: 40px;
     }
   }
 
   .description {
+    margin-bottom: 24px;
     font-family: "SF Pro Display Medium", sans-serif;
     font-size: 16px;
     line-height: 24px;
-    max-width: 602px;
+    max-width: 440px;
 
-    @include iPhone {
-      max-width: 400px;
+    @media (max-width: 980px) {
+      max-width: 480px;
     }
 
-    @include phone {
-      font-size: 14px;
+    @media (max-width: $medium-mobile-size) {
       max-width: 280px;
     }
   }
 
+  .subDescription {
+    font-family: "SF Pro Display Medium", sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    max-width: 440px;
+
+    @media (max-width: 980px) {
+      max-width: 480px;
+    }
+
+    @media (max-width: $medium-mobile-size) {
+      max-width: 280px;
+    }
+  }
+
+  .contentFooter {
+    position: relative;
+    top: 74px;
+    font-family: "SF Pro Display Normal", sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 17px;
+    line-height: 24px;
+
+    @media (max-width: 980px) {
+      display: none;
+    }
+  }
+
   .authButtons {
-    @include flex(row, center ,center);
-    column-gap: 16px;
-    margin-top: 8px;
+    @include flex(row, flex-start);
+
+    margin-top: 40px;
     gap: 16px;
-
-    @include iPhone {
-      flex-direction: column;
-    }
-
-    @include phone {
-      margin-bottom: 40px;
-    }
-
-    .signIcon {
-      @include size(14px, 16px);
-    }
 
     button {
       svg {
         margin-right: 16px;
       }
+    }
+
+    @media (max-width: 980px) {
+      margin-top: 40px;
+    }
+
+    @media (max-width: $medium-mobile-size) {
+      @include flex(column, flex-start);
+
+      button {
+        padding: 18px 44px;
+      }
+    }
+  }
+
+  .sectionFooter {
+    display: none;
+    font-family: "SF Pro Display Normal", sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 16px;
+    line-height: 24px;
+
+    @media (max-width: 980px) {
+      display: block;
+
+      // TODO update after fixing layout container
+      margin-top: 238px;
+    }
+
+    @media (max-width: $medium-mobile-size) {
+      display: block;
+
+      // TODO update after fixing layout container
+      margin-top: 150px;
     }
   }
 }
