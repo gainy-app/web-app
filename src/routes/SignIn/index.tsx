@@ -6,11 +6,10 @@ import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
 import { useLayoutEffect } from 'react';
 import { sendEvent } from 'utils/logEvent';
-import PhoneBanner from '../../assets/PhoneBanner.webm';
 import { getCurrentYear } from 'utils/helpers';
 
 export default function SignIn () {
-  const { title, form, description, subDescription } = config;
+  const { title, form, description, subDescription, videoLink } = config;
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -69,7 +68,7 @@ export default function SignIn () {
         <span className={styles.contentFooter}> © {currentYear} Gainy, Inc.</span>
       </div>
       <div className={styles.mainVideo}>
-        <video src={PhoneBanner} width="100%" height="100%" controls={false} autoPlay muted loop />
+        <iframe src={videoLink} width="100%" height="100%"/>
       </div>
       <div className={styles.sectionFooter}> © {currentYear} Gainy, Inc.</div>
       <div className={styles.starsBackground} />

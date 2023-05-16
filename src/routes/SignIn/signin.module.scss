@@ -58,6 +58,10 @@
     height: 560px;
     margin-left: 40px;
 
+    iframe {
+      border: 0;
+    }
+
     @media (max-width: 980px) {
       top: 90px;
       width: 325px;
