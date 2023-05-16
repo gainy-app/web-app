@@ -8,13 +8,14 @@ import { NumberFormatValues, PatternFormat } from 'react-number-format';
 import { formatNumber, getCurrentYear, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
-import { Background } from './Background';
+import CosmonautImage from '../../assets/cosmonaut.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from 'contexts/AuthContext';
 import { sendEvent } from 'utils/logEvent';
 
 export default function Success () {
-  const { form, qrcode, subtitle, title, description, validate, downloadButton } = config;
+  const { form, note, qrcode, subtitle, title, qrDescription, validate, downloadButton } = config;
+
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -75,62 +76,71 @@ export default function Success () {
   };
 
   return (
-    <>
-      <main className={styles.main}>
-        <section className={styles.section}>
-          <Image type={imageTypes.logoWhite} className={styles.logo}/>
-          <h1>Congratulations!</h1>
-          <h2 className={styles.title}>{title}</h2>
+    <section className={styles.section}>
+      <div className={styles.contentWrapper}>
+        <div className={styles.infoWrapper}>
+          <div className={styles.logoWrapper}>
+            <Image type={imageTypes.logoWhite} className={styles.logo}/>
+          </div>
+          <h1 className={styles.title}>{title}</h1>
           <p className={styles.subtitle}>{subtitle}</p>
-          <ButtonLink
-            href={downloadButton.link}
-            onClick={handleDownloadButtonClick}
-            variant={'download'}
-            id={downloadButton.id}
-          >
-            {downloadButton.text}
-          </ButtonLink>
+          <p className={styles.note}>{note}</p>
+          <div className={styles.buttonWrapper}>
+            <ButtonLink
+              href={downloadButton.link}
+              onClick={handleDownloadButtonClick}
+              variant={'download'}
+              id={downloadButton.id}
+            >
+              {downloadButton.text}
+            </ButtonLink>
+          </div>
+          <div className={styles.cosmonautMobileWrapper}>
+            <img src={CosmonautImage} loading='lazy' alt='cosmonaut'/>
+          </div>
           <div className={styles.line}>
             <Image type={imageTypes.line}/>
           </div>
           <div className={styles.qrWrapper} id={qrcode.id}>
             <QRCodeSVG value={qrcode.link} className={styles.qrCode}/>
           </div>
-          <p className={styles.description}>{description}</p>
-          <form
-            onSubmit={onSubmitHandler}
-          >
-            <div className={styles.actions}>
-              <Input>
-                <PatternFormat
-                  placeholder={form.phone}
-                  valueIsNumericString
-                  format="(###) ###-####"
-                  mask="_"
-                  name={'phone'}
-                  onValueChange={onPhoneChange}
-                  value={phoneState}
-                  className={`${errors ? styles.errorValidation : ''}`}
-                />
-              </Input>
-              <Button type={'submit'} id={'webapp_signin_send_link'}>
-                {loading ? <Loader className={styles.loader}/> : form.button}
-              </Button>
-              {error && (
-                <p className={styles.error}>{parseGQLerror(error)}</p>
-              )}
-              {data?.send_app_link?.ok && (
-                <p className={styles.success}>{form.successMessage}</p>
-              )}
-            </div>
-          </form>
-        </section>
-        <Background />
-      </main>
-      <footer className={styles.footer}>
-        <span>© {currentYear} Gainy, Inc. </span>
-      </footer>
-    </>
-
+          <p className={styles.qrDescription}>{qrDescription}</p>
+          <div className={styles.formWrapper}>
+            <form onSubmit={onSubmitHandler} >
+              <div className={styles.actions}>
+                <Input>
+                  <PatternFormat
+                    placeholder={form.phone}
+                    valueIsNumericString
+                    format="(###) ###-####"
+                    mask="_"
+                    name={'phone'}
+                    onValueChange={onPhoneChange}
+                    value={phoneState}
+                    className={`${errors ? styles.errorValidation : ''}`}
+                  />
+                </Input>
+                <Button type={'submit'} id={'webapp_signin_send_link'}>
+                  {loading ? <Loader className={styles.loader}/> : form.button}
+                </Button>
+                {error && (
+                  <p className={styles.error}>{parseGQLerror(error)}</p>
+                )}
+                {data?.send_app_link?.ok && (
+                  <p className={styles.success}>{form.successMessage}</p>
+                )}
+              </div>
+            </form>
+          </div>
+          <footer className={styles.footer}>
+            <span>© {currentYear} Gainy, Inc. </span>
+          </footer>
+        </div>
+        <div className={styles.cosmonautWrapper}>
+          <img src={CosmonautImage} loading='lazy' alt='cosmonaut'/>
+        </div>
+      </div>
+      <div className={styles.starsBackground} />
+    </section>
   );
 }
