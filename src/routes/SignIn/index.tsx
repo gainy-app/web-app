@@ -1,4 +1,4 @@
-import { Image, Button } from 'components';
+import { Image, Layout, Button } from 'components';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import styles from './signin.module.scss';
 import { imageTypes, routes } from 'utils/constants';
@@ -6,26 +6,21 @@ import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
 import { useLayoutEffect } from 'react';
 import { sendEvent } from 'utils/logEvent';
-import { getCurrentYear } from 'utils/helpers';
 
 export default function SignIn () {
-  const { title, form, description, subDescription, videoLink } = config;
-
+  const { title,form, description, subDescription } = config;
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { signInWithGoogle, currentUser, signInWithApple, appId } = useAuth();
 
-  if (currentUser) {
-    return <Navigate to={routes.home} replace state={{ path: pathname }} />;
+  if(currentUser) {
+    return <Navigate to={routes.home} replace state={{ path: pathname }}/>;
   }
 
-  const currentYear = getCurrentYear();
-
   const onSignIn = (cb:() => Promise<void>, method: string) => {
-    cb()
-      .then(() => {
-        localStorage.setItem('login', method);
-      })
+    cb().then(() => {
+      localStorage.setItem('login', method);
+    })
       .finally(() => {
         navigate(routes.home);
       });
@@ -40,21 +35,20 @@ export default function SignIn () {
   }, []);
 
   return (
-    <section className={styles.section}>
-      <div className={styles.contentWrapper}>
-        <div className={styles.logoWrapper}>
-          <Image type={imageTypes.logoWhite} className={styles.logo}/>
-        </div>
+    <Layout>
+      <section className={styles.section}>
+        <Image type={imageTypes.car} className={styles.car}/>
         <p className={styles.title}>{title}</p>
         <p className={styles.description}>{description}</p>
-        <p className={styles.subDescription}>{subDescription}</p>
+        <p className={styles.description}>{subDescription}</p>
+
         <div className={styles.authButtons}>
           <Button
             variant={'apple'}
             id={'webapp_signin_apple'}
             onClick={() => onSignIn(signInWithApple, 'Apple')}>
             <Image type={imageTypes.apple} className={styles.signIcon}/>
-            <span>{form.apple}</span>
+            <span> {form.apple}</span>
           </Button>
           <Button
             variant={'google'}
@@ -62,16 +56,10 @@ export default function SignIn () {
             id={'webapp_signin_google'}
           >
             <Image type={imageTypes.google} className={styles.signIcon}/>
-            <span>{form.google}</span>
+            <span> {form.google} </span>
           </Button>
         </div>
-        <span className={styles.contentFooter}> © {currentYear} Gainy, Inc.</span>
-      </div>
-      <div className={styles.mainVideo}>
-        <iframe src={videoLink} width="100%" height="100%"/>
-      </div>
-      <div className={styles.sectionFooter}> © {currentYear} Gainy, Inc.</div>
-      <div className={styles.starsBackground} />
-    </section>
+      </section>
+    </Layout>
   );
 }

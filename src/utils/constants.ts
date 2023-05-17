@@ -9,6 +9,7 @@ export const routes = {
 
 export const imageTypes = {
   logo: 'logo',
+  car: 'car',
   apple: 'apple',
   google: 'google',
   logoWhite: 'logoWhite',

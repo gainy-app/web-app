@@ -5,6 +5,5 @@
 *.svg
 *.gif
 *.png
-*.webm
 /node_modules
 src/styles/fonts
