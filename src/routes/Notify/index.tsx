@@ -42,8 +42,11 @@ export default function Notify () {
       });
     }
   };
+
   const onPhoneChange = (values: NumberFormatValues) => {
-    setPhoneState(values.value);
+    if (values.value.length <= 10) {
+      setPhoneState(values.value);
+    }
   };
 
   const handleDownloadButtonClick = () => {
@@ -99,10 +102,11 @@ export default function Notify () {
                     name={'phone'}
                     onValueChange={onPhoneChange}
                     value={phoneState}
-                    className={`${errors ? styles.errorValidation : ''}`}
+                    onFocus={(e) => e.target.placeholder = ''}
+                    onBlur={(e) => e.target.placeholder = form.phone}
                   />
                 </Input>
-                <Button type={'submit'} id={'webapp_signin_send_link'}>
+                <Button type={'submit'} id={'webapp_signin_send_link'} disabled={phoneState.length !== 10}>
                   {loading ? <Loader className={styles.loader}/> : form.button}
                 </Button>
                 {error && (

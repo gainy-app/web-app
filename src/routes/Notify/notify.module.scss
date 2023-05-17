@@ -209,6 +209,8 @@ li {
         border-radius: 16px;
         padding: 20px;
         background: $white;
+        max-height: 200px;
+        max-width: 200px;
 
         .qrCode {
           max-height: 160px;
@@ -259,7 +261,18 @@ li {
           margin-top: 16px;
           padding: 16px 0;
           width: 100%;
-          background: $dark-blue;
+          background: $blue;
+
+          &:disabled {
+            cursor: not-allowed;
+            background: $dark-blue;
+            color: rgba(255, 255, 255, .24);
+
+            &:hover,
+            &:active {
+              opacity: 1;
+            }
+          }
         }
 
         @media (max-width: 980px) {
@@ -275,10 +288,6 @@ li {
           text-align: center;
           margin-top: 5px;
           font-size: 14px;
-        }
-
-        .errorValidation {
-          color: $pink;
         }
 
         .error {
