@@ -13,7 +13,7 @@ import { setAnalyticsUserId } from './firebase';
 
 function App() {
   const { loading, currentUser, appId } = useAuth();
-  const { withHeader, isSuccess } = usePage();
+  const { withHeader, isSuccess, isNotHomePage } = usePage();
   const [searchParams] = useSearchParams();
 
   const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
@@ -44,8 +44,9 @@ function App() {
     return <Loader/>;
   }
 
+  // TODO get rid of this style definition
   return (
-    <div className={`${styles.container} ${withHeader ? '' : styles.black} ${isSuccess ? styles.reset : ''}`}>
+    <div className={`${styles.container} ${withHeader ? '' : styles.black} ${isSuccess ? styles.reset : ''} ${isNotHomePage ? styles.flex : ''}`}>
       <Routes>
         <Route path={routes.home} element={
           <React.Suspense>

@@ -2,8 +2,6 @@
 
 .container {
   @include flex(column);
-  align-items: center;
-  justify-content: center;
   margin: 0 auto;
   min-height: 100%;
   background: $gray-light-1;
@@ -13,6 +11,11 @@
   @include tablet {
     padding: 0;
   }
+}
+
+.flex {
+  align-items: center;
+  justify-content: center;
 }
 
 .black {
