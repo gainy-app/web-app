@@ -1,256 +1,320 @@
 @import "../../styles/mixins";
 
-.main {
+.section {
   display: flex;
-  flex-direction: row;
-  background-color: $black;
-  flex: 1 0 auto;
-  justify-content: space-between;
-  overflow: hidden;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
+  flex: 1 0 auto;
+  background-color: $black;
+  overflow: hidden;
+  padding: 120px 10px 64px;
+  width: 100%;
+  height: 100%;
 
-  .section {
-    padding-left: 35.3%;
-    z-index: 2;
-
-    @include flex(column,flex-start,flex-start);
-    color: $white;
+  @media (max-width: 980px) {
     padding-top: 80px;
-    max-width: 455px;
+    align-items: center;
+    justify-content: center;
+  }
 
-    h1,
-    p {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+  .cosmonautWrapper {
+    position: relative;
+    top: 14px;
+    left: 10px;
+    width: 480px;
+    height: 480px;
+
+    @media (max-width: 980px) {
+      display: none;
+    }
+  }
+
+  .cosmonautMobileWrapper {
+    display: none;
+    width: 480px;
+    height: 480px;
+
+    @media (max-width: 980px) {
+      display: block;
+      position: relative;
+      top: 32px;
     }
 
-    a {
-      text-decoration: none;
-    }
-
-    @media (max-width: 1400px) {
-      padding-left: 24.3%;
-    }
-
-    @media (max-width: 1088px) {
-      padding-left: 15%;
-    }
-
-    @include largeTablet {
-      padding-left: 7%;
-      padding-top: 150px;
-    }
-
-    @media (max-width: 772px) {
-      padding-top: 100px;
-    }
-
-    @media (max-width: 420px) {
-      padding-top: 130px;
-    }
-
-    @include tablet {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-
-    .logo {
-      @include size(120px, 40px);
-    }
-
-    .title,
-    .subtitle {
-      letter-spacing: 1px;
-    }
-
-    h1 {
-      margin-top: 40px;
-      font-family: "SF Pro Display Medium", sans-serif;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 32px;
-      line-height: 32px;
-    }
-
-    .mainTitle {
-      max-width: 455px;
-      font-family: "SF Pro Display Medium", sans-serif;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 32px;
-      line-height: 32px;
-      margin-top: 40px;
-      margin-bottom: 0;
-
-      @media (max-width: 1478px) {
-        margin-top: 100px;
-      }
-
-      @media (max-width: 624px) {
-        margin-top: 40px;
-      }
-
-      @include phone {
-        font-size: 21px;
-      }
-    }
-
-    .title {
-      max-width: 455px;
-      font-family: "SF Pro Display Medium", sans-serif;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 32px;
-      line-height: 32px;
-      margin-bottom: 24px;
-      margin-top: 0;
-
-      @include phone {
-        font-size: 21px;
-      }
-    }
-
-    .subtitle {
-      font-family: "SF Pro Display Medium", sans-serif;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 24px;
-      letter-spacing: .1px;
-      margin-bottom: 40px;
-
-      @include phone {
-        font-size: 14px;
-        margin-bottom: 16px;
-      }
-    }
-
-    .buttonLink {
-      margin-bottom: 40px;
-    }
-
-    .line {
-      svg {
-        @include iPhone {
-          width: 300px;
-        }
-      }
-    }
-
-    .qrWrapper {
-      background: $white;
-      margin-top: 40px;
-      border-radius: 16px;
-      padding: 20px;
-
-      .qrCode {
-        height: 160px;
-        width: 160px;
-      }
-    }
-
-    .description {
-      font-family: "SF Pro Display Medium", sans-serif;
-      font-weight: 500;
-      margin-top: 40px;
-      font-size: 16px;
-      line-height: 24px;
-      max-width: 320px;
-    }
-
-    .actions {
+    @media (max-width: $medium-mobile-size) {
       width: 320px;
-      margin-top: 24px;
-      margin-bottom: 56px;
+      height: 320px;
+      top: 0;
+      margin-bottom: 5px;
 
-      @include phone {
-        width: 280px;
+      img {
+        width: 320px;
+        height: 320px;
+      }
+    }
+  }
+
+  .contentWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 3;
+    margin-left: 30px;
+
+    @media (max-width: 980px) {
+      margin-left: 0;
+    }
+
+    .infoWrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 450px;
+
+      @media (max-width: 980px) {
+        align-items: center;
+        text-align: center;
+        max-width: 480px;
       }
 
-      label {
-        max-width: 100% !important;
-        border: transparent;
-        background: #fff;
+      @media (max-width: $medium-mobile-size) {
+        max-width: 280px;
 
-        input {
-          text-align: center;
-          max-width: 100% !important;
-          width: 100%;
-          padding: 20px 0;
-          color: #000 !important;
-
-          &::placeholder {
-            color: #000 !important;
+        .logoWrapper {
+          svg {
+            width: 96px;
+            height: 32px;
           }
         }
       }
 
-      button {
-        position: relative;
-        width: 100%;
-        height: 56px;
-        margin-top: 16px;
-        padding: 22px 68px;
+      .title {
+        margin-top: 56px;
+        font-family: "SF Pro Display", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 32px;
+        line-height: 32px;
+        color: $white;
+
+        @media (max-width: 980px) {
+          font-size: 30px;
+        }
+
+        @media (max-width: $medium-mobile-size) {
+          margin-top: 40px;
+          font-size: 24px;
+        }
       }
 
-      .success {
-        color: $success;
-        text-align: center;
-        margin-top: 5px;
-        font-size: 14px;
+      .subtitle {
+        font-family: "SF Pro Display", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 32px;
+        line-height: 32px;
+        color: $white;
+
+        @media (max-width: 980px) {
+          font-size: 30px;
+        }
+
+        @media (max-width: $medium-mobile-size) {
+          font-size: 24px;
+        }
       }
 
-      .errorValidation {
-        color: $pink;
+      .countryAvailable {
+        font-family: "SF Pro Display", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 32px;
+        line-height: 32px;
+        color: $white;
+
+        @media (max-width: 980px) {
+          font-size: 30px;
+        }
+
+        @media (max-width: $medium-mobile-size) {
+          font-size: 24px;
+        }
       }
 
-      .error {
-        font-family: "SF Pro Display Medium", sans-serif;
-        text-align: center;
-        color: $pink;
-        margin-top: 16px;
-        font-size: 14px;
+      .note {
+        margin-top: 24px;
+        font-family: "SF Pro Display", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        color: $white;
       }
 
-      .loader {
-        position: absolute;
-        top: 25%;
-        left: 50%;
-        transform: translate(-50%);
+      .buttonWrapper {
+        margin-top: 35px;
+        max-width: 325px;
 
-        div {
-          height: 20px;
-          width: 20px;
+        @media (max-width: $medium-mobile-size) {
+          max-width: 245px;
+
+          a {
+            padding: 16px 69px;
+          }
+        }
+      }
+
+      .line {
+        overflow: hidden;
+        width: 400px;
+        margin-top: 25px;
+
+        @media (max-width: 980px) {
+          margin-top: 72px;
+        }
+
+        @media (max-width: $medium-mobile-size) {
+          margin-top: 0;
+          width: 240px;
+        }
+      }
+
+      .qrWrapper {
+        margin-top: 40px;
+        border-radius: 16px;
+        padding: 20px;
+        background: $white;
+
+        .qrCode {
+          max-height: 160px;
+          max-width: 160px;
+        }
+      }
+
+      .qrDescription {
+        margin-top: 40px;
+        max-width: 340px;
+        font-family: "SF Pro Display", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        color: $white;
+
+        @media (max-width: 980px) {
+          margin-top: 38px;
+        }
+      }
+
+      .actions {
+        width: 320px;
+        margin-top: 24px;
+
+        label {
+          border: transparent;
+          background: #fff;
+
+          input {
+            text-align: center;
+            width: 100%;
+            padding: 16px 0;
+            color: $black;
+
+            &::placeholder {
+              color: $black;
+            }
+          }
+        }
+
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 56px;
+          margin-top: 16px;
+          padding: 16px 0;
+          width: 100%;
+          background: $dark-blue;
+        }
+
+        @media (max-width: 980px) {
+          margin-top: 20px;
+        }
+
+        @media (max-width: $medium-mobile-size) {
+          max-width: 240px;
+        }
+
+        .success {
+          color: $success;
+          text-align: center;
+          margin-top: 5px;
+          font-size: 14px;
+        }
+
+        .errorValidation {
+          color: $pink;
+        }
+
+        .error {
+          font-family: "SF Pro Display Medium", sans-serif;
+          text-align: center;
+          color: $pink;
+          margin-top: 16px;
+          font-size: 14px;
+        }
+
+        .loader {
+          position: static;
+
+          div {
+            height: 16px;
+            width: 16px;
+          }
+        }
+      }
+
+      .footer {
+        margin-top: 42px;
+        font-family: "SF Pro Display", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        color: $white;
+
+        @media (max-width: 980px) {
+          margin-top: 80px;
+        }
+
+        @media (max-width: $medium-mobile-size) {
+          margin-top: 152px;
         }
       }
     }
   }
-}
 
-.footer {
-  flex: 0 0 auto;
-  padding-left: 35.3%;
-  padding-bottom: 24px;
-  background-color: $black;
-  font-family: "Inter Regular", sans-serif;
-  color: $white;
-  font-size: 16px;
+  .starsBackground {
+    top: 0;
+    left: 30%;
+    z-index: 2;
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    background: url("../../assets/stars.gif"), no-repeat center center fixed;
+    background-size: cover;
 
-  @media (max-width: 1400px) {
-    padding-left: 24.3%;
-  }
+    @media (max-width: 980px) {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 75%;
+    }
 
-  @media (max-width: 1088px) {
-    padding-left: 15%;
-  }
-
-  @include largeTablet {
-    padding-left: 7%;
-    padding-top: 150px;
-  }
-
-  @include tablet {
-    padding-left: 20px;
-    padding-right: 20px;
+    @media (max-width: $medium-mobile-size) {
+      height: 50%;
+    }
   }
 }
