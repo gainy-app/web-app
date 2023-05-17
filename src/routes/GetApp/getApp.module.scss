@@ -188,6 +188,11 @@ li {
         max-height: 200px;
         max-width: 200px;
 
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+
         .qrCode {
           max-height: 160px;
           max-width: 160px;
