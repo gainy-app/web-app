@@ -96,7 +96,7 @@ export default function Success () {
             </ButtonLink>
           </div>
           <div className={styles.cosmonautMobileWrapper}>
-            <img src={CosmonautImage} loading='lazy' alt='cosmonaut'/>
+            <img src={CosmonautImage} loading='lazy' alt='cosmonaut' width="100%" height="100%"/>
           </div>
           <div className={styles.line}>
             <Image type={imageTypes.line}/>
@@ -137,7 +137,7 @@ export default function Success () {
           </footer>
         </div>
         <div className={styles.cosmonautWrapper}>
-          <img src={CosmonautImage} loading='lazy' alt='cosmonaut'/>
+          <img src={CosmonautImage} loading='lazy' alt='cosmonaut' width="100%" height="100%"/>
         </div>
       </div>
       <div className={styles.starsBackground} />
