@@ -136,6 +136,7 @@ export default function GetApp () {
                     name={'phone'}
                     onValueChange={onPhoneChange}
                     value={phoneState}
+                    className={`${errors ? '' : ''}`}
                     onFocus={(e) => e.target.placeholder = ''}
                     onBlur={(e) => e.target.placeholder = form.phone}
                   />
