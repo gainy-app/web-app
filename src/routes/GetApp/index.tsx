@@ -4,7 +4,7 @@ import { Button, Image, Input, Loader, ButtonLink } from '../../components';
 import { FormEvent, useLayoutEffect, useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import { formatNumber, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
+import { formatNumber, getCurrentYear, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,18 +14,25 @@ import { useAuth } from '../../contexts/AuthContext';
 import { sendEvent, sendGoogleDataLayerEvent } from '../../utils/logEvent';
 
 export default function GetApp () {
-  const { form,qrcode,subtitle,paragraph,title,description,validate, downloadButton } = config;
-  const [phoneState, setPhoneState] = useState<string>('');
+  const { form, qrcode, subtitle, paragraph, title, description, validate, downloadButton } = config;
+
+  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [errors, setErrors] = useState<string>('');
+  const { currentUser, appId } = useAuth();
+
   const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK, {
     onError: () => sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid),
     onCompleted: () => sendGoogleDataLayerEvent('click_button_after_input_target_phone', currentUser?.uid || 'not authorized')
   });
-  const navigate = useNavigate();
-  const { currentUser, appId } = useAuth();
+
+  const [errors, setErrors] = useState<string>('');
+  const [phoneState, setPhoneState] = useState<string>('');
+
   const status = localStorage.getItem('status');
   const authMethod = localStorage.getItem('login');
+
+  const currentYear = getCurrentYear();
+
   const handleDownloadButtonClick = () => {
     sendEvent('download_app_clicked', currentUser?.uid, appId, {
       pageUrl: window.location.href,
@@ -80,6 +87,7 @@ export default function GetApp () {
       sendGoogleDataLayerEvent('click_button_after_input_not_target_phone', currentUser?.uid);
     }
   };
+
   const onPhoneChange = (values: NumberFormatValues) => {
     setPhoneState(values.value);
   };
@@ -138,7 +146,7 @@ export default function GetApp () {
         <Background />
       </main>
       <footer className={styles.footer}>
-        <span>© 2021 Gainy, Inc. </span>
+        <span>© {currentYear} Gainy, Inc. </span>
       </footer>
     </>
 
