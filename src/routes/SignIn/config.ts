@@ -5,6 +5,5 @@ export const config = {
   form: {
     apple: 'Enter with Apple',
     google: 'Enter with Google'
-  },
-  videoLink: 'https://player.vimeo.com/video/827233770?autoplay=1&controls=0&loop=1&background=0&muted=1'
+  }
 };

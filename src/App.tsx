@@ -15,7 +15,6 @@ function App() {
   const { loading, currentUser, appId } = useAuth();
   const { withHeader, isSuccess } = usePage();
   const [searchParams] = useSearchParams();
-
   const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
 
   useEffect(() => {
@@ -45,7 +44,7 @@ function App() {
   }
 
   return (
-    <div className={`${styles.container} ${withHeader ? '' : styles.black} ${isSuccess ? styles.reset : ''}`}>
+    <div className={`${styles.container} ${withHeader ? '' : styles.blue} ${isSuccess ? styles.reset : ''}`}>
       <Routes>
         <Route path={routes.home} element={
           <React.Suspense>
@@ -56,22 +55,19 @@ function App() {
             </PrivateRoute>
           </React.Suspense>
         }/>
-        <Route path={routes.signIn} element={
-          <React.Suspense>
-            <SignIn/>
-          </React.Suspense>}>
+        <Route path={routes.signIn}   element={<React.Suspense>
+          <SignIn/>
+        </React.Suspense>}>
         </Route>
-        <Route path={routes.getApp} element={
-          <React.Suspense>
-            <GetApp/>
-          </React.Suspense>}>
+        <Route path={routes.getApp} element={<React.Suspense>
+          <GetApp/>
+        </React.Suspense>}>
         </Route>
-        <Route path={routes.success} element={
-          <React.Suspense>
-            <PrivateRoute>
-              <Success/>
-            </PrivateRoute>
-          </React.Suspense>}>
+        <Route path={routes.success} element={<React.Suspense>
+          <PrivateRoute>
+            <Success/>
+          </PrivateRoute>
+        </React.Suspense>}>
         </Route>
         <Route path={routes.notify}
           element={

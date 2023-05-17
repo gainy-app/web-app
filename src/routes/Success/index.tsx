@@ -5,7 +5,7 @@ import { FormEvent, useLayoutEffect, useEffect, useState } from 'react';
 import { config } from './config';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import { formatNumber, getCurrentYear, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
+import { formatNumber, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
 import { Background } from './Background';
@@ -14,20 +14,14 @@ import { useAuth } from 'contexts/AuthContext';
 import { sendEvent } from 'utils/logEvent';
 
 export default function Success () {
-  const { form, qrcode, subtitle, title, description, validate, downloadButton } = config;
-
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const { currentUser, appId } = useAuth();
-
-  const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
-
+  const { form,qrcode,subtitle,title,description,validate, downloadButton } = config;
   const [phoneState, setPhoneState] = useState<string>('');
   const [errors, setErrors] = useState<string>('');
-
+  const [sendLink, { loading, error, data }] = useMutation(SEND_APP_LINK);
+  const navigate = useNavigate();
   const status = localStorage.getItem('status');
-  const currentYear = getCurrentYear();
-
+  const { currentUser, appId } = useAuth();
+  const { pathname } = useLocation();
   const handleDownloadButtonClick = () => {
     sendEvent('download_app_clicked', currentUser?.uid, appId, {
       pageUrl: window.location.href,
@@ -69,7 +63,6 @@ export default function Success () {
       });
     }
   };
-
   const onPhoneChange = (values: NumberFormatValues) => {
     setPhoneState(values.value);
   };
@@ -128,7 +121,7 @@ export default function Success () {
         <Background />
       </main>
       <footer className={styles.footer}>
-        <span>© {currentYear} Gainy, Inc. </span>
+        <span>© 2021 Gainy, Inc. </span>
       </footer>
     </>
 
