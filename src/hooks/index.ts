@@ -8,8 +8,10 @@ export const usePage = () => {
   const withHeader = (!pathname.includes(routes.signIn));
   const withFooter = (!pathname.includes(routes.signIn) && !pathname.includes(routes.getApp));
   const isSuccess = (pathname.includes(routes.success) && pathname.includes(routes.getApp));
+  const isNotHomePage = pathname.includes(routes.success) || pathname.includes(routes.getApp) || pathname.includes(routes.notify) || pathname.includes(routes.signIn);
 
   return {
+    isNotHomePage,
     withHeader,
     withFooter,
     isSuccess

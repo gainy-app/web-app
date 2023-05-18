@@ -13,8 +13,13 @@
   }
 }
 
-.blue {
-  background: $blue;
+.flex {
+  align-items: center;
+  justify-content: center;
+}
+
+.black {
+  background: $black;
 }
 
 .content {

@@ -1,6 +1,7 @@
 export const config = {
-  title: 'You’ve successfully completed onboarding ',
-  subtitle: 'To check your KYC status and continue, please get our mobile app by signing in with the account you’ve just created.',
+  title: 'Thanks for signing up!',
+  subtitle: 'To install the app, kindly click on the provided link and access it through the AppStore.',
+  note: 'Regrettably, as of today, it is only available for iOS.',
   downloadButton: {
     text: 'Download App',
     link: 'https://go.gainy.app/ZOFw/Webp',
@@ -10,7 +11,7 @@ export const config = {
     link: 'https://go.gainy.app/ZOFw/Webp?af_qr=true',
     id: 'qr_code_place'
   },
-  description: 'Scan the QR code or enter your phone number for the download link',
+  qrDescription: 'Scan the QR code or enter your phone number for the download link',
   form: {
     phone: 'Enter your phone number',
     button: 'Text me the link',

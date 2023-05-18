@@ -13,8 +13,9 @@ import { setAnalyticsUserId } from './firebase';
 
 function App() {
   const { loading, currentUser, appId } = useAuth();
-  const { withHeader, isSuccess } = usePage();
+  const { withHeader, isSuccess, isNotHomePage } = usePage();
   const [searchParams] = useSearchParams();
+
   const accessWithLink = searchParams.get('trading_access') === accessConst.trading_access;
 
   useEffect(() => {
@@ -43,8 +44,9 @@ function App() {
     return <Loader/>;
   }
 
+  // TODO get rid of this style definition
   return (
-    <div className={`${styles.container} ${withHeader ? '' : styles.blue} ${isSuccess ? styles.reset : ''}`}>
+    <div className={`${styles.container} ${withHeader ? '' : styles.black} ${isSuccess ? styles.reset : ''} ${isNotHomePage ? styles.flex : ''}`}>
       <Routes>
         <Route path={routes.home} element={
           <React.Suspense>
@@ -55,19 +57,22 @@ function App() {
             </PrivateRoute>
           </React.Suspense>
         }/>
-        <Route path={routes.signIn}   element={<React.Suspense>
-          <SignIn/>
-        </React.Suspense>}>
+        <Route path={routes.signIn} element={
+          <React.Suspense>
+            <SignIn/>
+          </React.Suspense>}>
         </Route>
-        <Route path={routes.getApp} element={<React.Suspense>
-          <GetApp/>
-        </React.Suspense>}>
+        <Route path={routes.getApp} element={
+          <React.Suspense>
+            <GetApp/>
+          </React.Suspense>}>
         </Route>
-        <Route path={routes.success} element={<React.Suspense>
-          <PrivateRoute>
-            <Success/>
-          </PrivateRoute>
-        </React.Suspense>}>
+        <Route path={routes.success} element={
+          <React.Suspense>
+            <PrivateRoute>
+              <Success/>
+            </PrivateRoute>
+          </React.Suspense>}>
         </Route>
         <Route path={routes.notify}
           element={
