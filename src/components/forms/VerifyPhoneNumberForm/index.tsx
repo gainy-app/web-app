@@ -40,6 +40,7 @@ export const VerifyPhoneNumberForm = ({ updateFields, verifyCode }:Props) => {
           error: ''
         });
         sendEvent('kyc_what_now_create_acc_done', currentUser?.uid, appId);
+        localStorage.setItem('createAccountEdit', 'true');
       }
     } catch (error: any) {
       console.error(`Failed to send verificationCode - ${error.message}`);

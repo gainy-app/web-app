@@ -25,6 +25,7 @@ export const SocialSecurityForm = ({ updateFields }:Props) => {
     onSendData();
     next();
     sendEvent('kyc_what_now_identity_done', currentUser?.uid, appId);
+    localStorage.setItem('verifyIdentityEdit', 'true');
   };
 
   const [open, setOpen] = useState(true);

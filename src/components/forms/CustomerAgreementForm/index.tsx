@@ -48,6 +48,7 @@ export const CustomerAgreementForm = () => {
             sendEvent('kyc_profile_customer_agreement_accepted', currentUser?.uid, appId);
             next();
             sendEvent('kyc_what_now_profile_done', currentUser?.uid, appId);
+            localStorage.setItem('investProfileEdit', 'true');
           }}>{buttonText}</Button>
         </ButtonsGroup>
       </div>
