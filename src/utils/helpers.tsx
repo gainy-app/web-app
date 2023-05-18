@@ -3,6 +3,8 @@ import { IChoices } from 'models';
 import { phoneMasks } from './constants';
 import Cookies from 'js-cookie';
 
+export const getCurrentYear = () => new Date().getFullYear();
+
 export const formatNumber = (phone: string, mask: string) => {
   switch (mask) {
     case phoneMasks.us: {

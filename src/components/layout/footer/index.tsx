@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { getCurrentYear } from 'utils/helpers';
 import styles from './footer.module.scss';
 
 interface Props {
@@ -6,11 +7,13 @@ interface Props {
 }
 
 export const Footer = ({ footerClassName }: Props) => {
+  const currentYear = getCurrentYear();
+
   return (
     <footer className={classNames(styles.footer, {
       [footerClassName || '']: footerClassName,
     })  }>
-      <span> © 2021 Gainy, Inc.</span>
+      <span> © {currentYear} Gainy, Inc.</span>
     </footer>
   );
 };
