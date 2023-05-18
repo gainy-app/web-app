@@ -44,9 +44,8 @@ export default function Notify () {
   };
 
   const onPhoneChange = (values: NumberFormatValues) => {
-    if (values.value.length <= 10) {
-      setPhoneState(values.value);
-    }
+    const resultValue = values.value.length >= 10 ? values.value.slice(0,10) : values.value;
+    setPhoneState(resultValue);
   };
 
   const handleDownloadButtonClick = () => {
