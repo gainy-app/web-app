@@ -16,7 +16,8 @@ export default function Home () {
   const withLinkFromStorage = localStorage.getItem('withLink') === 'true' ? true : false;
   const withTrading = isTreadingEnabled?.app_profiles?.find((profile: any) => !!profile.flags);
 
-  if(!(withTrading?.flags?.is_trading_enabled || withLinkFromStorage)) return <Navigate to={routes.getApp}/>;
+  if(!(withTrading?.flags?.is_trading_enabled && withLinkFromStorage)) return <Navigate to={routes.getApp}/>;
+
   if(isKycFormDone) {
     return <Navigate to={routes.success}/>;
   }

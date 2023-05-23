@@ -1,7 +1,22 @@
 import { ApolloError } from '@apollo/client';
+import { User as FirebaseUser } from 'firebase/auth';
 import { IChoices } from 'models';
 import { phoneMasks } from './constants';
 import Cookies from 'js-cookie';
+
+export const getAuthProvider = (user: FirebaseUser | null): string | null => {
+  const providerMap: { [key: string]: string } = {
+    'google.com': 'google',
+    'apple.com': 'apple',
+  };
+
+  if (user && user.providerData && user.providerData.length > 0) {
+    const providerId = user.providerData[0].providerId;
+    return providerMap[providerId] || null;
+  }
+
+  return null;
+};
 
 export const getCurrentYear = () => new Date().getFullYear();
 

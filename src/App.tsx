@@ -25,8 +25,8 @@ function App() {
       localStorage.setItem('withLink', accessWithLink.toString());
     }
 
-    setAmplitudeUserId(currentUser?.uid || null);
-  }, []);
+    setAmplitudeUserId(appId?.toString()?.padStart(5,'0') || null);
+  }, [accessWithLink, appId, searchParams]);
 
   useEffect(() => {
     if(currentUser) {

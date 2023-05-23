@@ -72,7 +72,7 @@ export default function Success () {
   };
 
   const onPhoneChange = (values: NumberFormatValues) => {
-    const resultValue = values.value.length >= 10 ? values.value.slice(0,10) : values.value;
+    const resultValue = values.value.length >= 10 ? values.value.slice(-10) : values.value;
     setPhoneState(resultValue);
   };
 
