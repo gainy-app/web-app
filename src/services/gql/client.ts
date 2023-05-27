@@ -7,12 +7,12 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers = {} }) => {
-  const token = JSON.stringify(localStorage.getItem('token') || '');
+  const token = localStorage.getItem('token') || '';
 
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${JSON.parse(token)}` : '',
+      authorization: token ? `Bearer ${token}` : '',
     }
   };
 });

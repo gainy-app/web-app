@@ -4,7 +4,7 @@ import { Button, Image, Input, Loader, ButtonLink } from '../../components';
 import { FormEvent, useLayoutEffect, useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import { formatNumber, getCurrentYear, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
+import { formatNumber, getAuthProvider, getCurrentYear, getQueryAppLink, parseGQLerror } from '../../utils/helpers';
 import { useMutation } from '@apollo/client';
 import { SEND_APP_LINK } from '../../services/gql/queries';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -47,7 +47,7 @@ export default function GetApp () {
     if(status === null) {
       navigate(routes.home);
     }
-  }, [status]);
+  }, [navigate, status]);
 
   useLayoutEffect(() => {
     if(authMethod) {
@@ -57,11 +57,13 @@ export default function GetApp () {
     return () => {
       localStorage.removeItem('login');
     };
-  }, []);
+  }, [authMethod, currentUser?.uid]);
 
   useEffect(() => {
-    appId && sendEvent('get_app_page_viewed', currentUser?.uid, appId);
-  }, [appId]);
+    if(appId){
+      sendEvent('get_app_page_viewed', currentUser?.uid, appId, { accountType: getAuthProvider(currentUser) });
+    }
+  }, [appId, currentUser, currentUser?.uid]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -89,7 +91,7 @@ export default function GetApp () {
   };
 
   const onPhoneChange = (values: NumberFormatValues) => {
-    const resultValue = values.value.length >= 10 ? values.value.slice(0,10) : values.value;
+    const resultValue = values.value.length >= 10 ? values.value.slice(-10) : values.value;
     setPhoneState(resultValue);
   };
 

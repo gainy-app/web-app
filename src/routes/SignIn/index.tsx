@@ -4,7 +4,7 @@ import styles from './signin.module.scss';
 import { imageTypes, routes } from 'utils/constants';
 import { config } from './config';
 import { useAuth } from 'contexts/AuthContext';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { sendEvent } from 'utils/logEvent';
 import { getCurrentYear } from 'utils/helpers';
 
@@ -14,6 +14,14 @@ export default function SignIn () {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { signInWithGoogle, currentUser, signInWithApple, appId } = useAuth();
+
+  useEffect(() => {
+    sendEvent('sign_in_page_viewed', '', appId, {
+      pageUrl: window.location.href,
+      pagePath: pathname,
+      title: document.title
+    });
+  }, []);
 
   if (currentUser) {
     return <Navigate to={routes.home} replace state={{ path: pathname }} />;
@@ -30,14 +38,6 @@ export default function SignIn () {
         navigate(routes.home);
       });
   };
-
-  useLayoutEffect(() => {
-    sendEvent('sign_in_page_viewed', '', appId, {
-      pageUrl: window.location.href,
-      pagePath: pathname,
-      title: document.title
-    });
-  }, []);
 
   return (
     <section className={styles.section}>
