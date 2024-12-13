@@ -78,7 +78,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.31.10",
     "firebase-admin": "^11.3.0",
-    "stylelint": "^14.15.0",
+    "stylelint": "^15.10.1",
     "stylelint-config-standard-scss": "^6.1.0",
     "stylelint-order": "^5.0.0",
     "stylelint-scss": "^4.3.0"
